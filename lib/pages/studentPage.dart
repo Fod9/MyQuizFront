@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/dropDownQuiz.dart';
+import 'package:my_quiz_ap/components/Stats/Statistics.dart';
 
 class StudentPage extends StatefulWidget {
   const StudentPage({super.key, required this.screenType});
@@ -16,12 +17,12 @@ class _StudentPageState extends State<StudentPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.screenType == "mobile") {
+    if (widget.screenType == "mobile" ) {
       _width = MediaQuery.of(context).size.width * 0.8;
       _height = MediaQuery.of(context).size.height * 0.1;
     }
 
-    return (widget.screenType == "mobile")
+    return (widget.screenType == "mobile" || _width > 600)
         ? MobileDisplay(width: _width, height: _height)
         : DesktopDisplay(width: _width, height: _height);
   }
@@ -41,18 +42,22 @@ class MobileDisplay extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          DropDownQuiz(
-            matiereName: "Maths",
+          StatisticsBlock(
             height: height,
             width: width,
           ),
           DropDownQuiz(
-            matiereName: "Physics",
+            blockName: "Maths",
             height: height,
             width: width,
           ),
           DropDownQuiz(
-            matiereName: "Chemistry",
+            blockName: "Physics",
+            height: height,
+            width: width,
+          ),
+          DropDownQuiz(
+            blockName: "Chemistry",
             height: height,
             width: width,
           ),
@@ -75,17 +80,17 @@ class DesktopDisplay extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DropDownQuiz(
-          matiereName: "Maths",
+          blockName: "Maths",
           height: height,
           width: width,
         ),
         DropDownQuiz(
-          matiereName: "Physics",
+          blockName: "Physics",
           height: height,
           width: width,
         ),
         DropDownQuiz(
-          matiereName: "Chemistry",
+          blockName: "Chemistry",
           height: height,
           width: width,
         ),

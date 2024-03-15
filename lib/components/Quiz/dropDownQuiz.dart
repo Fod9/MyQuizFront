@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/sizedBlock.dart';
+import 'package:my_quiz_ap/components/sizedBlock.dart';
 
 
 class DropDownQuiz extends StatefulWidget {
-  const DropDownQuiz({super.key, required this.height, required this.width, required this.matiereName});
+  const DropDownQuiz({super.key, required this.height, required this.width, required this.blockName});
 
-  final String matiereName;
+  final String blockName;
   final double height;
   final double width;
 
@@ -30,7 +30,7 @@ class _DropDownQuizState extends State<DropDownQuiz> with TickerProviderStateMix
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 2 ), // Durée réduite pour une réactivité accrue
+      duration: const Duration(seconds: 2 ),
       vsync: this,
     );
 
@@ -49,7 +49,7 @@ class _DropDownQuizState extends State<DropDownQuiz> with TickerProviderStateMix
           parent: _controller,
           curve: Interval(
             startInterval, endInterval,
-            curve: Curves.linear, // Courbe plus réactive
+            curve: Curves.linear,
           ),
         ),
       ));
@@ -62,7 +62,7 @@ class _DropDownQuizState extends State<DropDownQuiz> with TickerProviderStateMix
           parent: _controller,
           curve: Interval(
             startInterval, endInterval,
-            curve: Curves.linear, // Courbe plus réactive
+            curve: Curves.linear,
           ),
         ),
       ));
@@ -99,7 +99,7 @@ class _DropDownQuizState extends State<DropDownQuiz> with TickerProviderStateMix
         SizedBlock(
             height: widget.height,
             width: widget.width,
-            matiereName: widget.matiereName,
+            blockName: widget.blockName,
             isExpanded: false,
             isExpendable: true,
             expandController: _expandController,
@@ -130,7 +130,7 @@ class _DropDownQuizState extends State<DropDownQuiz> with TickerProviderStateMix
                         clickEvent: () {},
                         height: widget.height,
                         width: widget.width,
-                        matiereName: quiz,
+                        blockName: quiz,
                       ),
                     ),
                   ),

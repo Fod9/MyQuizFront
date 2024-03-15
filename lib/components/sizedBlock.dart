@@ -3,23 +3,24 @@ import 'package:my_quiz_ap/helpers/Colors.dart';
 
 class SizedBlock extends StatefulWidget {
   const SizedBlock({super.key,
-    required this.matiereName,
     required this.height,
     required this.width,
     required this.clickEvent,
     this.isExpanded = true,
     this.isExpendable = false,
-    this.expandController
-    ,
+    this.expandController,
+    this.child = const SizedBox(),
+    this.blockName = "",
   });
 
-  final String matiereName;
+  final String blockName;
   final double height;
   final double width;
   final VoidCallback clickEvent;
   final bool isExpanded;
   final bool isExpendable;
   final AnimationController? expandController;
+  final Widget child;
 
   @override
   State<SizedBlock> createState() => _SizedBlockState();
@@ -84,7 +85,7 @@ class _SizedBlockState extends State<SizedBlock>
             ),
             child: Center(
               child: Text(
-                widget.matiereName,
+                widget.blockName,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20,
