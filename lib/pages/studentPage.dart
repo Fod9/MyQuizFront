@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/matiereBlock.dart';
+import 'package:my_quiz_ap/components/Quiz/dropDownQuiz.dart';
 
 class StudentPage extends StatefulWidget {
   const StudentPage({super.key, required this.screenType});
@@ -36,26 +36,28 @@ class MobileDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        MatiereBlock(
-          matiere_name: "Maths",
-          height: height,
-          width: width,
-        ),
-        MatiereBlock(
-          matiere_name: "Français",
-          height: height,
-          width: width,
-        ),
-        MatiereBlock(
-          matiere_name: "Histoire",
-          height: height,
-          width: width,
-        ),
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          DropDownQuiz(
+            matiereName: "Maths",
+            height: height,
+            width: width,
+          ),
+          DropDownQuiz(
+            matiereName: "Physics",
+            height: height,
+            width: width,
+          ),
+          DropDownQuiz(
+            matiereName: "Chemistry",
+            height: height,
+            width: width,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -72,18 +74,18 @@ class DesktopDisplay extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MatiereBlock(
-          matiere_name: "Maths",
+        DropDownQuiz(
+          matiereName: "Maths",
           height: height,
           width: width,
         ),
-        MatiereBlock(
-          matiere_name: "Français",
+        DropDownQuiz(
+          matiereName: "Physics",
           height: height,
           width: width,
         ),
-        MatiereBlock(
-          matiere_name: "Histoire",
+        DropDownQuiz(
+          matiereName: "Chemistry",
           height: height,
           width: width,
         ),

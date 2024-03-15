@@ -31,32 +31,51 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   String _screenType = "mobile";
 
   @override
   Widget build(BuildContext context) {
-    if (MediaQuery.of(context).size.width > 600) {
-      _screenType = "desktop";
-    }
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
-        ),
-        body: Container(
-            // width and height are set to double.infinity
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                // switch background with type
-                image: (_screenType == "mobile")
-                    ? const AssetImage("assets/images/BackgroundMobile.png")
-                    : const AssetImage("assets/images/BackgroundDesktop.png"),
-                fit: BoxFit.cover,
+    return LayoutBuilder(
+    builder: (context, constraints) {
+      if (constraints.maxWidth > 600) {
+        _screenType = "desktop";
+      } else {
+        _screenType = "mobile";
+      }
+
+      return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Theme
+                .of(context)
+                .colorScheme
+                .inversePrimary,
+            title: Text(widget.title),
+          ),
+          body: Stack(
+            children: [
+              Container(
+                // width and height are set to double.infinity
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      // switch background with type
+                      image: (_screenType == "mobile")
+                          ? const AssetImage(
+                          "assets/images/BackgroundMobile.png")
+                          : const AssetImage(
+                          "assets/images/BackgroundDesktop.png"),
+                      fit: BoxFit.cover,
+                    ),
+                  )
               ),
-            ),
-            child: StudentPage(screenType: _screenType,)));
+              SingleChildScrollView(
+                child: StudentPage(screenType: _screenType,),
+              ),
+            ],
+          )
+      );
+    },
+    );
   }
 }
