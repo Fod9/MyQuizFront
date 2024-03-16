@@ -43,8 +43,8 @@ class MobileDisplay extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           StatisticsBlock(
-            height: height,
-            width: width,
+            height: height * 2,
+            width: width * 1.1,
           ),
           DropDownQuiz(
             blockName: "Maths",
