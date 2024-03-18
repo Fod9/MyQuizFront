@@ -78,8 +78,8 @@ class DesktopDisplay extends StatelessWidget {
     return Column(
       children: [
         StatisticsBlock(
-          height: height * 5,
-          width: width * 1.1,
+          height: height ,
+          width: width * 4,
           isExpanded: true,
           isExpandable: false,
           mode: "desktop",

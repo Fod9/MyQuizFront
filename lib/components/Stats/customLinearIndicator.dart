@@ -6,10 +6,12 @@ class CustomLinearIndicator extends StatefulWidget {
     super.key,
     required this.width,
     required this.text,
+    this.margin = const EdgeInsets.only(top: 40),
   });
 
   final double width;
   final String text;
+  final EdgeInsets margin;
 
   @override
   State<CustomLinearIndicator> createState() => _CustomLinearIndicatorState();
@@ -20,7 +22,7 @@ class _CustomLinearIndicatorState extends State<CustomLinearIndicator> {
   Widget build(BuildContext context) {
     return Container(
       width: widget.width,
-      margin: const EdgeInsets.only(top: 40),
+      margin: widget.margin,
       child: Stack(
         alignment: Alignment.center,
         children: [

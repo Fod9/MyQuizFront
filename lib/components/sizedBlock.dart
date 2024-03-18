@@ -100,7 +100,11 @@ class _SizedBlockState extends State<SizedBlock>
       animation: _expandController,
       builder: (context, child) {
         return GestureDetector(
-          onTap: _expand,
+          onTap: () {
+            if (widget.isExpendable) {
+              _expand();
+            }
+          },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(radius),
             child: Container(

@@ -99,19 +99,22 @@ class MobileDisplay extends StatelessWidget {
 }
 
 class DesktopDisplay extends StatelessWidget {
-  const DesktopDisplay({super.key, required this.parentWidget});
+  DesktopDisplay({super.key, required this.parentWidget});
 
   final parentWidget;
 
+
   @override
   Widget build(BuildContext context) {
+    final double blockHeight = MediaQuery.of(context).size.height * 0.3;
+    final double blockWidth  = MediaQuery.of(context).size.width * 0.8;
     return SizedBlock(
       blockName: parentWidget.blockName,
-      height: parentWidget.height,
-      width: parentWidget.width,
+      height: blockHeight,
+      width: blockWidth,
       expandController: parentWidget.expandController,
-      isExpanded: false,
-      isExpendable: true,
+      isExpanded: parentWidget.isExpanded,
+      isExpendable: parentWidget.isExpandable,
       clickEvent: () {},
       expandSize: 0.3,
       percentRadius: 0.05,
@@ -119,25 +122,31 @@ class DesktopDisplay extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            children: [
-              CustomCircularIndicator(
-                width: parentWidget.width * 0.35,
-                percentage: 90,
-              ),
-              Center(
-                child: CustomLinearIndicator(
-                  width: parentWidget.width * 0.8,
-                  text: "20/40 minutes",
+          Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CustomCircularIndicator(
+                  width: blockHeight * 0.50,
+                  percentage: 90,
                 ),
-              ),
-              Center(
-                child: CustomLinearIndicator(
-                  width: parentWidget.width * 0.8,
-                  text: "10/20 Quiz",
+                Center(
+                  child: CustomLinearIndicator(
+                    width: blockWidth * 0.25,
+                    text: "20/40 minutes",
+                    margin: const EdgeInsets.only(left: 20)
+                  ),
                 ),
-              )
-            ],
+                Center(
+                  child: CustomLinearIndicator(
+                    width: blockWidth * 0.25,
+                    text: "10/20 Quiz",
+                    margin: const EdgeInsets.only(left: 20)
+                  ),
+                )
+              ],
+            ),
           ),
           parentWidget.child,
         ],
