@@ -43,7 +43,7 @@ class MobileDisplay extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           StatisticsBlock(
-            height: height * 2,
+            height: height * 5,
             width: width * 1.1,
           ),
           DropDownQuiz(
@@ -75,24 +75,35 @@ class DesktopDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
       children: [
-        DropDownQuiz(
-          blockName: "Maths",
-          height: height,
-          width: width,
+        StatisticsBlock(
+          height: height * 5,
+          width: width * 1.1,
+          isExpanded: true,
+          isExpandable: false,
+          mode: "desktop",
         ),
-        DropDownQuiz(
-          blockName: "Physics",
-          height: height,
-          width: width,
-        ),
-        DropDownQuiz(
-          blockName: "Chemistry",
-          height: height,
-          width: width,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DropDownQuiz(
+              blockName: "Maths",
+              height: height,
+              width: width,
+            ),
+            DropDownQuiz(
+              blockName: "Physics",
+              height: height,
+              width: width,
+            ),
+            DropDownQuiz(
+              blockName: "Chemistry",
+              height: height,
+              width: width,
+            ),
+          ],
         ),
       ],
     );

@@ -38,7 +38,8 @@ class _DropDownQuizState extends State<DropDownQuiz>
     int numberOfElements = 3;
     setState(() {
       calculatedDuration = Duration(milliseconds: 350 * numberOfElements);
-      calculatedHeight = widget.height * (numberOfElements) + widget.height * 1.1 ;
+      calculatedHeight =
+          (widget.height * (numberOfElements) + widget.height) * 0.8;
     });
 
     _controller = AnimationController(
@@ -137,8 +138,8 @@ class _DropDownQuizState extends State<DropDownQuiz>
           children: [
             AnimatedContainer(
               duration: (_isExpanded)
-                  ?  Duration(milliseconds: 300 * numberOfElements)
-                  :  Duration(milliseconds: 300 * numberOfElements),
+                  ? Duration(milliseconds: 300 * numberOfElements)
+                  : Duration(milliseconds: 300 * numberOfElements),
               height: containerHeight,
               child: Column(
                 children: quizList.asMap().entries.map((entry) {
@@ -156,8 +157,8 @@ class _DropDownQuizState extends State<DropDownQuiz>
                             scale: _opacityAnimations[idx].value,
                             child: SizedBlock(
                               clickEvent: () {},
-                              height: widget.height,
-                              width: widget.width,
+                              height: widget.height * 0.7,
+                              width: widget.width * 0.9,
                               blockName: quiz,
                             ),
                           ),

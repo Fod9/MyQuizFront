@@ -14,6 +14,9 @@ class SizedBlock extends StatefulWidget {
     this.blockName = "",
     this.expandSize = 0.5,
     this.hasShadow = false,
+    this.percentRadius = 0.15,
+    this.centeredVText = true,
+    this.centeredHText = true,
   });
 
   final String blockName;
@@ -26,6 +29,9 @@ class SizedBlock extends StatefulWidget {
   final Widget? child;
   final double expandSize;
   final bool hasShadow;
+  final double percentRadius;
+  final bool centeredVText;
+  final bool centeredHText;
 
   @override
   State<SizedBlock> createState() => _SizedBlockState();
@@ -36,6 +42,7 @@ class _SizedBlockState extends State<SizedBlock>
   late AnimationController _expandController;
   late Animation<double> _expandAnimation;
   bool isExpanded = true;
+  double radius = 0;
 
   @override
   void initState() {
@@ -57,6 +64,12 @@ class _SizedBlockState extends State<SizedBlock>
         curve: Curves.easeInOut,
       ),
     );
+
+
+    setState(() {
+      radius = widget.height * widget.percentRadius;
+    });
+
   }
 
   void _expand() {
@@ -68,11 +81,13 @@ class _SizedBlockState extends State<SizedBlock>
           Future.delayed(const Duration(milliseconds: 100), () {
             isExpanded = !isExpanded;
           });
+          radius = widget.height * widget.percentRadius;
         } else {
           _expandController.forward();
           Future.delayed(const Duration(milliseconds: 200), () {
             isExpanded = !isExpanded;
           });
+          radius = widget.height / 2 * widget.percentRadius;
         }
       }
       widget.clickEvent();
@@ -86,47 +101,72 @@ class _SizedBlockState extends State<SizedBlock>
       builder: (context, child) {
         return GestureDetector(
           onTap: _expand,
-          child: Container(
-            width: widget.width,
-            height:
-                widget.isExpendable ? _expandAnimation.value : widget.height,
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: darkGlass,
-              borderRadius: BorderRadius.circular(widget.height / 6),
-              boxShadow: widget.hasShadow
-                  ? [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: const Offset(0, 3),
-                      ),
-                    ]
-                  : null,
-            ),
-            child: Center(
-              child: Container(
-                width: widget.width,
-                height: widget.height,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.blockName,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(radius),
+            child: Container(
+              width: widget.width,
+              height: widget.isExpendable ? _expandAnimation.value : widget.height,
+              margin: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: darkGlass,
+                borderRadius: BorderRadius.circular(radius),
+                boxShadow: widget.hasShadow
+                    ? [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 2,
+                    offset: Offset(2, 2),
+                  ),
+                ]
+                    : null,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(radius),
+                child: Container(
+                  color: Colors.transparent, // Apply the background color here
+                  child: Center(
+                    child: Container(
+                      width: widget.width,
+                      height: widget.height,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          if (!isExpanded)
+                            Center(
+                              child: Text(
+                                widget.blockName,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          else
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Padding(
+                                padding: (isExpanded && !widget.isExpendable)
+                                    ? const EdgeInsets.only(top: 0)
+                                    : const EdgeInsets.only(top: 20),
+                                child: Text(
+                                  widget.blockName,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          if (widget.child != null && isExpanded)
+                            Expanded(
+                              child: widget.child!,
+                            ),
+                        ],
                       ),
                     ),
-                    if (isExpanded && widget.child != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        // Ajouter un espacement si nécessaire
-                        child: widget.child,
-                      ),
-                  ],
+                  ),
                 ),
               ),
             ),
