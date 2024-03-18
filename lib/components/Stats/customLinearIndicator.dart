@@ -28,7 +28,7 @@ class _CustomLinearIndicatorState extends State<CustomLinearIndicator> {
         children: [
           LinearProgressIndicator(
             value: 0.9,
-            backgroundColor: Colors.grey[200],
+            backgroundColor: Colors.grey[300],
             color: lightGreen,
             borderRadius: BorderRadius.circular(30),
             minHeight: 30,
