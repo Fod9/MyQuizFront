@@ -15,6 +15,7 @@ class _AuthPageState extends State<AuthPage> {
   double _width = 300;
   double _height = 150;
   String authType = "inscription";
+  bool isLoginFormDisplayed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,22 +25,25 @@ class _AuthPageState extends State<AuthPage> {
     }
 
     return (widget.screenType == "mobile" || _width > 600)
-        ? MobileDisplay(width: _width, height: _height)
+        ? MobileDisplay(width: _width, height: _height, toggleForm: toggleForm, isLoginFormDisplayed: isLoginFormDisplayed)
         : DesktopDisplay(width: _width, height: _height);
+  }
+  void toggleForm() {
+    setState(() {
+      isLoginFormDisplayed = !isLoginFormDisplayed;
+    });
   }
 }
 
 //create a widget
 class MobileDisplay extends StatelessWidget {
-  MobileDisplay({super.key, required this.width, required this.height});
+  MobileDisplay({Key? key, required this.width, required this.height, required this.toggleForm, required this.isLoginFormDisplayed}) : super(key: key);
 
   final double width;
   final double height;
+  final void Function() toggleForm;
   final formKey = GlobalKey<FormState>();
-
-  showConnexionForm() {
-    print("Connexion");
-  }
+  final bool isLoginFormDisplayed;
 
   Widget _buildTextFormField(String label, String hintText) {
     return Column(
@@ -70,6 +74,17 @@ class MobileDisplay extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String? validateEmail(String value) {
+    RegExp regex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    if (value.isNotEmpty) {
+      if (!regex.hasMatch(value)) {
+        return 'Veuillez entrer une adresse e-mail valide';
+      }
+    } else {
+      return 'Veuillez entrer une adresse e-mail';
+    }
   }
 
   Widget _buildInscriptionForm() {
@@ -143,11 +158,11 @@ class MobileDisplay extends StatelessWidget {
     );
   }
 
-  Widget _buildConnexionForm(String label, String hintText) {
+  Widget _buildConnexionForm() {
     return Form(
       key: formKey,
       child: SizedBlock(
-        height: height * 7.3,
+        height: height * 4,
         width: width * 1.1,
         percentRadius: 0.03,
         clickEvent: () {  },
@@ -157,11 +172,11 @@ class MobileDisplay extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _buildTextFormField("Nom d'utilisateur :", "Entrez votre nom d'utilisateur"),
-              _buildTextFormField("Mot de passe :", "Choisissez un mot de passe"),
+              _buildTextFormField("Mot de passe :", "Entrez votre mot de passe"),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Container(
-                  width: width * 0.4,
+                  width: width * 0.5,
                   height: height * 0.5,
                   decoration: BoxDecoration(
                     color: electricBlue,
@@ -203,7 +218,7 @@ class MobileDisplay extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 20.0),
         child: Column(
           children: [
-            _buildInscriptionForm(),
+            isLoginFormDisplayed ? _buildConnexionForm() : _buildInscriptionForm(),
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
               child: Container(
@@ -222,15 +237,13 @@ class MobileDisplay extends StatelessWidget {
                   ],
                 ),
                 child: ElevatedButton(
-                  onPressed: () {
-                    showConnexionForm;
-                  },
+                  onPressed: toggleForm,
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.transparent,
                     ),
-                  child: const Text("J'ai déjà un compte")
+                  child: Text(isLoginFormDisplayed ? "Je n'ai pas de compte" : "J'ai déjà un compte"),
                 ),
               ),
             )
