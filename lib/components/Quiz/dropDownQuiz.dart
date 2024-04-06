@@ -45,11 +45,15 @@ class _DropDownQuizState extends State<DropDownQuiz>
     super.initState();
 
     int numberOfElements = 3;
+
     setState(() {
+      // Calculate the duration and height of the container based on the number of elements
       calculatedDuration = Duration(milliseconds: 350 * numberOfElements);
       calculatedHeight =
           (widget.height * (numberOfElements) + widget.height) * 0.9;
     });
+
+    // Initialize the controllers for the animations
 
     _controller = AnimationController(
       duration: Duration(seconds: calculatedDuration!.inSeconds),
@@ -101,12 +105,14 @@ class _DropDownQuizState extends State<DropDownQuiz>
   }
 
   @override
+  // Dispose of the controllers when the widget is removed
   void dispose() {
     _controller.dispose();
     _buttonController.dispose();
     super.dispose();
   }
 
+  // Start the animation when the user clicks on the block
   void startAnimation() {
     _expandController.forward();
     _controller.forward();
@@ -116,13 +122,12 @@ class _DropDownQuizState extends State<DropDownQuiz>
       _buttonController.forward();
     });
     setState(() {
-      print(calculatedHeight);
       containerHeight = calculatedHeight;
     });
   }
 
+  // Start the out animation when the user clicks on the block
   void startAnimationOut() {
-    Duration? delay = Duration(milliseconds: 100 * numberOfElements);
     _buttonController.reverse();
     _expandController.reverse();
     _controller.reverse();
@@ -187,6 +192,7 @@ class _DropDownQuizState extends State<DropDownQuiz>
                     },
                   );
                 }).toList(),
+                // Add button to add a new quiz ( only for teachers )
                 (widget.mode == "teacher")
                     ? AnimatedBuilder(
                         animation: _buttonController,

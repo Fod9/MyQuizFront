@@ -18,7 +18,6 @@ class AddButton extends StatefulWidget {
 class _AddButtonState extends State<AddButton> {
   @override
   Widget build(BuildContext context) {
-    // cut a "add" button inside a circle
     return Container(
       height: widget.width * 0.15,
       width: widget.width * 0.15,
@@ -50,7 +49,9 @@ class AddClipper extends CustomClipper<Path> {
     // Draw horizontal rectangle
     final horizontalRect = Path()
       ..addRect(Rect.fromLTWH(
+        // Center the rectangle horizontally
         size.width / 2 - rectWidth / 2,
+        // Center the rectangle vertically
         size.height / 4,
         rectWidth,
         size.height / 2,
@@ -59,7 +60,9 @@ class AddClipper extends CustomClipper<Path> {
     // Draw vertical rectangle
     final verticalRect = Path()
       ..addRect(Rect.fromLTWH(
+        // Center the rectangle horizontally
         size.width / 4,
+        // Center the rectangle vertically
         size.height / 2 - rectHeight / 2,
         size.width / 2,
         rectHeight,

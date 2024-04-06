@@ -49,6 +49,8 @@ class _SizedBlockState extends State<SizedBlock>
     super.initState();
     isExpanded = widget.isExpanded;
 
+    // Initialize the controller for the animation to pass to the widget’
+
     _expandController = widget.expandController ??
         AnimationController(
           duration: const Duration(milliseconds: 500),
