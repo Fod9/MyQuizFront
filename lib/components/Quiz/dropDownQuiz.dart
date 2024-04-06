@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_quiz_ap/components/Globals/AddButton.dart';
 import 'package:my_quiz_ap/components/sizedBlock.dart';
 
 class DropDownQuiz extends StatefulWidget {
@@ -6,11 +7,14 @@ class DropDownQuiz extends StatefulWidget {
       {super.key,
       required this.height,
       required this.width,
-      required this.blockName});
+      required this.blockName,
+      this.mode = "student"
+      });
 
   final String blockName;
   final double height;
   final double width;
+  final String mode;
 
   @override
   State<DropDownQuiz> createState() => _DropDownQuizState();
@@ -166,7 +170,8 @@ class _DropDownQuizState extends State<DropDownQuiz>
                       );
                     },
                   );
-                }).toList(),
+
+                }).toList()
               ),
             ),
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/pages/studentPage.dart';
+import 'package:my_quiz_ap/pages/TeacherPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -70,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   )
               ),
               SingleChildScrollView(
-                child: StudentPage(screenType: _screenType,),
+                child: TeacherPage(screenType: _screenType,),
               ),
             ],
           )

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:my_quiz_ap/components/Globals/AddButton.dart';
 import 'package:my_quiz_ap/components/Quiz/dropDownQuiz.dart';
 import 'package:my_quiz_ap/components/Stats/Statistics.dart';
 
-class StudentPage extends StatefulWidget {
-  const StudentPage({super.key, required this.screenType});
+class TeacherPage extends StatefulWidget {
+  const TeacherPage({super.key, required this.screenType});
 
   final String screenType;
 
   @override
-  State<StudentPage> createState() => _StudentPageState();
+  State<TeacherPage> createState() => _TeacherPageState();
 }
 
-class _StudentPageState extends State<StudentPage> {
+class _TeacherPageState extends State<TeacherPage> {
   double _width = 300;
   double _height = 150;
 
@@ -42,10 +43,6 @@ class MobileDisplay extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          StatisticsBlock(
-            height: height * 5,
-            width: width * 1.1,
-          ),
           DropDownQuiz(
             blockName: "Maths",
             height: height,
@@ -61,6 +58,14 @@ class MobileDisplay extends StatelessWidget {
             height: height,
             width: width,
           ),
+
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: AddButton(
+              width: width,
+              color : Colors.blue,
+            ),
+          )
         ],
       ),
     );
@@ -78,13 +83,6 @@ class DesktopDisplay extends StatelessWidget {
     return Center(
       child: Column(
         children: [
-          StatisticsBlock(
-            height: height ,
-            width: width * 4,
-            isExpanded: true,
-            isExpandable: false,
-            mode: "desktop",
-          ),
           Wrap(
             spacing: 5,
             runSpacing: 5,

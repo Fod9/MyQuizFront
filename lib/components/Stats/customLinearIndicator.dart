@@ -26,12 +26,30 @@ class _CustomLinearIndicatorState extends State<CustomLinearIndicator> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          LinearProgressIndicator(
-            value: 0.9,
-            backgroundColor: Colors.grey[300],
-            color: lightGreen,
-            borderRadius: BorderRadius.circular(30),
-            minHeight: 30,
+          Stack(
+            children: [
+              Container(
+                height: 30,
+                width: widget.width,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              Container(
+                height: 30,
+                width: widget.width * 0.9,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      lightGlassBlue,
+                      lightGreen,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ],
           ),
           Text(
             widget.text,
