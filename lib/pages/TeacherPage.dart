@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Globals/AddButton.dart';
 import 'package:my_quiz_ap/components/Quiz/dropDownQuiz.dart';
 import 'package:my_quiz_ap/components/Stats/Statistics.dart';
+import 'package:my_quiz_ap/helpers/Colors.dart';
 
 class TeacherPage extends StatefulWidget {
   const TeacherPage({super.key, required this.screenType});
@@ -47,25 +48,20 @@ class MobileDisplay extends StatelessWidget {
             blockName: "Maths",
             height: height,
             width: width,
+            mode: "teacher",
           ),
           DropDownQuiz(
             blockName: "Physics",
             height: height,
             width: width,
+            mode: "teacher",
           ),
           DropDownQuiz(
             blockName: "Chemistry",
             height: height,
             width: width,
+            mode: "teacher",
           ),
-
-          Container(
-            margin: const EdgeInsets.only(top: 20),
-            child: AddButton(
-              width: width,
-              color : Colors.blue,
-            ),
-          )
         ],
       ),
     );
@@ -91,16 +87,19 @@ class DesktopDisplay extends StatelessWidget {
                 blockName: "Maths",
                 height: height,
                 width: width,
+                mode: "teacher",
               ),
               DropDownQuiz(
                 blockName: "Physics",
                 height: height,
                 width: width,
+                mode: "teacher",
               ),
               DropDownQuiz(
                 blockName: "Chemistry",
                 height: height,
                 width: width,
+                mode: "teacher",
               ),
             ],
           ),

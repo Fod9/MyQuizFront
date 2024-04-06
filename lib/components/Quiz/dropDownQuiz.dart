@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Globals/AddButton.dart';
 import 'package:my_quiz_ap/components/sizedBlock.dart';
+import 'package:my_quiz_ap/helpers/Colors.dart';
 
 class DropDownQuiz extends StatefulWidget {
   const DropDownQuiz(
@@ -8,8 +9,7 @@ class DropDownQuiz extends StatefulWidget {
       required this.height,
       required this.width,
       required this.blockName,
-      this.mode = "student"
-      });
+      this.mode = "student"});
 
   final String blockName;
   final double height;
@@ -24,9 +24,14 @@ class _DropDownQuizState extends State<DropDownQuiz>
     with TickerProviderStateMixin {
   late AnimationController _controller;
   late AnimationController _expandController;
+  late final AnimationController _buttonController = AnimationController(
+    duration: const Duration(milliseconds: 200),
+    vsync: this,
+  );
 
   List<Animation<double>> _opacityAnimations = [];
   List<Animation<Offset>> _popAnimations = [];
+  late Animation<double> _buttonAnimation;
   double containerHeight = 0;
 
   bool _isExpanded = false;
@@ -43,7 +48,7 @@ class _DropDownQuizState extends State<DropDownQuiz>
     setState(() {
       calculatedDuration = Duration(milliseconds: 350 * numberOfElements);
       calculatedHeight =
-          (widget.height * (numberOfElements) + widget.height) * 0.8;
+          (widget.height * (numberOfElements) + widget.height) * 0.9;
     });
 
     _controller = AnimationController(
@@ -86,11 +91,19 @@ class _DropDownQuizState extends State<DropDownQuiz>
         ),
       ));
     }
+
+    _buttonAnimation = Tween<double>(begin: 0.0, end: 1).animate(
+      CurvedAnimation(
+        parent: _buttonController,
+        curve: Curves.linear,
+      ),
+    );
   }
 
   @override
   void dispose() {
-    _controller!.dispose();
+    _controller.dispose();
+    _buttonController.dispose();
     super.dispose();
   }
 
@@ -98,6 +111,10 @@ class _DropDownQuizState extends State<DropDownQuiz>
     _expandController.forward();
     _controller.forward();
     _isExpanded = true;
+
+    Future.delayed(_controller.duration!, () {
+      _buttonController.forward();
+    });
     setState(() {
       print(calculatedHeight);
       containerHeight = calculatedHeight;
@@ -106,9 +123,8 @@ class _DropDownQuizState extends State<DropDownQuiz>
 
   void startAnimationOut() {
     Duration? delay = Duration(milliseconds: 100 * numberOfElements);
-    Future.delayed(delay, () {
-      _expandController.reverse();
-    });
+    _buttonController.reverse();
+    _expandController.reverse();
     _controller.reverse();
     _isExpanded = false;
     setState(() {
@@ -145,8 +161,8 @@ class _DropDownQuizState extends State<DropDownQuiz>
                   ? Duration(milliseconds: 300 * numberOfElements)
                   : Duration(milliseconds: 300 * numberOfElements),
               height: containerHeight,
-              child: Column(
-                children: quizList.asMap().entries.map((entry) {
+              child: Column(children: [
+                ...quizList.asMap().entries.map((entry) {
                   int idx = entry.key;
                   String quiz = entry.value;
 
@@ -170,9 +186,28 @@ class _DropDownQuizState extends State<DropDownQuiz>
                       );
                     },
                   );
-
-                }).toList()
-              ),
+                }).toList(),
+                (widget.mode == "teacher")
+                    ? AnimatedBuilder(
+                        animation: _buttonController,
+                        builder: (context, child) {
+                          return Visibility(
+                            visible: _buttonAnimation.value > 0,
+                            child: Opacity(
+                              opacity: _buttonAnimation.value,
+                              child: Transform.scale(
+                                scale: _buttonAnimation.value,
+                                child: AddButton(
+                                  width: widget.width * 0.9,
+                                  color: lightGreen,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    : Container(),
+              ]),
             ),
           ],
         ),
