@@ -27,6 +27,7 @@ class _AuthPageState extends State<AuthPage> {
     if (formType == "inscription") {
       if (formKeyInscription.currentState!.validate()) {
         // Form submission logic for inscription form
+        formController.getData();
       }
     } else {
       if (formKeyConnexion.currentState!.validate()) {

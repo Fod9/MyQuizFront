@@ -79,4 +79,14 @@ class FormController with ChangeNotifier {
         break;
     }
   }
+
+  Map<String, String> getData() {
+    return {
+      "nom": nameController.text,
+      "prenom": firstnameController.text,
+      "email": emailController.text,
+      "pseudo": usernameController.text,
+      "mdp": pwdController.text,
+    };
+  }
 }
