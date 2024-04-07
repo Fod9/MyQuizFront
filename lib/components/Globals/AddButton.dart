@@ -46,6 +46,8 @@ class AddClipper extends CustomClipper<Path> {
       radius: size.width / 2,
     ));
 
+    //TODO: The plus sign become a rectangle on desktop view
+
     // Draw horizontal rectangle
     final horizontalRect = Path()
       ..addRect(Rect.fromLTWH(
