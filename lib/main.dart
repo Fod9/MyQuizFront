@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_quiz_ap/pages/AdminPage.dart';
 import 'package:my_quiz_ap/pages/studentPage.dart';
 import 'package:my_quiz_ap/pages/authPage.dart';
 
@@ -75,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   )
               ),
               SingleChildScrollView(
-                child: AuthPage(screenType: _screenType,),
+                child: AdminPage(),
               ),
             ],
           )
