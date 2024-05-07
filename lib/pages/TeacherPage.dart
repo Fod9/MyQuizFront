@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz.dart';
+import 'package:my_quiz_ap/fakers/fake_quiz_list.dart';
 
 class TeacherPage extends StatefulWidget {
   const TeacherPage({super.key, required this.screenType});
@@ -14,35 +15,18 @@ class _TeacherPageState extends State<TeacherPage> {
   double _width = 300;
   double _height = 150;
 
-  final List<Map<String, dynamic>> _blocList = [
-    {
-      "name": "Maths",
-      "id": "1",
-      "quizList": [
-        {"name": "Math Quiz 1", "id": "1"},
-        {"name": "Math Quiz 2", "id": "2"},
-        {"name": "Math Quiz 3", "id": "3"}
-      ]
-    },
-    {
-      "name": "Physics",
-      "id": "2",
-      "quizList": [
-        {"name": "Physics Quiz 1", "id": "1"},
-        {"name": "Physics Quiz 2", "id": "2"},
-        {"name": "Physics Quiz 3", "id": "3"}
-      ]
-    },
-    {
-      "name": "Chemistry",
-      "id": "3",
-      "quizList": [
-        {"name": "Chemistry Quiz 1", "id": "1"},
-        {"name": "Chemistry Quiz 2", "id": "2"},
-        {"name": "Chemistry Quiz 3", "id": "3"}
-      ]
-    },
-  ];
+  late final Future<List<Map<String, dynamic>>> _blocList;
+
+  @override
+  void initState() {
+    super.initState();
+    _blocList = getFakeQuizList(
+      subjectCount: 3,
+      quizCount: 5,
+      throwError: false,
+      delay: 3,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,20 +35,50 @@ class _TeacherPageState extends State<TeacherPage> {
       _height = MediaQuery.of(context).size.height * 0.1;
     }
 
-    return (widget.screenType == "mobile" || _width > 600)
-        ? MobileDisplay(
-          width: _width,
-          height: _height,
-          blocList: _blocList,
-        )
-        : DesktopDisplay(
-          width: _width,
-          height: _height
-        );
+    return FutureBuilder(
+        future: _blocList,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+
+            return const Center(
+              child: Text("An error occurred, please try again later"),
+            );
+
+          } else if (snapshot.connectionState == ConnectionState.done) {
+
+            return (widget.screenType == "mobile" || _width > 600)
+                ? MobileDisplay(
+              width: _width,
+              height: _height,
+              blocList: snapshot.data!,
+            )
+                : DesktopDisplay(
+                width: _width,
+                height: _height
+            );
+
+          } else {
+
+            return Center(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.8,
+                child: const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      strokeCap: StrokeCap.round,
+                    )
+                ),
+              ),
+            );
+
+          }
+
+        }
+    );
   }
 }
 
-//create a widget
 class MobileDisplay extends StatelessWidget {
   const MobileDisplay({
     super.key,
