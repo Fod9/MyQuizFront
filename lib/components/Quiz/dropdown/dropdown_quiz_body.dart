@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz_btn.dart';
 
 class DropdownQuizBody extends StatefulWidget {
   const DropdownQuizBody({
@@ -18,6 +19,7 @@ class DropdownQuizBody extends StatefulWidget {
 class DropdownQuizBodyState extends State<DropdownQuizBody>
   with SingleTickerProviderStateMixin {
 
+  final double quizBtnHeight = 50;
   late double currentHeight = 0;
   final Duration _animationDuration = const Duration(milliseconds: 250);
 
@@ -37,7 +39,7 @@ class DropdownQuizBodyState extends State<DropdownQuizBody>
 
   late final Animation<double> _animation = Tween<double>(
     begin: 0,
-    end: widget.height,
+    end: quizBtnHeight * widget.quizList.length,
   ).animate(_animationCurve);
 
   void toggleExpand() {
@@ -48,11 +50,29 @@ class DropdownQuizBodyState extends State<DropdownQuizBody>
     }
   }
 
+  Iterable<Widget> getQuizList() sync* {
+    for (var quiz in widget.quizList) {
+      yield DropdownQuizButton(
+          quizName: quiz['name']!,
+          height: quizBtnHeight,
+          width: widget.width * 0.75,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: widget.width,
       height: currentHeight,
+      child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Column(
+          children: [
+            ...getQuizList(),
+          ],
+        ),
+      ),
     );
   }
 }

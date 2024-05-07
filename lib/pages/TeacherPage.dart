@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Globals/AddButton.dart';
-import 'package:my_quiz_ap/components/Quiz/dropdown_quiz.dart';
-import 'package:my_quiz_ap/components/Stats/Statistics.dart';
-import 'package:my_quiz_ap/helpers/Colors.dart';
+import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz.dart';
 
 class TeacherPage extends StatefulWidget {
   const TeacherPage({super.key, required this.screenType});
@@ -21,7 +18,7 @@ class _TeacherPageState extends State<TeacherPage> {
     {
       "name": "Maths",
       "id": "1",
-      "QuizList": [
+      "quizList": [
         {"name": "Math Quiz 1", "id": "1"},
         {"name": "Math Quiz 2", "id": "2"},
         {"name": "Math Quiz 3", "id": "3"}
@@ -30,7 +27,7 @@ class _TeacherPageState extends State<TeacherPage> {
     {
       "name": "Physics",
       "id": "2",
-      "QuizList": [
+      "quizList": [
         {"name": "Physics Quiz 1", "id": "1"},
         {"name": "Physics Quiz 2", "id": "2"},
         {"name": "Physics Quiz 3", "id": "3"}
@@ -39,7 +36,7 @@ class _TeacherPageState extends State<TeacherPage> {
     {
       "name": "Chemistry",
       "id": "3",
-      "QuizList": [
+      "quizList": [
         {"name": "Chemistry Quiz 1", "id": "1"},
         {"name": "Chemistry Quiz 2", "id": "2"},
         {"name": "Chemistry Quiz 3", "id": "3"}
@@ -87,7 +84,7 @@ class MobileDisplay extends StatelessWidget {
         height: height,
         width: width,
         mode: "teacher",
-        quizList: bloc["QuizList"],
+        quizList: bloc["quizList"]!,
       );
     }
   }

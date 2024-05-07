@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/dropdown_quiz_body.dart';
-import 'package:my_quiz_ap/components/Quiz/dropdown_quiz_header.dart';
+import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz_body.dart';
+import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz_header.dart';
 
 class DropDownQuiz extends StatefulWidget {
   const DropDownQuiz({
@@ -39,6 +39,7 @@ class _DropDownQuizState extends State<DropDownQuiz> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
         child: Column(
           children: [
             DropdownQuizHeader(
@@ -54,7 +55,7 @@ class _DropDownQuizState extends State<DropDownQuiz> {
               key: _bodyKey,
               width: widget.width,
               height: widget.height,
-              quizList: widget.quizList,
+              quizList: widget.quizList!,
             ),
           ],
         ),

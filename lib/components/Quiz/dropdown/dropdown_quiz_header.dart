@@ -1,6 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
-import '../../helpers/Colors.dart';
+import '../../../helpers/Colors.dart';
 
 class DropdownQuizHeader extends StatefulWidget {
   const DropdownQuizHeader({
@@ -94,15 +96,14 @@ class DropdownQuizHeaderState extends State<DropdownQuizHeader>
 
               SizedBox(
                 width: 44,
-                child: AnimatedRotation(
-                  turns: _animationCurve.value / 2 - 0.25,
-                  duration: const Duration(milliseconds: 25),
+                child: Transform.rotate(
+                  angle: pi - (pi * (_animationCurve.value - 0.5)),
                   child: const Icon(
-                    Icons.arrow_forward_ios_rounded,
+                    Icons.arrow_back_ios_rounded,
                     color: lightGreen,
                     size: 27,
                   ),
-                ),
+                )
               ),
             ],
           ),
