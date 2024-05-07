@@ -39,7 +39,7 @@ class DropdownQuizBodyState extends State<DropdownQuizBody>
 
   late final Animation<double> _animation = Tween<double>(
     begin: 0,
-    end: quizBtnHeight * widget.quizList.length,
+    end: (quizBtnHeight + 20) * widget.quizList.length,
   ).animate(_animationCurve);
 
   void toggleExpand() {
