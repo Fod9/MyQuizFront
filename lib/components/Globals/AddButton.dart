@@ -18,12 +18,12 @@ class AddButton extends StatefulWidget {
 class _AddButtonState extends State<AddButton> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: widget.width * 0.15,
       width: widget.width * 0.15,
       child: ClipPath(
         clipper: AddClipper(),
-        child: Container(
+        child: DecoratedBox(
           decoration: BoxDecoration(
             color: widget.color,
             borderRadius: BorderRadius.circular(100),
@@ -33,6 +33,7 @@ class _AddButtonState extends State<AddButton> {
     );
   }
 }
+
 class AddClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
