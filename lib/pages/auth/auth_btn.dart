@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/helpers/Colors.dart' show lightGlassBlue;
 import 'package:my_quiz_ap/components/Forms/FormController.dart' show FormController;
 import 'package:http/http.dart' as http;
+import 'package:my_quiz_ap/pages/auth/store_auth_token.dart';
 
 class AuthBtn extends StatefulWidget {
 
@@ -54,9 +55,24 @@ class _AuthBtnState extends State<AuthBtn> {
         },
       );
 
-      if (kDebugMode) {
-        print(response.body);
+      if (kDebugMode) print(response.body);
+
+      var data = jsonDecode(response.body);
+
+      String token = data["token"] ?? "";
+
+      if (token.isNotEmpty) {
+        await AuthToken.write(token);
+
+        if (kDebugMode) {
+          print("Token successfully written");
+          print(await AuthToken.read());
+        }
+
+      } else {
+        if (kDebugMode) print("Token is empty");
       }
+
     } else {
       if (kDebugMode) {
         print("Form data is null");
@@ -119,9 +135,9 @@ class _AuthBtnState extends State<AuthBtn> {
             )
         )
           :
-        const Text(
-            "Login",
-          style: TextStyle(
+        Text(
+            widget.formType == "inscription" ? "S'inscrire" : "Se connecter",
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontFamily: "Quicksand"
