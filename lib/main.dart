@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/pages/studentPage.dart';
-import 'package:my_quiz_ap/pages/TeacherPage.dart';
-import 'package:my_quiz_ap/pages/authPage.dart';
+import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
+import 'package:my_quiz_ap/pages/TeacherPage.dart' show TeacherPage;
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+      .then((_) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
