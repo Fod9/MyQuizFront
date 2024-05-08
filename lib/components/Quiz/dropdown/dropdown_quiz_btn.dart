@@ -22,6 +22,8 @@ class DropdownQuizButton extends StatefulWidget {
 class _DropdownQuizButtonState extends State<DropdownQuizButton>
   with SingleTickerProviderStateMixin {
 
+  final Color effectColor = lightGlassBlue.withOpacity(0.4);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -45,10 +47,11 @@ class _DropdownQuizButtonState extends State<DropdownQuizButton>
             borderRadius: BorderRadius.circular(10),
           ),
 
-          splashColor: lightGlassBlue,
-          focusColor: lightGlassBlue,
-          hoverColor: Colors.white,
-          highlightColor: lightGlassBlue,
+          splashColor: effectColor,
+          focusColor: effectColor,
+          hoverColor: effectColor,
+          highlightColor: effectColor,
+          colorBrightness: Brightness.light,
 
           elevation: 0,
 

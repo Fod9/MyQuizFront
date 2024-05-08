@@ -1,8 +1,6 @@
-import 'dart:math';
-
+import 'dart:math' show pi;
 import 'package:flutter/material.dart';
-
-import '../../../helpers/Colors.dart';
+import 'package:my_quiz_ap/helpers/Colors.dart' show lightGreen;
 
 class DropdownQuizHeader extends StatefulWidget {
   const DropdownQuizHeader({
@@ -11,11 +9,13 @@ class DropdownQuizHeader extends StatefulWidget {
     required this.height,
     required this.width,
     required this.expandedHeight,
+    this.radius,
     this.toggleExpand,
   });
 
   final String blockName;
   final double height, expandedHeight, width;
+  final double? radius;
   final VoidCallback? toggleExpand;
 
   @override
@@ -64,14 +64,13 @@ class DropdownQuizHeaderState extends State<DropdownQuizHeader>
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: const Color(0x66000000),
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(widget.radius ?? 10),
           boxShadow: const [
             BoxShadow(
               blurStyle: BlurStyle.outer,
               color: Color(0x40000000),
               blurRadius: 7.5,
               spreadRadius: 0,
-              // offset: Offset(0, 5),
             ),
           ],
         ),

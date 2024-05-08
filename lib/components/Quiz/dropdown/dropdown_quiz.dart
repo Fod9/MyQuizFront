@@ -7,14 +7,16 @@ class DropDownQuiz extends StatefulWidget {
     super.key,
     required this.blockName,
     required this.height,
+    required this.expandedHeight,
     required this.width,
     required this.quizList,
+    this.radius,
     this.mode = "student",
   });
 
   final String blockName;
-  final double height;
-  final double width;
+  final double height, expandedHeight, width;
+  final double? radius;
   final String mode;
   final List<Map<String, dynamic>> quizList;
 
@@ -45,17 +47,18 @@ class _DropDownQuizState extends State<DropDownQuiz> {
             DropdownQuizHeader(
               key: _headerKey,
               blockName: widget.blockName,
-              height: 50,
+              height: widget.height,
               width: widget.width,
-              expandedHeight: 140,
+              expandedHeight: widget.expandedHeight,
               toggleExpand: toggleExpand,
+              radius: widget.radius,
             ),
 
             DropdownQuizBody(
               key: _bodyKey,
               width: widget.width,
               height: widget.height,
-              quizList: widget.quizList!,
+              quizList: widget.quizList,
             ),
           ],
         ),
