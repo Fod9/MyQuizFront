@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Globals/AddButton.dart';
-import 'package:my_quiz_ap/components/Quiz/dropDownQuiz.dart';
-import 'package:my_quiz_ap/components/Stats/Statistics.dart';
-import 'package:my_quiz_ap/helpers/Colors.dart';
+import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz.dart' show DropDownQuiz;
+import 'package:my_quiz_ap/fakers/fake_quiz_list.dart' show getFakeQuizList;
 
 class TeacherPage extends StatefulWidget {
   const TeacherPage({super.key, required this.screenType});
@@ -14,28 +12,97 @@ class TeacherPage extends StatefulWidget {
 }
 
 class _TeacherPageState extends State<TeacherPage> {
-  double _width = 300;
-  double _height = 150;
+
+  late final Future<List<Map<String, dynamic>>> _blocList;
+
+  @override
+  void initState() {
+    super.initState();
+    _blocList = getFakeQuizList(
+      subjectCount: 5,
+      quizCount: 5,
+      throwError: false,
+      delay: 1,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.screenType == "mobile" ) {
-      _width = MediaQuery.of(context).size.width * 0.8;
-      _height = MediaQuery.of(context).size.height * 0.1;
-    }
 
-    return (widget.screenType == "mobile" || _width > 600)
-        ? MobileDisplay(width: _width, height: _height)
-        : DesktopDisplay(width: _width, height: _height);
+    return FutureBuilder(
+        future: _blocList,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+
+            return const Center(
+              child: Text("An error occurred, please try again later"),
+            );
+
+          } else if (snapshot.connectionState == ConnectionState.done) {
+
+            final bool isMobile = MediaQuery.of(context).size.width < 600;
+
+            if (isMobile) {
+              return MobileDisplay(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: 55,
+                expendedHeight: 140,
+                blocList: snapshot.data!,
+              );
+            } else {
+              return DesktopDisplay(
+                  width: 410,
+                  height: 140,
+                  expendedHeight: 210,
+                  blocList: snapshot.data!
+              );
+            }
+          } else {
+
+            return Center(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.8,
+                child: const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      strokeCap: StrokeCap.round,
+                    )
+                ),
+              ),
+            );
+
+          }
+
+        }
+    );
   }
 }
 
-//create a widget
 class MobileDisplay extends StatelessWidget {
-  const MobileDisplay({super.key, required this.width, required this.height});
+  const MobileDisplay({
+    super.key,
+    required this.width,
+    required this.height,
+    required this.expendedHeight,
+    required this.blocList,
+  });
 
-  final double width;
-  final double height;
+  final double width, height, expendedHeight;
+  final List<Map<String, dynamic>> blocList;
+
+  Iterable<Widget> get _blocWidgets sync* {
+    for (var bloc in blocList) {
+      yield DropDownQuiz(
+        blockName: bloc["name"],
+        height: height,
+        expandedHeight: 140,
+        width: width,
+        mode: "teacher",
+        quizList: bloc["quizList"]!,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,24 +111,7 @@ class MobileDisplay extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          DropDownQuiz(
-            blockName: "Maths",
-            height: height,
-            width: width,
-            mode: "teacher",
-          ),
-          DropDownQuiz(
-            blockName: "Physics",
-            height: height,
-            width: width,
-            mode: "teacher",
-          ),
-          DropDownQuiz(
-            blockName: "Chemistry",
-            height: height,
-            width: width,
-            mode: "teacher",
-          ),
+          ..._blocWidgets
         ],
       ),
     );
@@ -69,41 +119,54 @@ class MobileDisplay extends StatelessWidget {
 }
 
 class DesktopDisplay extends StatelessWidget {
-  const DesktopDisplay({super.key, required this.width, required this.height});
 
-  final double width;
-  final double height;
+  const DesktopDisplay({
+    super.key,
+    required this.width,
+    required this.height,
+    required this.expendedHeight,
+    required this.blocList,
+  });
+
+  final double width, height, expendedHeight;
+  final List<Map<String, dynamic>> blocList;
+
+  Iterable<Widget> get _blocWidgets sync* {
+    for (var bloc in blocList) {
+      yield Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 0,
+          vertical: 0,
+        ),
+        child: DropDownQuiz(
+          blockName: bloc["name"],
+          height: height,
+          expandedHeight: expendedHeight,
+          width: width,
+          mode: "teacher",
+          radius: 30,
+          quizList: bloc["quizList"]!,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        children: [
-          Wrap(
-            spacing: 5,
-            runSpacing: 5,
-            children: [
-              DropDownQuiz(
-                blockName: "Maths",
-                height: height,
-                width: width,
-                mode: "teacher",
-              ),
-              DropDownQuiz(
-                blockName: "Physics",
-                height: height,
-                width: width,
-                mode: "teacher",
-              ),
-              DropDownQuiz(
-                blockName: "Chemistry",
-                height: height,
-                width: width,
-                mode: "teacher",
-              ),
-            ],
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.only(top:75),
+        child: Column(
+          children: [
+            Wrap(
+              spacing: 100,
+              runSpacing: 75,
+              children: [
+                ..._blocWidgets,
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
