@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Forms/CustomForm.dart';
-import '../helpers/Colors.dart';
-import '../components/Forms/FormController.dart';
+import 'package:my_quiz_ap/pages/auth/login_btn.dart';
+import '../../helpers/Colors.dart';
+import '../../components/Forms/FormController.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key, required this.screenType});
@@ -27,11 +28,12 @@ class _AuthPageState extends State<AuthPage> {
     if (formType == "inscription") {
       if (formKeyInscription.currentState!.validate()) {
         // Form submission logic for inscription form
-        formController.getData();
+        Map<String, String> data = formController.getData();
       }
     } else {
       if (formKeyConnexion.currentState!.validate()) {
         // Form submission logic for connexion form
+        Map<String, String> data = formController.getData();
       }
     }
   }
@@ -143,6 +145,10 @@ class MobileDisplay extends StatelessWidget {
                       : "J'ai déjà un compte"),
                 ),
               ),
+            ),
+
+            LoginBtn(
+                formData: formController.getData(),
             )
           ],
         ),

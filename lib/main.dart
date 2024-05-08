@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/pages/AdminPage.dart';
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 import 'package:my_quiz_ap/pages/TeacherPage.dart' show TeacherPage;
+import 'package:my_quiz_ap/pages/auth/authPage.dart' show AuthPage;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       return Scaffold(
           appBar: AppBar(
-            title: Text("NavBar"),
+            title: const Text("NavBar"),
             actions: [
               IconButton(
                 icon: const Icon(Icons.menu),
@@ -81,8 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   )
               ),
               SingleChildScrollView(
-                // child: AuthPage(screenType: _screenType,),
-                child: TeacherPage(screenType: _screenType,),
+                child: AuthPage(screenType: _screenType,),
+                // child: TeacherPage(screenType: _screenType,),
               ),
             ],
           )
