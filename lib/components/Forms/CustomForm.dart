@@ -33,7 +33,7 @@ class CustomForm extends StatelessWidget {
       {"type": "mdp", "label": "Mot de passe :", "hintText": "Choisissez un mot de passe"},
     ]
         : [
-      {"type": "pseudo", "label": "Nom d'utilisateur :", "hintText": "Entrez votre nom d'utilisateur"},
+      {"type": "email", "label": "Email :", "hintText": "Entrez votre email"},
       {"type": "mdp", "label": "Mot de passe :", "hintText": "Entrez votre mot de passe"},
     ];
 

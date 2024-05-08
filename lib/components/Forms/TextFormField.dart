@@ -35,7 +35,9 @@ class CustomTextFormField extends StatelessWidget {
         const SizedBox(height: 5),
         TextFormField(
           controller: controller,
+          keyboardType: type == 'email' ? TextInputType.emailAddress : TextInputType.text,
           onChanged: (value) => formController.handleTextFieldChange(type, value),
+          obscureText: type == 'mdp',
           decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
@@ -46,7 +48,8 @@ class CustomTextFormField extends StatelessWidget {
               hintText: hintText,
               hintStyle: const TextStyle(color: Colors.grey),
               errorText: errorText,
-              errorMaxLines: 4
+              errorMaxLines: 4,
+
           ),
           style: const TextStyle(fontSize: 14),
         ),

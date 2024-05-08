@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Forms/CustomForm.dart';
-import 'package:my_quiz_ap/pages/auth/login_btn.dart';
+import 'package:my_quiz_ap/pages/auth/auth_btn.dart';
 import '../../helpers/Colors.dart';
 import '../../components/Forms/FormController.dart';
 
@@ -21,22 +21,8 @@ class _AuthPageState extends State<AuthPage> {
 
   final FormController formController = FormController();
 
-  final formKeyInscription = GlobalKey<FormState>();
-  final formKeyConnexion = GlobalKey<FormState>();
-
-  void handleFormSubmit(String formType) {
-    if (formType == "inscription") {
-      if (formKeyInscription.currentState!.validate()) {
-        // Form submission logic for inscription form
-        Map<String, String> data = formController.getData();
-      }
-    } else {
-      if (formKeyConnexion.currentState!.validate()) {
-        // Form submission logic for connexion form
-        Map<String, String> data = formController.getData();
-      }
-    }
-  }
+  final GlobalKey<FormState> formKeyInscription = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKeyConnexion = GlobalKey<FormState>();
 
   // This code allow FormController to react to changes in the form fields
 
@@ -140,15 +126,19 @@ class MobileDisplay extends StatelessWidget {
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.transparent,
                   ),
-                  child: Text(isLoginFormDisplayed
-                      ? "Je n'ai pas de compte"
-                      : "J'ai déjà un compte"),
+                  child: Text(isLoginFormDisplayed ?
+                    "J'ai déjà un compte"
+                      :
+                    "Je n'ai pas de compte"),
                 ),
               ),
             ),
 
-            LoginBtn(
-                formData: formController.getData(),
+            AuthBtn(
+              formKeyInscription: formController.formKeyInscription,
+              formKeyConnexion: formController.formKeyConnexion,
+              formController: formController,
+              formType: isLoginFormDisplayed ? "inscription" : "connexion",
             )
           ],
         ),
