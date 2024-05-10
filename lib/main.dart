@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_quiz_ap/helpers/get_screen_type.dart';
 import 'package:my_quiz_ap/pages/AdminPage.dart';
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 import 'package:my_quiz_ap/pages/TeacherPage.dart' show TeacherPage;
@@ -9,12 +10,12 @@ void main() {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((_) {
-    runApp(const MyApp());
+    runApp(const MyQuizApp());
   });
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyQuizApp extends StatelessWidget {
+  const MyQuizApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,70 +26,74 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'MyQuiz'),
+      initialRoute: '/',
+
+      routes: {
+        '/': (context) => const Layout("MyQuiz", page: AuthPage()),
+        '/admin': (context) => const Layout("Admin", page: AdminPage()),
+        '/teacher': (context) => const Layout("Teacher", page: TeacherPage()),
+      }
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class Layout extends StatefulWidget {
+  const Layout(
+    this.title,
+    {
+      super.key,
+      required this.page,
+    }
+  );
 
   final String title;
+  final Widget page;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<Layout> createState() => _LayoutState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  String _screenType = "mobile";
+class _LayoutState extends State<Layout> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-    builder: (context, constraints) {
-      if (constraints.maxWidth > 600) {
-        _screenType = "desktop";
-      } else {
-        _screenType = "mobile";
-      }
 
-      return Scaffold(
-          appBar: AppBar(
-            title: const Text("NavBar"),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () {
-                },
-              ),
-            ],
-          ),
-          body: Stack(
-            children: [
-              Container(
-                // width and height are set to double.infinity
-                  width: double.infinity,
-                  height: double.infinity,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      // switch background with type
-                      image: (_screenType == "mobile")
-                          ? const AssetImage(
-                          "assets/images/BackgroundMobile.png")
-                          : const AssetImage(
-                          "assets/images/BackgroundDesktop.png"),
-                      fit: BoxFit.cover,
-                    ),
-                  )
-              ),
-              SingleChildScrollView(
-                child: AuthPage(screenType: _screenType,),
-                // child: TeacherPage(screenType: _screenType,),
-              ),
-            ],
-          )
-      );
-    },
+    String screenType = getScreenType(context);
+
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+              },
+            ),
+          ],
+        ),
+        body: Stack(
+          children: [
+            SizedBox.expand(
+                child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        // switch background with type
+                        image: (screenType == "mobile")
+                            ? const AssetImage(
+                            "assets/images/BackgroundMobile.png")
+                            : const AssetImage(
+                            "assets/images/BackgroundDesktop.png"),
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                ),
+            ),
+
+            SingleChildScrollView(
+              child: widget.page,
+            ),
+          ],
+        )
     );
   }
 }

@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Forms/CustomForm.dart' show CustomForm, FormMode;
+import 'package:my_quiz_ap/helpers/get_screen_type.dart';
 import 'package:my_quiz_ap/pages/auth/auth_btn.dart';
 import 'package:my_quiz_ap/helpers/Colors.dart' show darkGlass;
 import 'package:my_quiz_ap/components/Forms/FormController.dart' show FormController;
 
 class AuthPage extends StatefulWidget {
-  const AuthPage({super.key, required this.screenType});
-
-  final String screenType;
+  const AuthPage({super.key});
 
   @override
   State<AuthPage> createState() => _AuthPageState();
@@ -45,12 +44,15 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.screenType == "mobile") {
+
+    String screenType = getScreenType(context);
+
+    if (screenType == "mobile") {
       _width = MediaQuery.of(context).size.width * 0.8;
       _height = MediaQuery.of(context).size.height * 0.1;
     }
 
-    return (widget.screenType == "mobile" || _width > 600)
+    return (screenType == "mobile" || _width > 600)
         ? MobileDisplay(
             width: _width,
             height: _height,

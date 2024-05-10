@@ -101,7 +101,7 @@ class _AuthBtnState extends State<AuthBtn> {
     if (mounted) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const TeacherPage(screenType: "mobile"),
+          builder: (context) => const TeacherPage(),
         ),
       );
     }

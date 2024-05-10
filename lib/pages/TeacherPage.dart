@@ -3,9 +3,7 @@ import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz.dart' show Dro
 import 'package:my_quiz_ap/fakers/fake_quiz_list.dart' show getFakeQuizList;
 
 class TeacherPage extends StatefulWidget {
-  const TeacherPage({super.key, required this.screenType});
-
-  final String screenType;
+  const TeacherPage({super.key});
 
   @override
   State<TeacherPage> createState() => _TeacherPageState();
