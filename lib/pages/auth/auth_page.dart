@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Forms/CustomForm.dart' show CustomForm, FormMode;
-import 'package:my_quiz_ap/helpers/get_screen_type.dart';
+import 'package:my_quiz_ap/helpers/utils.dart';
 import 'package:my_quiz_ap/pages/auth/auth_btn.dart';
 import 'package:my_quiz_ap/helpers/Colors.dart' show darkGlass;
 import 'package:my_quiz_ap/components/Forms/FormController.dart' show FormController;
@@ -21,10 +21,12 @@ class _AuthPageState extends State<AuthPage> {
 
   final FormController formController = FormController();
 
+  String errorMessage = "";
+
   final GlobalKey<FormState> formKeyInscription = GlobalKey<FormState>();
   final GlobalKey<FormState> formKeyConnexion = GlobalKey<FormState>();
 
-  // This code allow FormController to react to changes in the form fields
+  void setErrorMessage(String message) => setState(() {errorMessage = message;});
 
   @override
   void initState() {
@@ -52,15 +54,21 @@ class _AuthPageState extends State<AuthPage> {
       _height = MediaQuery.of(context).size.height * 0.1;
     }
 
-    return (screenType == "mobile" || _width > 600)
-        ? MobileDisplay(
-            width: _width,
-            height: _height,
-            toggleForm: toggleForm,
-            isLoginFormDisplayed: isLoginFormDisplayed,
-            formController: formController,
-          )
-        : DesktopDisplay(width: _width, height: _height);
+    return (screenType == "mobile" || _width > 600) ?
+      MobileDisplay(
+        width: _width,
+        height: _height,
+        toggleForm: toggleForm,
+        isLoginFormDisplayed: isLoginFormDisplayed,
+        formController: formController,
+        setErrorMessage: setErrorMessage,
+        errorMessage: errorMessage,
+      )
+        :
+      DesktopDisplay(
+        width: _width,
+        height: _height
+      );
   }
 
   void toggleForm() {
@@ -79,6 +87,8 @@ class MobileDisplay extends StatelessWidget {
     required this.toggleForm,
     required this.isLoginFormDisplayed,
     required this.formController,
+    required this.setErrorMessage,
+    required this.errorMessage,
   }) : super(key: key);
 
   final double width;
@@ -86,6 +96,8 @@ class MobileDisplay extends StatelessWidget {
   final void Function() toggleForm;
   final bool isLoginFormDisplayed;
   final FormController formController;
+  final String errorMessage;
+  final Function(String) setErrorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -99,14 +111,16 @@ class MobileDisplay extends StatelessWidget {
                 height: height,
                 width: width,
                 formController: formController,
-                mode:FormMode.register
+                mode: FormMode.register,
+                errorMessage: errorMessage,
               )
                 :
               CustomForm(
                 height: height,
                 width: width,
                 formController: formController,
-                mode: FormMode.login
+                mode: FormMode.login,
+                errorMessage: errorMessage,
               ),
 
             ConstrainedBox(
@@ -123,6 +137,7 @@ class MobileDisplay extends StatelessWidget {
                       formKeyConnexion: formController.formKeyConnexion,
                       formController: formController,
                       formType: isLoginFormDisplayed ? "inscription" : "connexion",
+                      setErrorMessage: setErrorMessage,
                     ),
                   ),
 

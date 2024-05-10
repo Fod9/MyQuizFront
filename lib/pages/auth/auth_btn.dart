@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:my_quiz_ap/helpers/Colors.dart' show lightGlassBlue;
 import 'package:my_quiz_ap/components/Forms/FormController.dart' show FormController;
 import 'package:http/http.dart' as http;
+import 'package:my_quiz_ap/helpers/http_extensions.dart';
+import 'package:my_quiz_ap/helpers/utils.dart';
 import 'package:my_quiz_ap/pages/TeacherPage.dart';
 import 'package:my_quiz_ap/pages/auth/store_auth_token.dart';
 
@@ -17,12 +19,14 @@ class AuthBtn extends StatefulWidget {
     required this.formKeyConnexion,
     required this.formController,
     required this.formType,
+    required this.setErrorMessage,
   });
 
   final GlobalKey<FormState> formKeyInscription;
   final GlobalKey<FormState> formKeyConnexion;
   final FormController formController;
   final String formType;
+  final Function(String) setErrorMessage;
 
   @override
   State<AuthBtn> createState() => _AuthBtnState();
@@ -47,7 +51,6 @@ class _AuthBtnState extends State<AuthBtn> {
 
     if (kDebugMode) print(formData);
 
-
     if (formData != null) {
 
       // end autofill context
@@ -58,6 +61,7 @@ class _AuthBtnState extends State<AuthBtn> {
         "password": formData["mdp"]!,
       };
 
+
       // Send a POST request to the server to login the user
       final http.Response response = await http.post(
         Uri.parse('http://10.0.2.2:3000/connection/signin'),
@@ -67,9 +71,19 @@ class _AuthBtnState extends State<AuthBtn> {
         },
       );
 
-      if (kDebugMode) print(response.body);
+      if (kDebugMode) printError(response.body);
 
-      final data = jsonDecode(response.body);
+      dynamic data;
+
+      if (response.error) {
+        widget.setErrorMessage(response.body);
+        setState(() {
+          _loading = false;
+        });
+        return;
+      } else {
+        data = jsonDecode(response.body);
+      }
 
       String token = data["token"] ?? "";
 
@@ -99,11 +113,7 @@ class _AuthBtnState extends State<AuthBtn> {
 
     // TODO : fix navigation depending on the user type and screen type
     if (mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const TeacherPage(),
-        ),
-      );
+      Navigator.of(context).pushReplacementNamed('/teacher');
     }
   }
 

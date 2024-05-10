@@ -15,12 +15,14 @@ class CustomForm extends StatelessWidget {
     required this.width,
     required this.formController,
     required this.mode,
+    required this.errorMessage,
   }) : super(key: key);
 
   final double height;
   final double width;
   final FormController formController;
   final FormMode mode;
+  final String errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -37,37 +39,61 @@ class CustomForm extends StatelessWidget {
       {"type": "mdp", "label": "Mot de passe :", "hintText": "Entrez votre mot de passe"},
     ];
 
+    Iterable<Widget> formFieldsWidgets() sync* {
+      for (final field in formFields) {
+        yield CustomTextFormField(
+          type: field['type'] as String,
+          label: field['label'] as String,
+          hintText: field['hintText'] as String,
+          errorText: formController.getErrorText(field['type']!),
+          controller: formController.getController(field['type']!),
+          formController: formController,
+        );
+      }
+    }
+
     return Form(
       key: mode == FormMode.register ? formController.formKeyInscription : formController.formKeyConnexion,
-      child: Container(
-        height: height * (mode == FormMode.register ? 7.7 : 3.4),
+      child: SizedBox(
+        // height: height * (mode == FormMode.register ? 7.7 : 3.4),
         width: width * 1.1,
-        decoration: BoxDecoration(
-          color: darkGlass,
-          borderRadius: BorderRadius.circular(height * (mode == FormMode.register ? 7.3 : 4) * 0.03),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              spreadRadius: 2,
-              blurRadius: 2,
-              offset: const Offset(2, 2),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: darkGlass,
+            borderRadius: BorderRadius.circular(height * (mode == FormMode.register ? 7.3 : 4) * 0.03),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 2,
+                offset: const Offset(2, 2),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 25.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ...formFieldsWidgets(),
+
+                if (errorMessage.isNotEmpty) Padding(
+                  padding: const EdgeInsets.only(top: 25.0),
+                  child: Text(
+                    errorMessage,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: "Quicksand",
+                      decoration: TextDecoration.overline,
+                      decorationColor: Colors.red,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 25.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: formFields.map((field) {
-              return CustomTextFormField(
-                type: field['type'] as String,
-                label: field['label'] as String,
-                hintText: field['hintText'] as String,
-                errorText: formController.getErrorText(field['type']!),
-                controller: formController.getController(field['type']!),
-                formController: formController,
-              );
-            }).toList(),
           ),
         ),
       ),

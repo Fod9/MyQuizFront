@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/helpers/get_screen_type.dart';
+import 'package:my_quiz_ap/helpers/utils.dart';
 import 'package:my_quiz_ap/pages/AdminPage.dart';
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 import 'package:my_quiz_ap/pages/TeacherPage.dart' show TeacherPage;
