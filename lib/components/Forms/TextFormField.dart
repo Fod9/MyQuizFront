@@ -44,6 +44,11 @@ class CustomTextFormField extends StatelessWidget {
           onChanged: (value) => formController.handleTextFieldChange(type, value),
           obscureText: type == 'mdp',
 
+          autofillHints:
+            type == 'email' ? [AutofillHints.email] :
+            type == 'mdp' ? [AutofillHints.password] :
+            null,
+
           style: TextStyle(
             fontSize: 14,
             fontFamily: fontFamily,
