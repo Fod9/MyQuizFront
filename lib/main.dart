@@ -3,6 +3,8 @@ import 'package:my_quiz_ap/helpers/utils.dart';
 import 'package:my_quiz_ap/pages/AdminPage.dart';
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 import 'package:my_quiz_ap/pages/TeacherPage.dart' show TeacherPage;
+import 'package:my_quiz_ap/pages/landing_router.dart';
+import 'package:my_quiz_ap/pages/studentPage.dart' show StudentPage;
 import 'package:my_quiz_ap/pages/auth/auth_page.dart' show AuthPage;
 
 void main() {
@@ -29,9 +31,11 @@ class MyQuizApp extends StatelessWidget {
       initialRoute: '/',
 
       routes: {
-        '/': (context) => const Layout("MyQuiz", page: AuthPage()),
+        '/': (context) => const Layout("MyQuiz", page: LandingRouter(), hasNavBar: false),
+        '/auth': (context) => const Layout("MyQuiz", page: AuthPage(), hasNavBar: false),
         '/admin': (context) => const Layout("Admin", page: AdminPage()),
         '/teacher': (context) => const Layout("Teacher", page: TeacherPage()),
+        '/student': (context) => const Layout("Student", page: StudentPage()),
       }
     );
   }
@@ -43,11 +47,13 @@ class Layout extends StatefulWidget {
     {
       super.key,
       required this.page,
+      this.hasNavBar = true,
     }
   );
 
   final String title;
   final Widget page;
+  final bool hasNavBar;
 
   @override
   State<Layout> createState() => _LayoutState();
@@ -60,40 +66,43 @@ class _LayoutState extends State<Layout> {
 
     String screenType = getScreenType(context);
 
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-              },
-            ),
-          ],
-        ),
-        body: Stack(
-          children: [
-            SizedBox.expand(
-                child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        // switch background with type
-                        image: (screenType == "mobile")
-                            ? const AssetImage(
-                            "assets/images/BackgroundMobile.png")
-                            : const AssetImage(
-                            "assets/images/BackgroundDesktop.png"),
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                ),
-            ),
-
-            SingleChildScrollView(
-              child: widget.page,
-            ),
-          ],
-        )
+    return SafeArea(
+      bottom: false,
+      child: Scaffold(
+          appBar: widget.hasNavBar ? AppBar(
+            title: Text(widget.title),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                },
+              ),
+            ],
+          ) : null,
+          body: Stack(
+            children: [
+              SizedBox.expand(
+                  child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          // switch background with type
+                          image: (screenType == "mobile")
+                              ? const AssetImage(
+                              "assets/images/BackgroundMobile.png")
+                              : const AssetImage(
+                              "assets/images/BackgroundDesktop.png"),
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                  ),
+              ),
+      
+              SingleChildScrollView(
+                child: widget.page,
+              ),
+            ],
+          )
+      ),
     );
   }
 }

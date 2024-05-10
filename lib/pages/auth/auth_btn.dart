@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:my_quiz_ap/constants.dart';
 import 'package:my_quiz_ap/helpers/Colors.dart' show lightGlassBlue;
 import 'package:my_quiz_ap/components/Forms/FormController.dart' show FormController;
 import 'package:http/http.dart' as http;
@@ -64,25 +65,25 @@ class _AuthBtnState extends State<AuthBtn> {
 
       // Send a POST request to the server to login the user
       final http.Response response = await http.post(
-        Uri.parse('http://10.0.2.2:3000/connection/signin'),
+        Uri.parse('$apiUrl/connection/signin'),
         body: jsonEncode(requestBody),
         headers: {
           "Content-Type": "application/json",
         },
       );
 
-      if (kDebugMode) printError(response.body);
-
       dynamic data;
 
       if (response.error) {
         widget.setErrorMessage(response.body);
+        printError("${response.statusCode} - ${response.body}");
         setState(() {
           _loading = false;
         });
         return;
       } else {
         data = jsonDecode(response.body);
+        printInfo(data.toString());
       }
 
       String token = data["token"] ?? "";

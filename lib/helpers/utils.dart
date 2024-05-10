@@ -12,3 +12,7 @@ void printError(String text) {
 void printWarning(String text) {
   if (kDebugMode) print('\x1B[33m$text\x1B[0m');
 }
+
+void printInfo(String text) {
+  if (kDebugMode) print('\x1B[36m$text\x1B[0m');
+}

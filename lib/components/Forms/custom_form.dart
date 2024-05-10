@@ -54,9 +54,10 @@ class CustomForm extends StatelessWidget {
 
     return Form(
       key: mode == FormMode.register ? formController.formKeyInscription : formController.formKeyConnexion,
-      child: SizedBox(
-        // height: height * (mode == FormMode.register ? 7.7 : 3.4),
-        width: width * 1.1,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: (width * 1.1).clamp(250, 700)
+        ),
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: darkGlass,
@@ -77,7 +78,7 @@ class CustomForm extends StatelessWidget {
               children: [
                 ...formFieldsWidgets(),
 
-                if (errorMessage.isNotEmpty) Padding(
+                Padding(
                   padding: const EdgeInsets.only(top: 25.0),
                   child: Text(
                     errorMessage,
