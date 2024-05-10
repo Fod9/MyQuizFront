@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/pages/AdminPage.dart';
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 import 'package:my_quiz_ap/pages/TeacherPage.dart' show TeacherPage;
-import 'package:my_quiz_ap/pages/auth/authPage.dart' show AuthPage;
+import 'package:my_quiz_ap/pages/auth/auth_page.dart' show AuthPage;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

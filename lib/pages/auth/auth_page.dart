@@ -1,8 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Forms/CustomForm.dart';
+import 'package:my_quiz_ap/components/Forms/CustomForm.dart' show CustomForm, FormMode;
 import 'package:my_quiz_ap/pages/auth/auth_btn.dart';
-import '../../helpers/Colors.dart';
-import '../../components/Forms/FormController.dart';
+import 'package:my_quiz_ap/helpers/Colors.dart' show darkGlass;
+import 'package:my_quiz_ap/components/Forms/FormController.dart' show FormController;
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key, required this.screenType});
@@ -91,55 +92,58 @@ class MobileDisplay extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 20.0),
         child: Column(
           children: [
-            isLoginFormDisplayed
-                ? CustomForm(
+            isLoginFormDisplayed ?
+              CustomForm(
                 height: height,
                 width: width,
                 formController: formController,
-                mode:FormMode.register)
-                : CustomForm(
+                mode:FormMode.register
+              )
+                :
+              CustomForm(
                 height: height,
                 width: width,
                 formController: formController,
-                mode: FormMode.login),
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Container(
-                width: width * 0.6,
-                height: height * 0.6,
-                decoration: BoxDecoration(
-                  color: darkGlass,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 2,
-                      offset: const Offset(2, 2),
+                mode: FormMode.login
+              ),
+
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: (width * 0.75).clamp(150, 350),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: AuthBtn(
+                      formKeyInscription: formController.formKeyInscription,
+                      formKeyConnexion: formController.formKeyConnexion,
+                      formController: formController,
+                      formType: isLoginFormDisplayed ? "inscription" : "connexion",
                     ),
-                  ],
-                ),
-                child: ElevatedButton(
-                  onPressed: toggleForm,
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.transparent,
                   ),
-                  child: Text(isLoginFormDisplayed ?
-                    "J'ai déjà un compte"
-                      :
-                    "Je n'ai pas de compte"),
-                ),
+
+                  MaterialButton(
+                    onPressed: toggleForm,
+                    color: darkGlass,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    height: height * 0.6,
+                    minWidth: width * 0.6,
+                    child: Text(
+                      isLoginFormDisplayed ? "J'ai déjà un compte" : "Je n'ai pas de compte",
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontFamily: "Quicksand"
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-
-            AuthBtn(
-              formKeyInscription: formController.formKeyInscription,
-              formKeyConnexion: formController.formKeyConnexion,
-              formController: formController,
-              formType: isLoginFormDisplayed ? "inscription" : "connexion",
-            )
           ],
         ),
       ),

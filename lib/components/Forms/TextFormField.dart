@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? errorText;
   final TextEditingController controller;
   final FormController formController;
+  final String fontFamily;
 
   const CustomTextFormField({
     Key? key,
@@ -18,6 +19,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.errorText,
     required this.controller,
     required this.formController,
+    this.fontFamily = 'QuickSand',
   }) : super(key: key);
 
   @override
@@ -27,17 +29,26 @@ class CustomTextFormField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
             fontSize: 16,
+            fontFamily: fontFamily,
           ),
         ),
+
         const SizedBox(height: 5),
+
         TextFormField(
           controller: controller,
           keyboardType: type == 'email' ? TextInputType.emailAddress : TextInputType.text,
           onChanged: (value) => formController.handleTextFieldChange(type, value),
           obscureText: type == 'mdp',
+
+          style: TextStyle(
+            fontSize: 14,
+            fontFamily: fontFamily,
+          ),
+
           decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
@@ -45,13 +56,22 @@ class CustomTextFormField extends StatelessWidget {
               border: UnderlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
+
               hintText: hintText,
-              hintStyle: const TextStyle(color: Colors.grey),
+              hintStyle: TextStyle(
+                color: Colors.grey,
+                fontFamily: fontFamily,
+              ),
+
               errorText: errorText,
               errorMaxLines: 4,
-
+              errorStyle: TextStyle(
+                color: Colors.red,
+                fontFamily: fontFamily,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
           ),
-          style: const TextStyle(fontSize: 14),
         ),
       ],
     );
