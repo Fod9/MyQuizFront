@@ -1,5 +1,8 @@
 import 'package:http/http.dart' as http show Response;
 
+/// This extension provides a set of methods to check the status code of a http.Response
+/// It is used to check if the response is successful, an error, a server error, a redirect or an informational response
+
 extension IsOk on http.Response {
   bool get ok {
     return (statusCode ~/ 100) == 2;

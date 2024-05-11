@@ -9,6 +9,11 @@ class TmpLogoutBtn extends StatefulWidget {
   State<TmpLogoutBtn> createState() => _TmpLogoutBtnState();
 }
 
+/// this widget is used to log out the user
+/// it deletes the token from the device
+/// and redirects the user to the auth page
+///
+/// only used for testing purposes in the app bar
 class _TmpLogoutBtnState extends State<TmpLogoutBtn> {
 
   IconData _icon = Icons.logout_rounded;
@@ -17,15 +22,21 @@ class _TmpLogoutBtnState extends State<TmpLogoutBtn> {
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () async {
+          // small fancy animation
           setState(() {
             _icon = Icons.hourglass_full_rounded;
           });
+
+          // delete the token
           await AuthToken.delete();
           printInfo('JWT Token deleted');
+
+          // end of fancy animation
           setState(() {
             _icon = Icons.logout_rounded;
           });
 
+          // redirection to the auth page
           if (context.mounted) Navigator.pushReplacementNamed(context, '/');
         },
         icon: Icon(_icon),
