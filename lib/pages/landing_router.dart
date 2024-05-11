@@ -1,12 +1,23 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/constants.dart';
-import 'package:my_quiz_ap/helpers/http_extensions.dart';
-import 'package:my_quiz_ap/helpers/utils.dart';
-import 'package:my_quiz_ap/pages/auth/store_auth_token.dart';
-import 'package:http/http.dart' as http;
+import 'dart:convert' show jsonDecode;
+import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:my_quiz_ap/constants.dart' show apiUrl;
+import 'package:my_quiz_ap/helpers/http_extensions.dart' show IsOk;
+import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
+import 'package:my_quiz_ap/pages/auth/store_auth_token.dart' show AuthToken;
+import 'package:http/http.dart' as http show Response, get;
 
+
+/// This widget is used to redirect the user to the appropriate route
+/// depending on the user's role
+/// It appears when the app is launched or when the user logs out
+///
+/// It fetches the user data from the server
+/// if the token is not found, no user is logged in
+/// and the user is redirected to the auth page
+///
+/// if the token is found, checks Token with the server
+/// the user is redirected to the appropriate route
 class LandingRouter extends StatefulWidget {
   const LandingRouter({super.key});
 
@@ -16,10 +27,25 @@ class LandingRouter extends StatefulWidget {
 
 class _LandingRouterState extends State<LandingRouter> {
 
+  /// Fetches the user data from the server
+  /// if the token is not found, no user is logged in
+  /// and the user is redirected to the auth page
+  ///
+  /// if the token is found, checks Token with the server
+  ///
+  /// returns the user data if the token is valid
   Future<Map<String, dynamic>> getUserData() async {
 
+    // read the token from the device
     final String token = await AuthToken.read();
 
+    // if the token is not found, redirect to the auth page
+    if (token.isEmpty) {
+      redirectTo('/auth');
+      return <String, dynamic>{'role': ''};
+    }
+
+    // check the token with the server
     final http.Response response = await http.get(
       Uri.parse('$apiUrl/connection/checkToken'),
       headers: <String, String>{
@@ -28,8 +54,11 @@ class _LandingRouterState extends State<LandingRouter> {
       }
     );
 
+    // if the response is successful, return the user data
     if (response.ok) {
       return jsonDecode(response.body);
+
+    // if the response is not successful, return the error
     } else {
       return <String, dynamic>{
         'error': response.body,
@@ -37,43 +66,101 @@ class _LandingRouterState extends State<LandingRouter> {
     }
   }
 
+  /// Shortcuts the redirection to a route
+  /// respecting the widget lifecycle
+  void redirectTo(String route) {
+    if (mounted) {
+      Future.delayed(Duration.zero, () {
+        Navigator.pushReplacementNamed(context, route);
+      });
+    }
+  }
+
+  /// Redirects the [user] to the appropriate route
+  /// depending on the [role]
+  ///
+  /// returns [true] if the [user] is redirected
+  /// returns [false] if the [user] is not redirected
+  bool redirectFromRole(String role) {
+    if (role == 'admin') {
+      redirectTo('/admin');
+    } else if (role == 'teacher') {
+      redirectTo('/teacher');
+    } else if (role == 'student') {
+      redirectTo('/student');
+    } else {
+      return false;
+    }
+    return true;
+  }
+
+  late Widget resetJwtBtn = ElevatedButton(
+    onPressed: () async {
+      await AuthToken.delete();
+      printInfo("JWT Reset");
+      setState(() {});
+    },
+    child: const Text("Reset JWT"),
+  );
+
+  Widget loadingError(String error) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(error),
+          if (kDebugMode) resetJwtBtn,  // TODO : remove this button
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.9,
+
       child: FutureBuilder(
-          future: getUserData(),
+          future: getUserData(), // fetch the user data
           builder: (context, snapshot) {
+
+            // if the snapshot has an error, return the error message
             if (snapshot.hasError) {
-              return Center(
-                child: Text(snapshot.error.toString()),
-              );
+              return loadingError(snapshot.error.toString());
+
+            // if the snapshot is done, check the role
             } else if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.data!['error'] != null) {
-                return Center(
-                  child: Text(snapshot.data!['error']),
-                );
-              } else {
-                final String role = snapshot.data!['role'];
-                if (role == 'admin') {
-                  Navigator.pushNamed(context, '/admin');
-                } else if (role == 'teacher') {
-                  Navigator.pushNamed(context, '/teacher');
-                } else if (role == 'student') {
-                  Navigator.pushNamed(context, '/student');
+
+                // if data contains an error, return the error message
+                if (snapshot.data!['error'] != null) {
+                  return loadingError(snapshot.data!['error']);
+
+                // if the role is found, redirect the user
                 } else {
-                  return const Center(
-                    child: Text("An error occurred, please try again later"),
-                  );
+                  final String role = snapshot.data!['role'] ?? '';
+                  final bool hasRedirected = redirectFromRole(role);
+
+                  // if the user is redirected, return an empty widget
+                  return hasRedirected ?
+                    const SizedBox.shrink()
+                      :
+                    // else return an error message
+                    loadingError("Role not found");
                 }
-                return const SizedBox.shrink();
-              }
+
+
             } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+                // if the snapshot is not done, return a loading spinner
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    strokeCap: StrokeCap.round,
+                  ),
+                );
             }
           }
       ),

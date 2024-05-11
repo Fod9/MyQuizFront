@@ -103,7 +103,7 @@ class MobileDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20.0),
+        padding: const EdgeInsets.symmetric(vertical: 100.0),
         child: Column(
           children: [
             isLoginFormDisplayed ?

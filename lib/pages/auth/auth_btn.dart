@@ -86,7 +86,7 @@ class _AuthBtnState extends State<AuthBtn> {
         printInfo(data.toString());
       }
 
-      String token = data["token"] ?? "";
+      String token = data["access_token"] ?? "";
 
       // Write the token to the device
       if (token.isNotEmpty) {
@@ -114,7 +114,7 @@ class _AuthBtnState extends State<AuthBtn> {
 
     // TODO : fix navigation depending on the user type and screen type
     if (mounted) {
-      Navigator.of(context).pushReplacementNamed('/teacher');
+      Navigator.of(context).pushReplacementNamed('/');
     }
   }
 
