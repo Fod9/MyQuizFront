@@ -25,12 +25,11 @@ class _TeacherPageState extends State<TeacherPage> {
     _blocList = getQuizList();
   }
 
-  Future<List<Map<String, dynamic>>> getQuizList() async {
-
+  Future<List<Map<String, dynamic>>> getQuizList({int retryCount = 0}) async {
     final JWT jwt = JWT();
     final String token = await jwt.read();
 
-    final http.Response response = await http.get(
+    final Future<http.Response> fResponse = http.get(
       Uri.parse('$apiUrl/quiz/list'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -38,13 +37,22 @@ class _TeacherPageState extends State<TeacherPage> {
       },
     );
 
-    if (response.ok) {
+    final http.Response response = await fResponse;
+
+    if (response.error) {
+      if (retryCount >= 3) { // Limit the number of retries to 3
+        printError("Unauthorized request, maximum retries exceeded");
+        return Future.value([{"error": "Unauthorized request, maximum retries exceeded"}]);
+      } else {
+        printError("Unauthorized request, retrying...");
+        return getQuizList(retryCount: retryCount + 1);
+      }
+    } else if (response.ok) {
       final data = jsonDecode(response.body);
       printInfo(data.toString());
 
       final List<Map<String, dynamic>> formattedQuizList = quizListFormat(data);
       printInfo(formattedQuizList.toString());
-
 
       return formattedQuizList;
     } else {
