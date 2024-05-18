@@ -1,4 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http show Response, get;
+
+import '../constants.dart';
 
 
 /// Base class for [JWT] and [JWTR]
@@ -40,6 +43,23 @@ abstract class JWTBase {
 class JWT extends JWTBase {
   @override
   String get key => 'jwt';
+
+  void refresh() async {
+    final JWTR jwtr = JWTR();
+    final String refreshToken = await jwtr.read();
+
+    // if the refresh token is empty, return
+    if (refreshToken.isEmpty) return;
+
+    // send the refresh token to the server
+    final http.Response response = await http.get(
+      Uri.parse('$apiUrl/connection/refreshToken'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': refreshToken,
+      }
+    );
+  }
 }
 
 /// JWTR class to handle the JWT refresh token

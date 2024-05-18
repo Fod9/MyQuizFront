@@ -96,30 +96,30 @@ class _AuthBtnState extends State<AuthBtn> {
         await jwt.write(token);
 
         if (kDebugMode) {
-          print("Token successfully written");
-          print(await jwt.read());
+          printInfo("Token successfully written");
+          printInfo(await jwt.read());
         }
 
       } else {
-        if (kDebugMode) print("Token is empty");
+        if (kDebugMode) printError("Token is empty");
       }
 
       // Write the token to the device
       if (refreshToken.isNotEmpty) {
-        await jwtr.write(token);
+        await jwtr.write(refreshToken);
 
         if (kDebugMode) {
-          print("Token successfully written");
-          print(await jwtr.read());
+          printInfo("Refresh Token successfully written");
+          printInfo(await jwtr.read());
         }
 
       } else {
-        if (kDebugMode) print("Token is empty");
+        if (kDebugMode) printError("Refresh Token is empty");
       }
 
     } else {
       if (kDebugMode) {
-        print("Form data is null");
+        printError("Form data is null");
       }
     }
 
