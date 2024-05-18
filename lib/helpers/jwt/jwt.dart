@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http show Response, get;
+import 'package:my_quiz_ap/helpers/http_extensions.dart';
 
 import '../../constants.dart';
 
@@ -59,6 +62,15 @@ class JWT extends JWTBase {
         'authorization': refreshToken,
       }
     );
+
+    // if the response is successful, write the new token to the device
+    if (response.ok) {
+      final dynamic data = jsonDecode(response.body);
+      final String token = data["access_token"] ?? "";
+      if (token.isNotEmpty) {
+        await write(token);
+      }
+    }
   }
 }
 
