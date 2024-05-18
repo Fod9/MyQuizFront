@@ -9,7 +9,7 @@ import 'package:my_quiz_ap/components/Forms/FormController.dart' show FormContro
 import 'package:http/http.dart' as http;
 import 'package:my_quiz_ap/helpers/http_extensions.dart';
 import 'package:my_quiz_ap/helpers/utils.dart';
-import 'package:my_quiz_ap/pages/TeacherPage.dart';
+import 'package:my_quiz_ap/pages/teacher_page.dart';
 import 'package:my_quiz_ap/helpers/jwt.dart';
 
 class AuthBtn extends StatefulWidget {

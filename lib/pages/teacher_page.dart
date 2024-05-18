@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'dart:convert' show jsonDecode;
+import 'package:http/http.dart' as http show Response, get;
 import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz.dart' show DropDownQuiz;
-import 'package:my_quiz_ap/fakers/fake_quiz_list.dart' show getFakeQuizList;
+import 'package:my_quiz_ap/constants.dart' show apiUrl;
+import 'package:my_quiz_ap/helpers/jwt.dart' show JWT;
+import 'package:my_quiz_ap/helpers/quiz_list_format.dart';
+import 'package:my_quiz_ap/helpers/utils.dart' show printError, printInfo;
+import 'package:my_quiz_ap/helpers/http_extensions.dart';
 
 class TeacherPage extends StatefulWidget {
   const TeacherPage({super.key});
@@ -16,12 +22,35 @@ class _TeacherPageState extends State<TeacherPage> {
   @override
   void initState() {
     super.initState();
-    _blocList = getFakeQuizList(
-      subjectCount: 5,
-      quizCount: 5,
-      throwError: false,
-      delay: 1,
+    _blocList = getQuizList();
+  }
+
+  Future<List<Map<String, dynamic>>> getQuizList() async {
+
+    final JWT jwt = JWT();
+    final String token = await jwt.read();
+
+    final http.Response response = await http.get(
+      Uri.parse('$apiUrl/quiz/list'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': token,
+      },
     );
+
+    if (response.ok) {
+      final data = jsonDecode(response.body);
+      printInfo(data.toString());
+
+      final List<Map<String, dynamic>> formattedQuizList = quizListFormat(data);
+      printInfo(formattedQuizList.toString());
+
+
+      return formattedQuizList;
+    } else {
+      printError("${response.statusCode} - ${response.body}");
+      return Future.value([{"error": "An error occurred, please try again later"}]);
+    }
   }
 
   @override
@@ -32,8 +61,8 @@ class _TeacherPageState extends State<TeacherPage> {
         builder: (context, snapshot) {
           if (snapshot.hasError) {
 
-            return const Center(
-              child: Text("An error occurred, please try again later"),
+            return Center(
+              child: Text("An error occurred, please try again later ${snapshot.error}"),
             );
 
           } else if (snapshot.connectionState == ConnectionState.done) {

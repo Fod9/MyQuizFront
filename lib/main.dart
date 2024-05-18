@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/pages/AdminPage.dart' show AdminPage;
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
-import 'package:my_quiz_ap/pages/TeacherPage.dart' show TeacherPage;
+import 'package:my_quiz_ap/pages/teacher_page.dart' show TeacherPage;
 import 'package:my_quiz_ap/pages/landing_router.dart' show LandingRouter;
 import 'package:my_quiz_ap/pages/studentPage.dart' show StudentPage;
 import 'package:my_quiz_ap/pages/auth/auth_page.dart' show AuthPage;
