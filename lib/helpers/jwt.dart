@@ -44,7 +44,7 @@ class JWT extends JWTBase {
   @override
   String get key => 'jwt';
 
-  void refresh() async {
+  Future<void> refresh() async {
     final JWTR jwtr = JWTR();
     final String refreshToken = await jwtr.read();
 
