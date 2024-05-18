@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:my_quiz_ap/helpers/http_extensions.dart';
 import 'package:my_quiz_ap/helpers/utils.dart';
 import 'package:my_quiz_ap/pages/TeacherPage.dart';
-import 'package:my_quiz_ap/pages/auth/store_auth_token.dart';
+import 'package:my_quiz_ap/helpers/jwt.dart';
 
 class AuthBtn extends StatefulWidget {
 
@@ -37,6 +37,8 @@ class _AuthBtnState extends State<AuthBtn> {
 
   bool _loading = false;
   final Color effectColor = lightGlassBlue.withOpacity(0.4);
+  final JWT jwt = JWT();
+  final JWTR jwtr = JWTR();
 
   /// Handles the login logic
   /// it sends a POST request to the server
@@ -87,14 +89,28 @@ class _AuthBtnState extends State<AuthBtn> {
       }
 
       String token = data["access_token"] ?? "";
+      String refreshToken = data["refresh_token"] ?? "";
 
       // Write the token to the device
       if (token.isNotEmpty) {
-        await AuthToken.write(token);
+        await jwt.write(token);
 
         if (kDebugMode) {
           print("Token successfully written");
-          print(await AuthToken.read());
+          print(await jwt.read());
+        }
+
+      } else {
+        if (kDebugMode) print("Token is empty");
+      }
+
+      // Write the token to the device
+      if (refreshToken.isNotEmpty) {
+        await jwtr.write(token);
+
+        if (kDebugMode) {
+          print("Token successfully written");
+          print(await jwtr.read());
         }
 
       } else {

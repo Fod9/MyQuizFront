@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/http_extensions.dart' show IsOk;
 import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
-import 'package:my_quiz_ap/pages/auth/store_auth_token.dart' show AuthToken;
+import 'package:my_quiz_ap/helpers/jwt.dart' show JWT;
 import 'package:http/http.dart' as http show Response, get;
 
 
@@ -27,6 +27,8 @@ class LandingRouter extends StatefulWidget {
 
 class _LandingRouterState extends State<LandingRouter> {
 
+  final JWT jwt = JWT();
+
   /// Fetches the user data from the server
   /// if the token is not found, no user is logged in
   /// and the user is redirected to the auth page
@@ -37,7 +39,7 @@ class _LandingRouterState extends State<LandingRouter> {
   Future<Map<String, dynamic>> getUserData() async {
 
     // read the token from the device
-    final String token = await AuthToken.read();
+    final String token = await jwt.read();
 
     // if the token is not found, redirect to the auth page
     if (token.isEmpty) {
@@ -96,7 +98,7 @@ class _LandingRouterState extends State<LandingRouter> {
 
   late Widget resetJwtBtn = ElevatedButton(
     onPressed: () async {
-      await AuthToken.delete();
+      await jwt.delete();
       printInfo("JWT Reset");
       setState(() {});
     },
