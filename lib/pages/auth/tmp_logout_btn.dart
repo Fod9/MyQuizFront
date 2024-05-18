@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT;
+import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT, JWTR;
 import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
 
 class TmpLogoutBtn extends StatefulWidget {
@@ -22,6 +22,7 @@ class _TmpLogoutBtnState extends State<TmpLogoutBtn> {
   Widget build(BuildContext context) {
 
     final JWT jwt = JWT();
+    final JWTR jwtr = JWTR();
 
     return IconButton(
         onPressed: () async {
@@ -33,6 +34,8 @@ class _TmpLogoutBtnState extends State<TmpLogoutBtn> {
           // delete the token
           await jwt.delete();
           printInfo('JWT Token deleted');
+          await jwtr.delete();
+          printInfo('JWTR Token deleted');
 
           // end of fancy animation
           setState(() {
