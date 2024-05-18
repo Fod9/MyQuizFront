@@ -1,7 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http show Response, get;
 
-import '../constants.dart';
+import '../../constants.dart';
 
 
 /// Base class for [JWT] and [JWTR]

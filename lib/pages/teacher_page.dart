@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:convert' show jsonDecode;
-import 'package:http/http.dart' as http show Response, get;
 import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz.dart' show DropDownQuiz;
-import 'package:my_quiz_ap/constants.dart' show apiUrl;
-import 'package:my_quiz_ap/helpers/jwt.dart' show JWT;
-import 'package:my_quiz_ap/helpers/quiz_list_format.dart';
-import 'package:my_quiz_ap/helpers/token_checker.dart';
-import 'package:my_quiz_ap/helpers/utils.dart' show printError, printInfo;
-import 'package:my_quiz_ap/helpers/http_extensions.dart';
+import 'package:my_quiz_ap/helpers/quiz/get_quiz_list.dart' show getQuizList;
 
 class TeacherPage extends StatefulWidget {
   const TeacherPage({super.key});
@@ -26,43 +19,13 @@ class _TeacherPageState extends State<TeacherPage> {
     _blocList = getQuizList();
   }
 
-  Future<List<Map<String, dynamic>>> getQuizList() async {
-    final JWT jwt = JWT();
-    final String token = await jwt.read();
-
-    final Future<http.Response> fResponse = http.get(
-      Uri.parse('$apiUrl/quiz/list'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'authorization': token,
-      },
-    );
-
-    final http.Response response = await checkToken(fResponse);
-
-    if (response.error && response.body.contains("Unauthorized")) {
-      return Future.value([{"error": "Unauthorized request, please login again"}]);
-    } else if (response.ok) {
-      final data = jsonDecode(response.body);
-      printInfo(data.toString());
-
-      final List<Map<String, dynamic>> formattedQuizList = quizListFormat(data);
-      printInfo(formattedQuizList.toString());
-
-      return formattedQuizList;
-    } else {
-      printError("${response.statusCode} - ${response.body}");
-      return Future.value([{"error": "An error occurred, please try again later"}]);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
 
     return FutureBuilder(
-        future: _blocList,
+        future: _blocList, // list of all subjects
         builder: (context, snapshot) {
-          if (snapshot.hasError) {
+          if (snapshot.hasError) {  // if an error occurred return an error message
 
             return Center(
               child: Text("An error occurred, please try again later ${snapshot.error}"),
@@ -70,14 +33,17 @@ class _TeacherPageState extends State<TeacherPage> {
 
           } else if (snapshot.connectionState == ConnectionState.done) {
 
+            // check if the screen is mobile or desktop
             final bool isMobile = MediaQuery.of(context).size.width < 600;
 
+            // if the response contains an error display it
             if (snapshot.data![0].containsKey("error")) {
               return Center(
                 child: Text(snapshot.data![0]["error"]),
               );
             }
 
+            // display according to the screen size
             if (isMobile) {
               return MobileDisplay(
                 width: MediaQuery.of(context).size.width * 0.8,
@@ -95,6 +61,7 @@ class _TeacherPageState extends State<TeacherPage> {
             }
           } else {
 
+            // if the response is not done, display a loading spinner
             return Center(
               child: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.8,
@@ -115,6 +82,13 @@ class _TeacherPageState extends State<TeacherPage> {
   }
 }
 
+
+/// Display the list of blocs for mobile.
+/// All is in a [Column].
+/// - [width] is the width of the screen
+/// - [height] is the height of the bloc
+/// - [expendedHeight] is the height of the expanded header
+/// - [blocList] is the list of subjects
 class MobileDisplay extends StatelessWidget {
   const MobileDisplay({
     super.key,
@@ -127,6 +101,7 @@ class MobileDisplay extends StatelessWidget {
   final double width, height, expendedHeight;
   final List<Map<String, dynamic>> blocList;
 
+  /// Display the list of blocs
   Iterable<Widget> get _blocWidgets sync* {
     for (var bloc in blocList) {
       yield DropDownQuiz(
@@ -154,6 +129,12 @@ class MobileDisplay extends StatelessWidget {
   }
 }
 
+/// Display the list of blocs for desktop.
+/// All is in a [Wrap].
+/// - [width] is the width of the screen
+/// - [height] is the height of the bloc
+/// - [expendedHeight] is the height of the expanded header
+/// - [blocList] is the list of subjects
 class DesktopDisplay extends StatelessWidget {
 
   const DesktopDisplay({

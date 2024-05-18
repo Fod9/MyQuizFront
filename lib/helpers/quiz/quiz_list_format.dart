@@ -1,7 +1,6 @@
-
-// input format :
-// {Subject: [{name: Python, id: 1, Quiz: [{id: 40, name: Quiz Programmation 1, created_by: 17, created_at: 2024-05-08T14:49:21.000Z}]}]}
-
+/// Formats the quiz list data from the API to a more convenient format
+/// - [quizList] is the data from the API as a [Map<String, dynamic>]
+/// - returns a [List<Map<String, dynamic>>]
 List<Map<String, dynamic>> quizListFormat(Map<String, dynamic> quizList) {
   List<Map<String, dynamic>> formattedList = [];
 

@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/http_extensions.dart' show IsOk;
 import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
-import 'package:my_quiz_ap/helpers/jwt.dart' show JWT;
+import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT;
 import 'package:http/http.dart' as http show Response, get;
 
 

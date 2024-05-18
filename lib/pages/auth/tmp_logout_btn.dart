@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/helpers/jwt.dart' show JWT;
+import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT;
 import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
 
 class TmpLogoutBtn extends StatefulWidget {

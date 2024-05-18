@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:my_quiz_ap/helpers/http_extensions.dart';
 import 'package:my_quiz_ap/helpers/utils.dart';
 import 'package:my_quiz_ap/pages/teacher_page.dart';
-import 'package:my_quiz_ap/helpers/jwt.dart';
+import 'package:my_quiz_ap/helpers/jwt/jwt.dart';
 
 class AuthBtn extends StatefulWidget {
 

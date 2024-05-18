@@ -1,6 +1,6 @@
-import 'package:my_quiz_ap/helpers/jwt.dart' show JWT;
+import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT;
 import 'package:http/http.dart' as http;
-import 'http_extensions.dart';
+import '../http_extensions.dart';
 
 
 /// This function checks the token and refreshes it if it is expired
