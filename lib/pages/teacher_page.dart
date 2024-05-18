@@ -5,6 +5,7 @@ import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz.dart' show Dro
 import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/jwt.dart' show JWT;
 import 'package:my_quiz_ap/helpers/quiz_list_format.dart';
+import 'package:my_quiz_ap/helpers/token_checker.dart';
 import 'package:my_quiz_ap/helpers/utils.dart' show printError, printInfo;
 import 'package:my_quiz_ap/helpers/http_extensions.dart';
 
@@ -25,7 +26,7 @@ class _TeacherPageState extends State<TeacherPage> {
     _blocList = getQuizList();
   }
 
-  Future<List<Map<String, dynamic>>> getQuizList({int retryCount = 0}) async {
+  Future<List<Map<String, dynamic>>> getQuizList() async {
     final JWT jwt = JWT();
     final String token = await jwt.read();
 
@@ -37,16 +38,10 @@ class _TeacherPageState extends State<TeacherPage> {
       },
     );
 
-    final http.Response response = await fResponse;
+    final http.Response response = await checkToken(fResponse);
 
-    if (response.error) {
-      if (retryCount >= 3) { // Limit the number of retries to 3
-        printError("Unauthorized request, maximum retries exceeded");
-        return Future.value([{"error": "Unauthorized request, maximum retries exceeded"}]);
-      } else {
-        printError("Unauthorized request, retrying...");
-        return getQuizList(retryCount: retryCount + 1);
-      }
+    if (response.error && response.body.contains("Unauthorized")) {
+      return Future.value([{"error": "Unauthorized request, please login again"}]);
     } else if (response.ok) {
       final data = jsonDecode(response.body);
       printInfo(data.toString());
@@ -76,6 +71,12 @@ class _TeacherPageState extends State<TeacherPage> {
           } else if (snapshot.connectionState == ConnectionState.done) {
 
             final bool isMobile = MediaQuery.of(context).size.width < 600;
+
+            if (snapshot.data![0].containsKey("error")) {
+              return Center(
+                child: Text(snapshot.data![0]["error"]),
+              );
+            }
 
             if (isMobile) {
               return MobileDisplay(
