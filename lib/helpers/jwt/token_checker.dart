@@ -5,10 +5,11 @@ import 'package:my_quiz_ap/helpers/http_extensions.dart';
 
 
 /// This function checks the token and refreshes it if it is expired
-/// [fResponse] is the request to be sent
-/// [maxRetries] is the maximum number of retries
-/// [retryCount] is the current number of retries (better not setting it)
-/// returns a [Future<http.Response>]
+/// - [fResponse] is the function that returns the request (type: [Future<http.Response>]).
+/// it has to be a function to reset the request each time the token is refreshed
+/// - [maxRetries] is the maximum number of retries
+/// - [retryCount] is the current number of retries (better not setting it)
+/// - returns a [Future<http.Response>]
 Future<http.Response> checkToken(
     Future<http.Response> Function() fResponse,
     {
@@ -19,7 +20,7 @@ Future<http.Response> checkToken(
 
   if (retryCount > 0) printInfo("check token retry number $retryCount");
 
-  // await the response from the request
+  // await the response from a fresh request
   final http.Response response = await fResponse();
 
   // if the response has error status and contains "Unauthorized"
