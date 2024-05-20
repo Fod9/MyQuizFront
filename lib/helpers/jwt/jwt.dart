@@ -1,10 +1,9 @@
-import 'dart:convert';
-
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:convert' show jsonDecode;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' show FlutterSecureStorage;
 import 'package:http/http.dart' as http show Response, get;
+import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/http_extensions.dart';
-
-import '../../constants.dart';
+import 'package:my_quiz_ap/helpers/utils.dart';
 
 
 /// Base class for [JWT] and [JWTR]
@@ -15,10 +14,12 @@ abstract class JWTBase {
 
   // key for the token
   String get key;
+  String get verboseName;
 
   /// Write the token to the device
   /// [value] is the token to be written
   Future<void> write(String value) async {
+    printOrder('writing $verboseName : $value');
     await _storage.write(key: key, value: value);
   }
 
@@ -47,16 +48,24 @@ class JWT extends JWTBase {
   @override
   String get key => 'jwt';
 
+  @override
+  String get verboseName => 'JWT';
+
   Future<void> refresh() async {
     final JWTR jwtr = JWTR();
     final String refreshToken = await jwtr.read();
 
+    printOrder("refreshing $verboseName");
+
     // if the refresh token is empty, return
-    if (refreshToken.isEmpty) return;
+    if (refreshToken.isEmpty) {
+      printError("refresh token is empty");
+      return;
+    }
 
     // send the refresh token to the server
     final http.Response response = await http.get(
-      Uri.parse('$apiUrl/connection/refreshToken'),
+      Uri.parse('$apiUrl/connection/refresh'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'authorization': refreshToken,
@@ -65,11 +74,18 @@ class JWT extends JWTBase {
 
     // if the response is successful, write the new token to the device
     if (response.ok) {
+
+      printOrder("refresh response ok, writing new $verboseName");
+
       final dynamic data = jsonDecode(response.body);
       final String token = data["access_token"] ?? "";
       if (token.isNotEmpty) {
         await write(token);
+        printSuccess("new $verboseName written");
       }
+    } else {
+      printError("refresh response not ok");
+      printWarning(response.body);
     }
   }
 }
@@ -78,4 +94,7 @@ class JWT extends JWTBase {
 class JWTR extends JWTBase {
   @override
   String get key => 'jwt-refresh';
+
+  @override
+  String get verboseName => 'Refresh Token';
 }

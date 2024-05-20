@@ -14,14 +14,13 @@ Future<List<Map<String, dynamic>>> getQuizList() async {
 
   // get the jwt token
   final JWT jwt = JWT();
-  final String token = await jwt.read();
 
   // request to get the list of quiz
-  final Future<http.Response> fResponse = http.get(
+  Future<http.Response> fResponse() async => http.get(
     Uri.parse('$apiUrl/quiz/list'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'authorization': token,
+      'authorization': await jwt.read(),
     },
   );
 

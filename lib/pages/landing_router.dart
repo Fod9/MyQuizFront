@@ -3,6 +3,7 @@ import 'dart:convert' show jsonDecode;
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/http_extensions.dart' show IsOk;
+import 'package:my_quiz_ap/helpers/jwt/token_checker.dart';
 import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
 import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT;
 import 'package:http/http.dart' as http show Response, get;
@@ -39,7 +40,7 @@ class _LandingRouterState extends State<LandingRouter> {
   Future<Map<String, dynamic>> getUserData() async {
 
     // read the token from the device
-    final String token = await jwt.read();
+    String token = await jwt.read();
 
     // if the token is not found, redirect to the auth page
     if (token.isEmpty) {
@@ -48,13 +49,15 @@ class _LandingRouterState extends State<LandingRouter> {
     }
 
     // check the token with the server
-    final http.Response response = await http.get(
-      Uri.parse('$apiUrl/connection/checkToken'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': token,
-      }
-    );
+    Future<http.Response> fResponse() async => http.get(
+        Uri.parse('$apiUrl/connection/checkToken'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': await jwt.read(),
+        }
+      );
+
+    final http.Response response = await checkToken(fResponse);
 
     // if the response is successful, return the user data
     if (response.ok) {
