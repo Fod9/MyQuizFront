@@ -54,6 +54,7 @@ class DropdownQuizBodyState extends State<DropdownQuizBody>
     for (var quiz in widget.quizList) {
       yield DropdownQuizButton(
           quizName: quiz['name']!,
+          quizId: quiz['id']!,
           height: quizBtnHeight,
           width: widget.width * 0.75,
       );

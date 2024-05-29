@@ -8,11 +8,13 @@ class DropdownQuizButton extends StatefulWidget {
   const DropdownQuizButton({
     super.key,
     required this.quizName,
+    required this.quizId,
     required this.height,
     required this.width,
   });
 
   final String quizName;
+  final int quizId;
   final double height, width;
 
   @override
@@ -38,7 +40,11 @@ class _DropdownQuizButtonState extends State<DropdownQuizButton>
         child: MaterialButton(
 
           onPressed: () {
-            if (kDebugMode) print("Quiz ${widget.quizName} clicked");
+            Navigator.pushNamed(
+              context,
+              '/quiz',
+              arguments: widget.quizId,
+            );
           },
 
           color: const Color(0x66000000),
