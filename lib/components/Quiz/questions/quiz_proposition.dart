@@ -5,10 +5,12 @@ class QuizProposition extends StatefulWidget {
   const QuizProposition({
     super.key,
     required this.proposition,
+    required this.onPressed,
     required this.index,
   });
 
   final Map<String, dynamic> proposition;
+  final Function() onPressed;
   final int index;
 
   @override
@@ -75,6 +77,7 @@ class QuizPropositionState extends State<QuizProposition>
               child: MaterialButton(
                 onPressed: isLocked ? null : () {
                   if (!isLocked) setState(() {isSelected = !isSelected;});
+                  widget.onPressed();
                 },
                 color: Color.lerp(Colors.white, _highlightColor, _animation.value)!,
                 disabledColor: Color.lerp(Colors.white, _highlightColor, _animation.value)!,

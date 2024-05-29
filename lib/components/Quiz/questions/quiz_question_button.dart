@@ -5,15 +5,17 @@ class QuizQuestionButton extends StatefulWidget {
   const QuizQuestionButton({
     super.key,
     required this.onPressed,
+    required this.pageController,
   });
 
   final Function() onPressed;
+  final PageController pageController;
 
   @override
-  State<QuizQuestionButton> createState() => _QuizQuestionButtonState();
+  State<QuizQuestionButton> createState() => QuizQuestionButtonState();
 }
 
-class _QuizQuestionButtonState extends State<QuizQuestionButton>
+class QuizQuestionButtonState extends State<QuizQuestionButton>
     with AutomaticKeepAliveClientMixin {
 
   final TextStyle _style = const TextStyle(
@@ -24,6 +26,15 @@ class _QuizQuestionButtonState extends State<QuizQuestionButton>
   );
 
   bool _isNext = false;
+  bool _isEnabled = false;
+
+  void enable() {
+    setState(() {_isEnabled = true;});
+  }
+
+  void disable() {
+    setState(() {_isEnabled = false;});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +43,19 @@ class _QuizQuestionButtonState extends State<QuizQuestionButton>
       height: 50,
       width: 150,
       child: MaterialButton(
-        onPressed: () {
+        onPressed: !_isEnabled ? null :  () {
           widget.onPressed();
           if (!_isNext) {
             setState(() {_isNext = true;});
           } else {
-            // TODO NAVIGATE TO NEXT QUESTION
+            widget.pageController.nextPage(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+            );
           }
         },
         color: electricBlue,
+        disabledColor: Colors.grey[600],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),

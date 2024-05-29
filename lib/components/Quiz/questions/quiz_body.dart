@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/questions/quiz_question_block.dart';
+import 'package:my_quiz_ap/components/Quiz/questions/quiz_question_block.dart' show QuizQuestionBlock;
 
 class QuizBody extends StatefulWidget {
   const QuizBody({
@@ -22,24 +22,15 @@ class _QuizBodyState extends State<QuizBody>
 
   int _currentPage = 1;
 
-  void nextPage() {
-    _pageController.nextPage(
-      duration: const Duration(milliseconds: 750),
-      curve: Curves.easeInOut,
-    );
-  }
-
-  void previousPage() {
-    _pageController.previousPage(
-      duration: const Duration(milliseconds: 750),
-      curve: Curves.easeInOut,
-    );
-  }
-
   List<Widget> get _getQuestions {
     final List<Widget> questions = [];
     for (final question in widget.quiz['Questions']) {
-      questions.add(QuizQuestionBlock(question: question));
+      questions.add(
+          QuizQuestionBlock(
+            question: question,
+            pageController: _pageController,
+          )
+      );
     }
     return questions;
   }
@@ -72,13 +63,13 @@ class _QuizBodyState extends State<QuizBody>
             Expanded(
               child: PageView(
                 controller: _pageController,
-                children: questions,
-                // TODO physics: const NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 onPageChanged: (int page) {
                   setState(() {
                     _currentPage = page + 1;
                   });
                 },
+                children: questions,
               ),
             ),
           ],

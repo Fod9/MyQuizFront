@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/questions/quiz_proposition.dart';
 import 'package:my_quiz_ap/components/Quiz/questions/quiz_question_button.dart';
-import 'package:my_quiz_ap/helpers/Colors.dart';
 
 
 class QuizQuestionBlock extends StatefulWidget {
   const QuizQuestionBlock({
     super.key,
     required this.question,
+    required this.pageController,
   });
 
   final Map<String, dynamic> question;
+  final PageController pageController;
 
   @override
   State<QuizQuestionBlock> createState() => _QuizQuestionBlockState();
@@ -22,6 +23,7 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
 
   final List<Widget> _propositions = [];
   final List<GlobalKey<QuizPropositionState>> _propositionKeys = [];
+  final GlobalKey<QuizQuestionButtonState> _buttonKey = GlobalKey();
 
   void _getPropositions() {
     final List<Widget> propositions = [];
@@ -36,12 +38,28 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
           key: key,
           proposition: proposition,
           index: currentIndex++,
+          onPressed: _checkAtLeastOne,
         )
       );
     }
     setState(() {
       _propositions.addAll(propositions);
     });
+  }
+
+  void _checkAtLeastOne() {
+    bool atLeastOne = false;
+    for (final key in _propositionKeys) {
+      if (key.currentState!.isSelected) {
+        atLeastOne = true;
+        break;
+      }
+    }
+    if (atLeastOne) {
+      _buttonKey.currentState!.enable();
+    } else {
+      _buttonKey.currentState!.disable();
+    }
   }
 
   void validate() {
@@ -58,6 +76,7 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Padding(
         padding: const EdgeInsets.all(20.0),
         child: DecoratedBox(
@@ -118,7 +137,9 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
                 Align(
                   alignment: Alignment.centerRight,
                   child: QuizQuestionButton(
+                    key: _buttonKey,
                     onPressed: validate,
+                    pageController: widget.pageController,
                   )
                 )
               ],
