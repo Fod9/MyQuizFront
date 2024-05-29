@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_quiz_ap/components/Quiz/questions/quiz_body.dart';
 import 'package:my_quiz_ap/fakers/fake_quiz.dart';
 
 
@@ -26,21 +27,8 @@ class _QuizPageState extends State<QuizPage> {
               child: Text("An error occurred, please try again later ${snapshot.error}"),
             );
           } else if (snapshot.connectionState == ConnectionState.done) {
-            return Center(
-              child: Column(
-                children: [
-                  Text("Quiz: ${snapshot.data!["Quiz_name"]}"),
-
-                  for (var question in snapshot.data!["Questions"])
-                    Column(
-                      children: [
-                        Text("Question: ${question["Question_text"]}"),
-                        for (var proposition in question["Propositions"])
-                          Text("Proposition: ${proposition["Proposition_text"]}"),
-                      ],
-                    ),
-                ],
-              ),
+            return QuizBody(
+              quiz: snapshot.data!,
             );
           } else {
             return SizedBox(
