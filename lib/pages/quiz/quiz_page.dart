@@ -15,7 +15,7 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
 
   late final args = ModalRoute.of(context)!.settings.arguments;
-  final Future<Map<String, dynamic>> _fQuiz = generateFakeQuiz();
+  final Future<Map<String, dynamic>> _fQuiz = generateFakeQuiz(numPropositions: 4, delay: 1);
 
   @override
   Widget build(BuildContext context) {

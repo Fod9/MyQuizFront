@@ -5,7 +5,7 @@ Future<Map<String, dynamic>> generateFakeQuiz({
   int numPropositions = 4,
   int delay = 2,
 }) async {
-  return Future.delayed(const Duration(seconds: 2), () {
+  return Future.delayed(Duration(seconds: delay), () {
     Map<String, dynamic> quiz = {
       "Quiz_id": "1",
       "Quiz_name": "Quiz 1",
