@@ -32,7 +32,7 @@ class _QuizPageState extends State<QuizPage> {
             );
           } else {
             return SizedBox(
-              height: MediaQuery.of(context).size.height * 0.8,
+              height: MediaQuery.of(context).size.height * 0.85,
               width: MediaQuery.of(context).size.width,
               child: const Center(
                 child: Column(

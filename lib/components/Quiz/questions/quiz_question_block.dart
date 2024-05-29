@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/questions/quiz_proposition.dart';
+import 'package:my_quiz_ap/components/Quiz/questions/quiz_question_button.dart';
+import 'package:my_quiz_ap/helpers/Colors.dart';
 
 
 class QuizQuestionBlock extends StatefulWidget {
@@ -14,7 +16,9 @@ class QuizQuestionBlock extends StatefulWidget {
   State<QuizQuestionBlock> createState() => _QuizQuestionBlockState();
 }
 
-class _QuizQuestionBlockState extends State<QuizQuestionBlock> {
+
+class _QuizQuestionBlockState extends State<QuizQuestionBlock>
+    with AutomaticKeepAliveClientMixin {
 
   final List<Widget> _propositions = [];
   final List<GlobalKey<QuizPropositionState>> _propositionKeys = [];
@@ -38,6 +42,12 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock> {
     setState(() {
       _propositions.addAll(propositions);
     });
+  }
+
+  void validate() {
+    for (final key in _propositionKeys) {
+      key.currentState!.check();
+    }
   }
 
   @override
@@ -91,6 +101,8 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock> {
                     ),
                 ),
 
+                const SizedBox(height: 20),
+
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.55,
                   child: SingleChildScrollView(
@@ -99,6 +111,15 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock> {
                       children: _propositions,
                     ),
                   ),
+                ),
+
+                const Spacer(),
+
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: QuizQuestionButton(
+                    onPressed: validate,
+                  )
                 )
               ],
             ),
@@ -106,4 +127,7 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock> {
         )
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

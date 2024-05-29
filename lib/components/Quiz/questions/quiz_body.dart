@@ -13,7 +13,8 @@ class QuizBody extends StatefulWidget {
   State<QuizBody> createState() => _QuizBodyState();
 }
 
-class _QuizBodyState extends State<QuizBody> with SingleTickerProviderStateMixin {
+class _QuizBodyState extends State<QuizBody>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final PageController _pageController = PageController(
       initialPage: 0,
       keepPage: true,
@@ -21,14 +22,14 @@ class _QuizBodyState extends State<QuizBody> with SingleTickerProviderStateMixin
 
   int _currentPage = 1;
 
-  void _nextPage() {
+  void nextPage() {
     _pageController.nextPage(
       duration: const Duration(milliseconds: 750),
       curve: Curves.easeInOut,
     );
   }
 
-  void _previousPage() {
+  void previousPage() {
     _pageController.previousPage(
       duration: const Duration(milliseconds: 750),
       curve: Curves.easeInOut,
@@ -45,6 +46,7 @@ class _QuizBodyState extends State<QuizBody> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
 
     final List<Widget> questions = _getQuestions;
 
@@ -52,7 +54,7 @@ class _QuizBodyState extends State<QuizBody> with SingleTickerProviderStateMixin
       padding: const EdgeInsets.symmetric(vertical: 24.0),
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.8,
+        height: MediaQuery.of(context).size.height * 0.825,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -84,4 +86,7 @@ class _QuizBodyState extends State<QuizBody> with SingleTickerProviderStateMixin
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
