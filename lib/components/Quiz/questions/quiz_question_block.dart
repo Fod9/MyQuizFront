@@ -97,6 +97,7 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
             padding: const EdgeInsets.all(24.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 DecoratedBox(
@@ -123,7 +124,7 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
                 const SizedBox(height: 20),
 
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.55,
+                  height: MediaQuery.of(context).size.height * 0.5,
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     child: Column(

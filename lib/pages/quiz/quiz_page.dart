@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/questions/quiz_body.dart';
-import 'package:my_quiz_ap/fakers/fake_quiz.dart';
+import 'package:my_quiz_ap/helpers/quiz/get_quiz.dart';
 
 
 class QuizPage extends StatefulWidget {
@@ -15,7 +15,7 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
 
   late final args = ModalRoute.of(context)!.settings.arguments;
-  final Future<Map<String, dynamic>> _fQuiz = generateFakeQuiz(numPropositions: 4, delay: 1);
+  late final Future<Map<String, dynamic>> _fQuiz = getQuiz(args as int);
 
   @override
   Widget build(BuildContext context) {

@@ -37,7 +37,7 @@ class _TeacherPageState extends State<TeacherPage> {
             final bool isMobile = MediaQuery.of(context).size.width < 600;
 
             // if the response contains an error display it
-            if (snapshot.data![0].containsKey("error")) {
+            if (snapshot.data!.isNotEmpty && snapshot.data![0].containsKey("error")) {
               return Center(
                 child: Text(snapshot.data![0]["error"]),
               );
