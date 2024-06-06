@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show FontWeight, ImageFilter;
 
+import 'package:my_quiz_ap/helpers/Colors.dart';
+
 class QuizResultPopup extends StatefulWidget {
   const QuizResultPopup({
     super.key,
@@ -30,8 +32,8 @@ class _QuizResultPopupState extends State<QuizResultPopup> {
         child: Center(
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
+              color: Colors.white.withOpacity(0.75),
+              borderRadius: BorderRadius.circular(30),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.3),
@@ -42,38 +44,67 @@ class _QuizResultPopupState extends State<QuizResultPopup> {
               ],
             ),
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
-              height: MediaQuery.of(context).size.height * 0.6,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
+              width: MediaQuery.of(context).size.width * 0.75,
+              height: MediaQuery.of(context).size.height * 0.25,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
 
-                  Text(
-                    "Votre note est de $_note/20",
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontFamily: "Quicksand",
-                      fontWeight: FontWeight.w600,
+                        Column(
+                          children: [
+                            const Text(
+                              "Vous avez obtenu",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontFamily: "Quicksand",
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            Text(
+                              "$_note/20",
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 32,
+                                fontFamily: "Quicksand",
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )
+                          ],
+                        ),
+
+                        const Spacer(),
+
+                        MaterialButton(
+                          onPressed: sendScore,
+                          color: electricBlue,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: const Text(
+                            "Terminer le quiz",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontFamily: "Quicksand",
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-
-                  const Spacer(),
-
-                  ElevatedButton(
-                    onPressed: sendScore,
-                    child: const Text(
-                      "Envoyer la note",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontFamily: "Quicksand",
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           )
@@ -90,22 +121,10 @@ void displayResultPopup(
   showDialog(
     context: context,
     barrierDismissible: false,
-    barrierColor: const Color(0x10000000),
-    builder: (context) => Stack(
-      children: [
-        BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-          ),
-        ),
-
-        QuizResultPopup(
-          score: score,
-          total: total,
-        ),
-      ],
+    barrierColor: const Color(0x60000000),
+    builder: (context) => QuizResultPopup(
+      score: score,
+      total: total,
     ),
   );
 }
