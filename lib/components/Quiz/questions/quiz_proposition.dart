@@ -22,7 +22,7 @@ class QuizPropositionState extends State<QuizProposition>
 
   bool isSelected = false;
   bool isLocked = false;
-  late final isCorrect = widget.proposition['Is_correct'] == 'true';
+  late final isCorrect = widget.proposition['Is_correct'];
 
   final Color _validColor = const Color(0xff37ae28);
   final Color _invalidColor = const Color(0xffe74c3c);

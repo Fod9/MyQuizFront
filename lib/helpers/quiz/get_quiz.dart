@@ -2,11 +2,13 @@
 
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http show Response, get;
 import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/http_extensions.dart';
 import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT;
 import 'package:my_quiz_ap/helpers/jwt/token_checker.dart' show checkToken;
+import 'package:my_quiz_ap/helpers/utils.dart';
 
 Future<Map<String, dynamic>> getQuiz(int id) async {
 
@@ -28,6 +30,7 @@ Future<Map<String, dynamic>> getQuiz(int id) async {
     return Future.value({"error": "Unauthorized request, please login again"});
   } else if (response.ok) {
     dynamic data = jsonDecode(response.body);
+    printInfo(data["Questions"].toString());
     return Future.value(data);
   } else {
     return Future.value({"error": "An error occurred, please try again later"});
