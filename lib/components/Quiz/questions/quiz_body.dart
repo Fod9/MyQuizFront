@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/questions/quiz_question_block.dart' show QuizQuestionBlock;
 
+
+/// The body of the quiz page.
+/// This widget displays the questions of the quiz.
+///
+/// params: [Map<String, dynamic>] [quiz]
 class QuizBody extends StatefulWidget {
   const QuizBody({
     super.key,
@@ -22,6 +27,9 @@ class _QuizBodyState extends State<QuizBody>
 
   int _currentPage = 1;
 
+
+  /// Get the list of questions and propositions of the quiz.
+  /// Displayed in a page view.
   List<Widget> get _getQuestions {
     final List<Widget> questions = [];
     for (final question in widget.quiz['Questions']) {
@@ -50,6 +58,8 @@ class _QuizBodyState extends State<QuizBody>
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
+
+            // current question number
             Text(
               "Question $_currentPage/${questions.length}",
               style: const TextStyle(
@@ -60,14 +70,15 @@ class _QuizBodyState extends State<QuizBody>
               ),
             ),
 
+            // PageView to display the questions
+            // No scroll physics, scrolls only with "next" button
             Expanded(
               child: PageView(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
                 onPageChanged: (int page) {
-                  setState(() {
-                    _currentPage = page + 1;
-                  });
+                  // update the current page number when the page changes
+                  setState(() => _currentPage = page + 1);
                 },
                 children: questions,
               ),
@@ -78,6 +89,8 @@ class _QuizBodyState extends State<QuizBody>
     );
   }
 
+  // keep the state of the widget
+  // even when the widget is not visible
   @override
   bool get wantKeepAlive => true;
 }

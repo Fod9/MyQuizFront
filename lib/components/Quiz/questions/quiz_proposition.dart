@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/helpers/Colors.dart';
 
+
+/// A widget that displays a quiz proposition.
+/// The proposition is a button that can be selected (outlined).
+/// The proposition can be locked after the user has validated the answer.
+/// The proposition can be highlighted with a color (green or red) if it is correct or not.
+///
+/// params:
+/// - [Map<String, dynamic>] [proposition]
+/// - [Function()] [onPressed]
+/// - [int] [index]
 class QuizProposition extends StatefulWidget {
   const QuizProposition({
     super.key,
@@ -24,6 +34,7 @@ class QuizPropositionState extends State<QuizProposition>
   bool isLocked = false;
   late final isCorrect = widget.proposition['Is_correct'];
 
+  // colors for highlighting the proposition
   final Color _validColor = const Color(0xff37ae28);
   final Color _invalidColor = const Color(0xffe74c3c);
   late final Color _highlightColor = (isCorrect) ?
@@ -41,6 +52,8 @@ class QuizPropositionState extends State<QuizProposition>
     curve: Curves.easeInOut,
   );
 
+  /// Check if the proposition is correct or not.
+  /// Called from the parent widget.
   void check() {
     if (isSelected || isCorrect) _controller.forward();
     setState(() {isSelected = false;});
@@ -63,7 +76,7 @@ class QuizPropositionState extends State<QuizProposition>
         ),
         child: Stack(
           children: [
-            AnimatedContainer(
+            AnimatedContainer(  // animated outline for selection
               duration: const Duration(milliseconds: 250),
               curve: Curves.easeInOut,
               decoration: BoxDecoration(
@@ -79,6 +92,7 @@ class QuizPropositionState extends State<QuizProposition>
                   if (!isLocked) setState(() {isSelected = !isSelected;});
                   widget.onPressed();
                 },
+                // color depending if the proposition is correct or not
                 color: Color.lerp(Colors.white, _highlightColor, _animation.value)!,
                 disabledColor: Color.lerp(Colors.white, _highlightColor, _animation.value)!,
                 shape: RoundedRectangleBorder(
@@ -107,7 +121,7 @@ class QuizPropositionState extends State<QuizProposition>
               ),
             ),
 
-            Positioned(
+            Positioned(  // displayed index of the proposition
               left: 0,
               top: 0,
               child: DecoratedBox(

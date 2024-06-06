@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/questions/quiz_proposition.dart';
-import 'package:my_quiz_ap/components/Quiz/questions/quiz_question_button.dart';
+import 'package:my_quiz_ap/components/Quiz/questions/quiz_proposition.dart' show QuizProposition, QuizPropositionState;
+import 'package:my_quiz_ap/components/Quiz/questions/quiz_question_button.dart' show QuizQuestionButton, QuizQuestionButtonState;
 
 
+/// A widget that displays a question, its propositions
+/// and a button to validate the answer.
+///
+/// params:
+/// - [Map<String, dynamic>] [question]
+/// - [PageController] [pageController]
 class QuizQuestionBlock extends StatefulWidget {
   const QuizQuestionBlock({
     super.key,
@@ -10,7 +16,7 @@ class QuizQuestionBlock extends StatefulWidget {
     required this.pageController,
   });
 
-  final Map<String, dynamic> question;
+  final Map<String, dynamic> question;  // the question contains its propositions
   final PageController pageController;
 
   @override
@@ -100,7 +106,7 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                DecoratedBox(
+                DecoratedBox(  // Question text
                     decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -123,7 +129,7 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
 
                 const SizedBox(height: 20),
 
-                SizedBox(
+                SizedBox(  // Propositions
                   height: MediaQuery.of(context).size.height * 0.5,
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -135,7 +141,7 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
 
                 const Spacer(),
 
-                Align(
+                Align(  // Validate button
                   alignment: Alignment.centerRight,
                   child: QuizQuestionButton(
                     key: _buttonKey,

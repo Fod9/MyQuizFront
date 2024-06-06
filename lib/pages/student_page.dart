@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz.dart' show DropDownQuiz;
-import 'package:my_quiz_ap/fakers/fake_quiz_list.dart' show getFakeQuizList;
+import 'package:my_quiz_ap/helpers/quiz/get_quiz_list.dart' show getQuizList;
 
 class StudentPage extends StatefulWidget {
   const StudentPage({super.key});
@@ -16,30 +16,34 @@ class _StudentPageState extends State<StudentPage> {
   @override
   void initState() {
     super.initState();
-    _blocList = getFakeQuizList(
-      subjectCount: 5,
-      quizCount: 5,
-      throwError: false,
-      delay: 1,
-    );
+    _blocList = getQuizList();
   }
 
   @override
   Widget build(BuildContext context) {
 
     return FutureBuilder(
-        future: _blocList,
+        future: _blocList, // list of all subjects
         builder: (context, snapshot) {
-          if (snapshot.hasError) {
+          if (snapshot.hasError) {  // if an error occurred return an error message
 
-            return const Center(
-              child: Text("An error occurred, please try again later"),
+            return Center(
+              child: Text("An error occurred, please try again later ${snapshot.error}"),
             );
 
           } else if (snapshot.connectionState == ConnectionState.done) {
 
+            // check if the screen is mobile or desktop
             final bool isMobile = MediaQuery.of(context).size.width < 600;
 
+            // if the response contains an error display it
+            if (snapshot.data!.isNotEmpty && snapshot.data![0].containsKey("error")) {
+              return Center(
+                child: Text(snapshot.data![0]["error"]),
+              );
+            }
+
+            // display according to the screen size
             if (isMobile) {
               return MobileDisplay(
                 width: MediaQuery.of(context).size.width * 0.8,
@@ -57,6 +61,7 @@ class _StudentPageState extends State<StudentPage> {
             }
           } else {
 
+            // if the response is not done, display a loading spinner
             return Center(
               child: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.8,
@@ -77,6 +82,13 @@ class _StudentPageState extends State<StudentPage> {
   }
 }
 
+
+/// Display the list of blocs for mobile.
+/// All is in a [Column].
+/// - [width] is the width of the screen
+/// - [height] is the height of the bloc
+/// - [expendedHeight] is the height of the expanded header
+/// - [blocList] is the list of subjects
 class MobileDisplay extends StatelessWidget {
   const MobileDisplay({
     super.key,
@@ -89,6 +101,7 @@ class MobileDisplay extends StatelessWidget {
   final double width, height, expendedHeight;
   final List<Map<String, dynamic>> blocList;
 
+  /// Display the list of blocs
   Iterable<Widget> get _blocWidgets sync* {
     for (var bloc in blocList) {
       yield DropDownQuiz(
@@ -116,6 +129,12 @@ class MobileDisplay extends StatelessWidget {
   }
 }
 
+/// Display the list of blocs for desktop.
+/// All is in a [Wrap].
+/// - [width] is the width of the screen
+/// - [height] is the height of the bloc
+/// - [expendedHeight] is the height of the expanded header
+/// - [blocList] is the list of subjects
 class DesktopDisplay extends StatelessWidget {
 
   const DesktopDisplay({

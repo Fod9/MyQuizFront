@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/helpers/Colors.dart';
 
+
+/// Button to validate the current quiz question
+/// Once the button is pressed, it will change to a "next" button
+///
+/// The button is disabled by default and can be enabled by calling the [enable] method
+/// It is enabled only if at least 1 proposition is selected
 class QuizQuestionButton extends StatefulWidget {
   const QuizQuestionButton({
     super.key,
@@ -18,6 +24,7 @@ class QuizQuestionButton extends StatefulWidget {
 class QuizQuestionButtonState extends State<QuizQuestionButton>
     with AutomaticKeepAliveClientMixin {
 
+  // Text that will be displayed on the button
   final TextStyle _style = const TextStyle(
     color: Colors.white,
     fontSize: 18,
@@ -28,10 +35,15 @@ class QuizQuestionButtonState extends State<QuizQuestionButton>
   bool _isNext = false;
   bool _isEnabled = false;
 
+
+  /// Enables the button
+  /// Usually called from the parent widget
   void enable() {
     setState(() {_isEnabled = true;});
   }
 
+  /// Disables the button
+  /// Usually called from the parent widget
   void disable() {
     setState(() {_isEnabled = false;});
   }
