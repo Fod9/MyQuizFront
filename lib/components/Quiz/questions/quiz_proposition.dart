@@ -54,10 +54,14 @@ class QuizPropositionState extends State<QuizProposition>
 
   /// Check if the proposition is correct or not.
   /// Called from the parent widget.
-  void check() {
+  /// If the proposition is selected and correct, it returns true else false.
+  bool check() {
     if (isSelected || isCorrect) _controller.forward();
+    final bool result = isSelected && isCorrect;
     setState(() {isSelected = false;});
     isLocked = true;
+
+    return result;
   }
 
   @override

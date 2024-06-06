@@ -10,9 +10,13 @@ class QuizBody extends StatefulWidget {
   const QuizBody({
     super.key,
     required this.quiz,
+    required this.addScore,
+    required this.getScore,
   });
 
   final Map<String, dynamic> quiz;
+  final Function(int) addScore;
+  final List<int> Function() getScore;
 
   @override
   State<QuizBody> createState() => _QuizBodyState();
@@ -32,11 +36,16 @@ class _QuizBodyState extends State<QuizBody>
   /// Displayed in a page view.
   List<Widget> get _getQuestions {
     final List<Widget> questions = [];
-    for (final question in widget.quiz['Questions']) {
+    final int lastIndex = widget.quiz['Questions'].length - 1;
+    for (int i = 0; i <= lastIndex; i++) {
+      final question = widget.quiz['Questions'][i];
       questions.add(
           QuizQuestionBlock(
             question: question,
             pageController: _pageController,
+            addScore: widget.addScore,
+            isLast: i == lastIndex,
+            getScore: i == lastIndex ? widget.getScore : null,
           )
       );
     }

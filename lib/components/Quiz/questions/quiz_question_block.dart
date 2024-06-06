@@ -1,7 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/questions/quiz_proposition.dart' show QuizProposition, QuizPropositionState;
 import 'package:my_quiz_ap/components/Quiz/questions/quiz_question_button.dart' show QuizQuestionButton, QuizQuestionButtonState;
-
+import 'package:my_quiz_ap/helpers/utils.dart';
 
 /// A widget that displays a question, its propositions
 /// and a button to validate the answer.
@@ -14,10 +15,16 @@ class QuizQuestionBlock extends StatefulWidget {
     super.key,
     required this.question,
     required this.pageController,
+    required this.addScore,
+    this.getScore,
+    this.isLast = false,
   });
 
   final Map<String, dynamic> question;  // the question contains its propositions
   final PageController pageController;
+  final Function(int) addScore;
+  final List<int> Function()? getScore;
+  final bool isLast;
 
   @override
   State<QuizQuestionBlock> createState() => _QuizQuestionBlockState();
@@ -69,8 +76,28 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
   }
 
   void validate() {
+
+    // list of the results of the propositions
+    final List<bool> results = <bool>[];
     for (final key in _propositionKeys) {
-      key.currentState!.check();
+      final bool result = key.currentState!.check();
+      results.add(result);
+    }
+
+    // list of the correct answers
+    final List<bool> corrects = <bool>[];
+    for (final proposition in widget.question['Propositions']) {
+      corrects.add(proposition['Is_correct']);
+    }
+
+    // check if the 2 lists are equal
+    final bool questionResult = listEquals(results, corrects);
+
+    printInfo("results: $results");
+    printInfo("corrects: $corrects");
+
+    if (questionResult) {
+      widget.addScore(1);
     }
   }
 
@@ -147,6 +174,8 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
                     key: _buttonKey,
                     onPressed: validate,
                     pageController: widget.pageController,
+                    isLast: widget.isLast,
+                    getScore: widget.isLast ? widget.getScore : null,
                   )
                 )
               ],

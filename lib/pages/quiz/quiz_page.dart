@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/questions/quiz_body.dart' show QuizBody;
 import 'package:my_quiz_ap/helpers/quiz/get_quiz.dart' show getQuiz;
+import 'package:my_quiz_ap/helpers/utils.dart';
 
 
 class QuizPage extends StatefulWidget {
@@ -17,6 +18,17 @@ class _QuizPageState extends State<QuizPage> {
   late final args = ModalRoute.of(context)!.settings.arguments;
   late final Future<Map<String, dynamic>> _fQuiz = getQuiz(args as int);
 
+  int score = 0;
+  int total = 0;
+
+  void addScore(int toAdd) {
+    printInfo("Adding $toAdd to the score");
+    score += toAdd;
+    printInfo("New score: $score");
+  }
+
+  List<int> getScore() => [score, total];
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -27,8 +39,13 @@ class _QuizPageState extends State<QuizPage> {
               child: Text("An error occurred, please try again later ${snapshot.error}"),
             );
           } else if (snapshot.connectionState == ConnectionState.done) {
+
+            total = snapshot.data!['Questions'].length.toInt();
+
             return QuizBody(
               quiz: snapshot.data!,
+              addScore: addScore,
+              getScore: getScore,
             );
           } else {
             return SizedBox(

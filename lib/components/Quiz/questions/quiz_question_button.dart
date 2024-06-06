@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_quiz_ap/components/Quiz/questions/quiz_result_popup.dart';
 import 'package:my_quiz_ap/helpers/Colors.dart';
 
 
@@ -12,10 +13,14 @@ class QuizQuestionButton extends StatefulWidget {
     super.key,
     required this.onPressed,
     required this.pageController,
+    this.isLast = false,
+    this.getScore,
   });
 
   final Function() onPressed;
+  final List<int> Function()? getScore;
   final PageController pageController;
+  final bool isLast;
 
   @override
   State<QuizQuestionButton> createState() => QuizQuestionButtonState();
@@ -60,10 +65,20 @@ class QuizQuestionButtonState extends State<QuizQuestionButton>
           if (!_isNext) {
             setState(() {_isNext = true;});
           } else {
-            widget.pageController.nextPage(
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-            );
+            if (widget.isLast) {
+
+              final List<int> scores = widget.getScore!();
+
+              displayResultPopup(context,
+                score: scores[0],
+                total: scores[1],
+              );
+            } else {
+              widget.pageController.nextPage(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+              );
+            }
           }
         },
         color: electricBlue,
@@ -89,14 +104,15 @@ class QuizQuestionButtonState extends State<QuizQuestionButton>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Suivant",
+                    widget.isLast ? "Terminer" : "Suivant",
                     style: _style,
                   ),
 
                   const SizedBox(width: 10),
 
-                  const Icon(
-                    Icons.arrow_forward_ios_rounded,
+                  Icon(
+                    widget.isLast ?
+                      Icons.done_rounded : Icons.arrow_forward_ios_rounded,
                     color: Colors.white,
                     size: 18,
                   ),
