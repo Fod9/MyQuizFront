@@ -13,14 +13,14 @@ import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
 /// If the response is an error, return the error message.
 ///
 /// params: [int] [id]
-Future<Map<String, dynamic>> getQuiz(int id) async {
+Future<Map<String, dynamic>> getUserInfo() async {
 
   // create a JWT instance
   final JWT jwt = JWT();
 
   // request to get the quiz using the id
   Future<http.Response> fResponse() async => http.get(
-    Uri.parse('$apiUrl/quiz/getQuizById/$id'),
+    Uri.parse('$apiUrl/connection/checkToken/'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'authorization': await jwt.read(),

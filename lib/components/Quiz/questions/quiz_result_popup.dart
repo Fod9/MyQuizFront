@@ -36,7 +36,7 @@ class _QuizResultPopupState extends State<QuizResultPopup> {
             blur: 30,
             color: Colors.black.withOpacity(0.4),
             elevation: 15,
-            shadowColor: Colors.black,
+            shadowColor: electricBlue,
             borderRadius: BorderRadius.circular(20),
             width: MediaQuery.of(context).size.width * 0.75,
             height: MediaQuery.of(context).size.height * 0.25,
@@ -81,10 +81,17 @@ class _QuizResultPopupState extends State<QuizResultPopup> {
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
                     },
+
                     color: electricBlue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 20,
+                    ),
+
+
                     child: const Text(
                       "Terminer le quiz",
                       style: TextStyle(

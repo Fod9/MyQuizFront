@@ -10,13 +10,9 @@ class QuizBody extends StatefulWidget {
   const QuizBody({
     super.key,
     required this.quiz,
-    required this.addScore,
-    required this.getScore,
   });
 
   final Map<String, dynamic> quiz;
-  final Function(int) addScore;
-  final List<int> Function() getScore;
 
   @override
   State<QuizBody> createState() => _QuizBodyState();
@@ -43,9 +39,7 @@ class _QuizBodyState extends State<QuizBody>
           QuizQuestionBlock(
             question: question,
             pageController: _pageController,
-            addScore: widget.addScore,
             isLast: i == lastIndex,
-            getScore: i == lastIndex ? widget.getScore : null,
           )
       );
     }

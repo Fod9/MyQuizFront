@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/questions/quiz_result_popup.dart';
 import 'package:my_quiz_ap/helpers/Colors.dart';
+import 'package:provider/provider.dart';
+
+import '../../../providers/quiz_data.dart';
 
 
 /// Button to validate the current quiz question
@@ -14,11 +17,9 @@ class QuizQuestionButton extends StatefulWidget {
     required this.onPressed,
     required this.pageController,
     this.isLast = false,
-    this.getScore,
   });
 
   final Function() onPressed;
-  final List<int> Function()? getScore;
   final PageController pageController;
   final bool isLast;
 
@@ -67,11 +68,12 @@ class QuizQuestionButtonState extends State<QuizQuestionButton>
           } else {
             if (widget.isLast) {
 
-              final List<int> scores = widget.getScore!();
+              final int score = Provider.of<QuizData>(context, listen: false).score;
+              final total = Provider.of<QuizData>(context, listen: false).total;
 
               displayResultPopup(context,
-                score: scores[0],
-                total: scores[1],
+                score: score,
+                total: total,
               );
             } else {
               widget.pageController.nextPage(

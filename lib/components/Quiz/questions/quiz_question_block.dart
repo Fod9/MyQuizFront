@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/questions/quiz_proposition.dart' show QuizProposition, QuizPropositionState;
 import 'package:my_quiz_ap/components/Quiz/questions/quiz_question_button.dart' show QuizQuestionButton, QuizQuestionButtonState;
 import 'package:my_quiz_ap/helpers/utils.dart';
+import 'package:my_quiz_ap/providers/quiz_data.dart';
+import 'package:provider/provider.dart';
 
 /// A widget that displays a question, its propositions
 /// and a button to validate the answer.
@@ -15,15 +17,11 @@ class QuizQuestionBlock extends StatefulWidget {
     super.key,
     required this.question,
     required this.pageController,
-    required this.addScore,
-    this.getScore,
     this.isLast = false,
   });
 
   final Map<String, dynamic> question;  // the question contains its propositions
   final PageController pageController;
-  final Function(int) addScore;
-  final List<int> Function()? getScore;
   final bool isLast;
 
   @override
@@ -97,7 +95,7 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
     printInfo("corrects: $corrects");
 
     if (questionResult) {
-      widget.addScore(1);
+      Provider.of<QuizData>(context, listen: false).addScore(1);
     }
   }
 
@@ -175,7 +173,6 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
                     onPressed: validate,
                     pageController: widget.pageController,
                     isLast: widget.isLast,
-                    getScore: widget.isLast ? widget.getScore : null,
                   )
                 )
               ],
