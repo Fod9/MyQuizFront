@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_quiz_ap/helpers/quiz/save_note.dart';
 
 class QuizData extends ChangeNotifier {
   int _score = 0;
@@ -20,9 +21,10 @@ class QuizData extends ChangeNotifier {
 
   void setQuizId(int value) => _quizId = value;
 
-  Future<void> sendScore() async {
+  Future<bool> sendScore() async {
     final double note = _score * 20 / _total;
-
+    final bool done = await saveNote(note, userId, quizId);
+    return done;
   }
 
   @override

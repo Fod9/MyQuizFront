@@ -8,11 +8,13 @@ class QuizResultPopup extends StatefulWidget {
   const QuizResultPopup({
     super.key,
     required this.score,
-    required this.total
+    required this.total,
+    required this.sendScore,
   });
 
   final int score;
   final int total;
+  final Future<bool> Function() sendScore;
 
   @override
   State<QuizResultPopup> createState() => _QuizResultPopupState();
@@ -22,15 +24,35 @@ class _QuizResultPopupState extends State<QuizResultPopup> {
 
   late final double _note = widget.score / widget.total * 20;
 
-  void sendScore() async {
-    // TODO Send the score to the server
-  }
+  final Widget buttonText = const Text(
+    "Terminer le quiz",
+    style: TextStyle(
+      color: Colors.white,
+      fontSize: 18,
+      fontFamily: "Quicksand",
+      fontWeight: FontWeight.w600,
+    ),
+  );
+
+  final Widget buttonLoading = const Padding(
+    padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 40.0),
+    child: SizedBox(
+      height: 24,
+      width: 24,
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        strokeCap: StrokeCap.round,
+      ),
+    ),
+  );
+
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     printInfo("Note: $_note");
     return PopScope(
-        canPop: true,
+        canPop: false,
         child: Center(
           child: BlurryContainer(
             blur: 30,
@@ -76,10 +98,20 @@ class _QuizResultPopupState extends State<QuizResultPopup> {
                   const Spacer(),
 
                   MaterialButton(
-                    onPressed: () {
-                      sendScore;
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
+                    onPressed: () async {
+                      if (!_isLoading) {
+
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        
+                        await widget.sendScore();
+
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                        }
+                      }
                     },
 
                     color: electricBlue,
@@ -91,16 +123,14 @@ class _QuizResultPopupState extends State<QuizResultPopup> {
                       horizontal: 20,
                     ),
 
-
-                    child: const Text(
-                      "Terminer le quiz",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontFamily: "Quicksand",
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    child: AnimatedCrossFade(
+                        firstChild: buttonText,
+                        secondChild: buttonLoading,
+                        duration: const Duration(milliseconds: 250),
+                        sizeCurve: Curves.easeInOut,
+                        crossFadeState: _isLoading ?
+                          CrossFadeState.showSecond : CrossFadeState.showFirst,
+                    )
                   ),
                 ],
               ),
@@ -114,7 +144,8 @@ class _QuizResultPopupState extends State<QuizResultPopup> {
 void displayResultPopup(
     BuildContext context, {
       required int score,
-      required int total
+      required int total,
+      required Future<bool> Function() sendScore,
     }) {
   showDialog(
     context: context,
@@ -134,6 +165,7 @@ void displayResultPopup(
         QuizResultPopup(
           score: score,
           total: total,
+          sendScore: sendScore,
         ),
       ],
     ),

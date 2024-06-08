@@ -71,9 +71,11 @@ class QuizQuestionButtonState extends State<QuizQuestionButton>
               final int score = Provider.of<QuizData>(context, listen: false).score;
               final total = Provider.of<QuizData>(context, listen: false).total;
 
-              displayResultPopup(context,
+              displayResultPopup(
+                context,
                 score: score,
                 total: total,
+                sendScore: Provider.of<QuizData>(context, listen: false).sendScore,
               );
             } else {
               widget.pageController.nextPage(
