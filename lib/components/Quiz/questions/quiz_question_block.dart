@@ -75,7 +75,7 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
 
   void validate() {
 
-    // list of the results of the propositions
+    // list of the selected propositions
     final List<bool> results = <bool>[];
     for (final key in _propositionKeys) {
       final bool result = key.currentState!.check();

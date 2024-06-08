@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/questions/quiz_result_popup.dart';
-import 'package:my_quiz_ap/helpers/Colors.dart';
-import 'package:provider/provider.dart';
-
-import '../../../providers/quiz_data.dart';
+import 'package:my_quiz_ap/components/Quiz/questions/quiz_result_popup.dart' show displayResultPopup;
+import 'package:my_quiz_ap/helpers/Colors.dart' show electricBlue;
+import 'package:provider/provider.dart' show Provider;
+import 'package:my_quiz_ap/providers/quiz_data.dart' show QuizData;
 
 
 /// Button to validate the current quiz question
@@ -62,8 +61,8 @@ class QuizQuestionButtonState extends State<QuizQuestionButton>
       width: 150,
       child: MaterialButton(
         onPressed: !_isEnabled ? null :  () {
-          widget.onPressed();
           if (!_isNext) {
+            widget.onPressed();
             setState(() {_isNext = true;});
           } else {
             if (widget.isLast) {
