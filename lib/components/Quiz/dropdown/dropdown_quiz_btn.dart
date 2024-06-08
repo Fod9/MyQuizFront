@@ -40,7 +40,7 @@ class _DropdownQuizButtonState extends State<DropdownQuizButton>
         child: MaterialButton(
 
           onPressed: () {
-            Navigator.pushNamed(
+            Navigator.pushReplacementNamed(
               context,
               '/quiz',
               arguments: widget.quizId,

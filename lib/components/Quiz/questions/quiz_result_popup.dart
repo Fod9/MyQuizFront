@@ -108,8 +108,7 @@ class _QuizResultPopupState extends State<QuizResultPopup> {
                         await widget.sendScore();
 
                         if (context.mounted) {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
+                          Navigator.pushReplacementNamed(context, '/student');
                         }
                       }
                     },
