@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:my_quiz_ap/components/Quiz/questions/quiz_proposition.dart' show QuizProposition, QuizPropositionState;
 import 'package:my_quiz_ap/components/Quiz/questions/quiz_question_button.dart' show QuizQuestionButton, QuizQuestionButtonState;
 import 'package:my_quiz_ap/helpers/utils.dart';
@@ -36,6 +38,7 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
   final List<GlobalKey<QuizPropositionState>> _propositionKeys = [];
   final GlobalKey<QuizQuestionButtonState> _buttonKey = GlobalKey();
 
+  /// Get and generate the propositions of the question.
   void _getPropositions() {
     final List<Widget> propositions = [];
     int currentIndex = 1;
@@ -58,6 +61,10 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
     });
   }
 
+  /// Check if at least one proposition is selected.
+  /// If so, enable the validate button.
+  ///
+  /// Takes all the propositions keys and check if at least one is selected.
   void _checkAtLeastOne() {
     bool atLeastOne = false;
     for (final key in _propositionKeys) {
@@ -73,6 +80,10 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
     }
   }
 
+  /// Validate the propositions.
+  ///
+  /// Takes all the propositions keys and check if the selected propositions
+  /// are the correct ones by comparing them to the correct answers.
   void validate() {
 
     // list of the selected propositions
@@ -154,17 +165,16 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
 
                 const SizedBox(height: 20),
 
-                SizedBox(  // Propositions
-                  height: MediaQuery.of(context).size.height * 0.5,
+                Expanded(
+                  flex: 15,  // will take 15/17 of the available space
                   child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
                     child: Column(
                       children: _propositions,
                     ),
                   ),
                 ),
 
-                const Spacer(),
+                const Spacer(flex: 1),  // will take 1/17 of the available space
 
                 Align(  // Validate button
                   alignment: Alignment.centerRight,

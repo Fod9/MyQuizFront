@@ -56,7 +56,6 @@ class _QuizBodyState extends State<QuizBody>
       padding: const EdgeInsets.symmetric(vertical: 24.0),
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.825,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -75,9 +74,9 @@ class _QuizBodyState extends State<QuizBody>
 
             // PageView to display the questions
             // No scroll physics, scrolls only with "next" button
-            SizedBox(
+            SizedBox(  // responsive width and height
               width: MediaQuery.of(context).size.width.clamp(0, 600),
-              height: MediaQuery.of(context).size.height * 0.785,
+              height: (MediaQuery.of(context).size.height * 0.785).clamp(400, double.infinity),
               child: PageView(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),

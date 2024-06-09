@@ -21,7 +21,7 @@ class _QuizPageState extends State<QuizPage> {
   late final Object? args;  // used here to store the id of the quiz
   late final Future<Map<String, dynamic>> _fQuiz;  // the future quiz data
   late Map<String, dynamic> _userInfo;
-  bool _isLoaded = false;
+  bool _isQuizPageLoaded = false, _isQuizDataLoaded = false;
 
   Future<Map<String, dynamic>> _loadQuiz() async {
 
@@ -39,10 +39,10 @@ class _QuizPageState extends State<QuizPage> {
   @override
   Widget build(BuildContext context) {
 
-    if (!_isLoaded) {
+    if (!_isQuizPageLoaded) {
       args = ModalRoute.of(context)!.settings.arguments;
       _fQuiz = _loadQuiz();
-      _isLoaded = true;
+      _isQuizPageLoaded = true;
     }
 
     return ChangeNotifierProvider(
@@ -57,14 +57,17 @@ class _QuizPageState extends State<QuizPage> {
               );
             } else if (snapshot.connectionState == ConnectionState.done) {
 
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                QuizData quizData = Provider.of<QuizData>(context, listen: false);
-                quizData.setTotal(snapshot.data!['Questions'].length);
-                quizData.setQuizId(snapshot.data!['Quiz_id'] as int);
-                quizData.setUserId(_userInfo['id'] as int);
-
-                printInfo("QuizData: $quizData");
-              });
+              if (!_isQuizDataLoaded) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  QuizData quizData = Provider.of<QuizData>(context, listen: false);
+                  quizData.setTotal(snapshot.data!['Questions'].length);
+                  quizData.setQuizId(snapshot.data!['Quiz_id'] as int);
+                  quizData.setUserId(_userInfo['id'] as int);
+                
+                  printInfo("QuizData: $quizData");
+                  _isQuizDataLoaded = true;
+                });
+              }
 
               return QuizBody(quiz: snapshot.data!);
 
