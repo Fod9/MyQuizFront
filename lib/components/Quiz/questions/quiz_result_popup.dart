@@ -61,7 +61,7 @@ class _QuizResultPopupState extends State<QuizResultPopup> {
             shadowColor: electricBlue,
             borderRadius: BorderRadius.circular(20),
             width: (MediaQuery.of(context).size.width * 0.75).clamp(0, 500),
-            height: 200,
+            height: 220,
             child: Padding(
               padding: const EdgeInsets.all(24.0),
               child: Column(
