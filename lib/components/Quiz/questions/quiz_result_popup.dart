@@ -60,7 +60,7 @@ class _QuizResultPopupState extends State<QuizResultPopup> {
             elevation: 15,
             shadowColor: electricBlue,
             borderRadius: BorderRadius.circular(20),
-            width: MediaQuery.of(context).size.width * 0.75,
+            width: (MediaQuery.of(context).size.width * 0.75).clamp(0, 500),
             height: MediaQuery.of(context).size.height * 0.25,
             child: Padding(
               padding: const EdgeInsets.all(24.0),
@@ -108,7 +108,7 @@ class _QuizResultPopupState extends State<QuizResultPopup> {
                         await widget.sendScore();
 
                         if (context.mounted) {
-                          Navigator.pushReplacementNamed(context, '/student');
+                          Navigator.pushNamedAndRemoveUntil(context, '/student', (route) => false);
                         }
                       }
                     },

@@ -127,7 +127,6 @@ class _AuthBtnState extends State<AuthBtn> {
     });
 
 
-    // TODO : fix navigation depending on the user type and screen type
     if (mounted) {
       Navigator.of(context).pushReplacementNamed('/');
     }

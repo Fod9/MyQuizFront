@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/pages/AdminPage.dart' show AdminPage;
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
@@ -10,11 +11,15 @@ import 'layout.dart' show Layout;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
-      .then((_) {
+  if (!kIsWeb) {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]
+    ).then((_) {
+      runApp(const MyQuizApp());
+    });
+  } else {
     runApp(const MyQuizApp());
-  });
+  }
 }
 
 class MyQuizApp extends StatelessWidget {

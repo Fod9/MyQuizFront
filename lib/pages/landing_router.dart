@@ -76,7 +76,7 @@ class _LandingRouterState extends State<LandingRouter> {
   void redirectTo(String route) {
     if (mounted) {
       Future.delayed(Duration.zero, () {
-        Navigator.pushReplacementNamed(context, route);
+        Navigator.pushNamedAndRemoveUntil(context, route, (route) => false);
       });
     }
   }

@@ -75,7 +75,9 @@ class _QuizBodyState extends State<QuizBody>
 
             // PageView to display the questions
             // No scroll physics, scrolls only with "next" button
-            Expanded(
+            SizedBox(
+              width: MediaQuery.of(context).size.width.clamp(0, 600),
+              height: MediaQuery.of(context).size.height * 0.785,
               child: PageView(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),

@@ -1,4 +1,5 @@
 import 'dart:convert' show jsonEncode;
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http show Response, post;
 import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/http_extensions.dart';
@@ -11,6 +12,12 @@ Future<bool> saveNote(double note, int userId, int quizId) async {
 
   JWT jwt = JWT();
 
+  double parsedNote = note;
+
+  if (note == 0.0 && kIsWeb) {
+    parsedNote = -1.0;
+  }
+
   Future<http.Response> fResponse() async => http.post(
     Uri.parse('$apiUrl/quiz/saveNote/'),
     headers: <String, String>{
@@ -20,7 +27,7 @@ Future<bool> saveNote(double note, int userId, int quizId) async {
     body: jsonEncode(<String, dynamic>{
       'quiz_id': quizId,
       'student_id': userId,
-      'note': note,
+      'note': parsedNote,
     }),
   );
 

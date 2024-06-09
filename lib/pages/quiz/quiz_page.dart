@@ -1,16 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/questions/quiz_body.dart' show QuizBody;
-import 'package:my_quiz_ap/constants.dart';
-import 'package:my_quiz_ap/helpers/get_user_info.dart';
-import 'package:my_quiz_ap/helpers/http_extensions.dart';
-import 'package:my_quiz_ap/helpers/jwt/jwt.dart';
+import 'package:my_quiz_ap/helpers/get_user_info.dart' show getUserInfo;
 import 'package:my_quiz_ap/helpers/quiz/get_quiz.dart' show getQuiz;
 import 'package:my_quiz_ap/helpers/utils.dart' show printError, printInfo;
 import 'package:my_quiz_ap/providers/quiz_data.dart' show QuizData;
 import 'package:provider/provider.dart' show ChangeNotifierProvider, Provider;
-import 'package:http/http.dart' as http show Response, get;
 
 
 class QuizPage extends StatefulWidget {

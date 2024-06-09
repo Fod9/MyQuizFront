@@ -22,7 +22,7 @@ class QuizData extends ChangeNotifier {
   void setQuizId(int value) => _quizId = value;
 
   Future<bool> sendScore() async {
-    final double note = _score * 20 / _total;
+    final double note = (_score / _total) * 20;
     final bool done = await saveNote(note, userId, quizId);
     return done;
   }

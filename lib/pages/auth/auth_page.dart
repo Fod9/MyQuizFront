@@ -54,21 +54,31 @@ class _AuthPageState extends State<AuthPage> {
       _height = MediaQuery.of(context).size.height * 0.1;
     }
 
-    return (screenType == "mobile" || _width > 600) ?
-      MobileDisplay(
-        width: _width,
-        height: _height,
-        toggleForm: toggleForm,
-        isLoginFormDisplayed: isLoginFormDisplayed,
-        formController: formController,
-        setErrorMessage: setErrorMessage,
-        errorMessage: errorMessage,
-      )
-        :
-      DesktopDisplay(
-        width: _width,
-        height: _height
-      );
+    return MobileDisplay(
+      width: _width,
+      height: _height,
+      toggleForm: toggleForm,
+      isLoginFormDisplayed: isLoginFormDisplayed,
+      formController: formController,
+      setErrorMessage: setErrorMessage,
+      errorMessage: errorMessage,
+    );
+
+    // return (screenType == "mobile" || _width > 600) ?
+    //   MobileDisplay(
+    //     width: _width,
+    //     height: _height,
+    //     toggleForm: toggleForm,
+    //     isLoginFormDisplayed: isLoginFormDisplayed,
+    //     formController: formController,
+    //     setErrorMessage: setErrorMessage,
+    //     errorMessage: errorMessage,
+    //   )
+    //     :
+    //   DesktopDisplay(
+    //     width: _width,
+    //     height: _height
+    //   );
   }
 
   void toggleForm() {
