@@ -1,5 +1,4 @@
 import 'dart:convert' show jsonEncode;
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http show Response, post;
 import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/http_extensions.dart';
@@ -14,7 +13,7 @@ Future<bool> saveNote(double note, int userId, int quizId) async {
 
   double parsedNote = note;
 
-  if (note == 0.0 && kIsWeb) {
+  if (note == 0.0) {
     parsedNote = -1.0;
   }
 
