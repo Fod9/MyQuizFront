@@ -1,5 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz.dart' show DropDownQuiz;
+import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz.dart'
+    show DropDownQuiz;
+import 'package:my_quiz_ap/components/Stats/statistics.dart';
 import 'package:my_quiz_ap/helpers/quiz/get_quiz_list.dart' show getQuizList;
 
 class StudentPage extends StatefulWidget {
@@ -10,7 +14,6 @@ class StudentPage extends StatefulWidget {
 }
 
 class _StudentPageState extends State<StudentPage> {
-
   late final Future<List<Map<String, dynamic>>> _blocList;
 
   @override
@@ -21,23 +24,23 @@ class _StudentPageState extends State<StudentPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
         future: _blocList, // list of all subjects
         builder: (context, snapshot) {
-          if (snapshot.hasError) {  // if an error occurred return an error message
+          if (snapshot.hasError) {
+            // if an error occurred return an error message
 
             return Center(
-              child: Text("An error occurred, please try again later ${snapshot.error}"),
+              child: Text(
+                  "An error occurred, please try again later ${snapshot.error}"),
             );
-
           } else if (snapshot.connectionState == ConnectionState.done) {
-
             // check if the screen is mobile or desktop
             final bool isMobile = MediaQuery.of(context).size.width < 600;
 
             // if the response contains an error display it
-            if (snapshot.data!.isNotEmpty && snapshot.data![0].containsKey("error")) {
+            if (snapshot.data!.isNotEmpty &&
+                snapshot.data![0].containsKey("error")) {
               return Center(
                 child: Text(snapshot.data![0]["error"]),
               );
@@ -46,42 +49,34 @@ class _StudentPageState extends State<StudentPage> {
             // display according to the screen size
             if (isMobile) {
               return MobileDisplay(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 55,
-                expendedHeight: 140,
-                blocList: snapshot.data!,
-              );
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 55,
+                  expendedHeight: 140,
+                  blocList: snapshot.data!);
             } else {
               return DesktopDisplay(
                   width: 410,
                   height: 140,
                   expendedHeight: 210,
-                  blocList: snapshot.data!
-              );
+                  blocList: snapshot.data!);
             }
           } else {
-
             // if the response is not done, display a loading spinner
             return Center(
               child: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.8,
                 child: const Center(
                     child: CircularProgressIndicator(
-                      color: Colors.white,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      strokeCap: StrokeCap.round,
-                    )
-                ),
+                  color: Colors.white,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  strokeCap: StrokeCap.round,
+                )),
               ),
             );
-
           }
-
-        }
-    );
+        });
   }
 }
-
 
 /// Display the list of blocs for mobile.
 /// All is in a [Column].
@@ -89,7 +84,8 @@ class _StudentPageState extends State<StudentPage> {
 /// - [height] is the height of the bloc
 /// - [expendedHeight] is the height of the expanded header
 /// - [blocList] is the list of subjects
-class MobileDisplay extends StatelessWidget {
+///
+class MobileDisplay extends StatefulWidget {
   const MobileDisplay({
     super.key,
     required this.width,
@@ -101,14 +97,19 @@ class MobileDisplay extends StatelessWidget {
   final double width, height, expendedHeight;
   final List<Map<String, dynamic>> blocList;
 
+  @override
+  State<MobileDisplay> createState() => _MobileDisplayState();
+}
+
+class _MobileDisplayState extends State<MobileDisplay> {
   /// Display the list of blocs
   Iterable<Widget> get _blocWidgets sync* {
-    for (var bloc in blocList) {
+    for (var bloc in widget.blocList) {
       yield DropDownQuiz(
         blockName: bloc["name"],
-        height: height,
+        height: widget.height,
         expandedHeight: 140,
-        width: width,
+        width: widget.width,
         mode: "teacher",
         quizList: bloc["quizList"]!,
       );
@@ -118,11 +119,16 @@ class MobileDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Stack(
         children: [
-          ..._blocWidgets
+          Center(
+            child: Column(
+              children: [
+                Statistics(togglePopup: displayResultPopup),
+                ..._blocWidgets,
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -136,7 +142,6 @@ class MobileDisplay extends StatelessWidget {
 /// - [expendedHeight] is the height of the expanded header
 /// - [blocList] is the list of subjects
 class DesktopDisplay extends StatelessWidget {
-
   const DesktopDisplay({
     super.key,
     required this.width,
@@ -172,7 +177,7 @@ class DesktopDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.only(top:75),
+        padding: const EdgeInsets.only(top: 75),
         child: Column(
           children: [
             Wrap(
@@ -187,4 +192,24 @@ class DesktopDisplay extends StatelessWidget {
       ),
     );
   }
+}
+
+void displayResultPopup(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    barrierColor: const Color(0x00000000),
+    builder: (context) => Stack(
+      children: [
+        BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+            )),
+
+        const StatisticsPopUp(),
+      ],
+    ),
+  );
 }

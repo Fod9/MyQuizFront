@@ -10,7 +10,7 @@ class CustomCircularIndicator extends StatefulWidget {
 
   final double width;
 
-  final int percentage;
+  final num percentage;
 
   @override
   State<CustomCircularIndicator> createState() => _CustomCircularIndicatorState();
@@ -22,17 +22,16 @@ class _CustomCircularIndicatorState extends State<CustomCircularIndicator> {
     return SizedBox(
       height: widget.width,
       width: widget.width,
-      child: Expanded(
-        child: Stack(
+      child: Stack(
           children: [
             SizedBox(
               height: widget.width,
               width: widget.width,
-              child: const RotatedBox(
+              child: RotatedBox(
                 quarterTurns: 2,
                 child: CircularProgressIndicator(
-                  value: 0.9,
-                  strokeWidth: 15,
+                  value: widget.percentage / 20,
+                  strokeWidth: 10,
                   color: lightGreen,
                   strokeCap: StrokeCap.round,
                 ),
@@ -43,13 +42,14 @@ class _CustomCircularIndicatorState extends State<CustomCircularIndicator> {
                 "${widget.percentage}",
                 style: TextStyle(
                   fontSize: widget.width * 0.2,
+                  fontFamily: "QuickSand",
+                  fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }
