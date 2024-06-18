@@ -124,7 +124,7 @@ class _MobileDisplayState extends State<MobileDisplay> {
           Center(
             child: Column(
               children: [
-                const StatisticsButton(),
+                StatisticsButton(),
                 ..._blocWidgets,
               ],
             ),
@@ -180,6 +180,7 @@ class DesktopDisplay extends StatelessWidget {
         padding: const EdgeInsets.only(top: 75),
         child: Column(
           children: [
+            StatisticsButton(),
             Wrap(
               spacing: 100,
               runSpacing: 75,

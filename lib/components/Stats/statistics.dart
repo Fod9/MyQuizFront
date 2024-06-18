@@ -7,26 +7,19 @@ import 'package:my_quiz_ap/components/Stats/customLinearIndicator.dart' show Sta
 import 'package:my_quiz_ap/helpers/Colors.dart' show darkGlass, electricBlue;
 import 'package:my_quiz_ap/helpers/stats/get_stats.dart' show getStats;
 
-class StatisticsButton extends StatefulWidget {
-  const StatisticsButton({
-    super.key,
-  });
+class StatisticsButton extends StatelessWidget {
+  StatisticsButton({super.key});
 
-  @override
-  State<StatisticsButton> createState() => _StatisticsButtonState();
-}
-
-class _StatisticsButtonState extends State<StatisticsButton> {
-  
   final Color baseColor = darkGlass.withOpacity(0.4);
+
   final Color highlightColor = electricBlue.withOpacity(0.4);
-  
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 30, bottom: 30),
       child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.6,
+        width: (MediaQuery.of(context).size.width * 0.6).clamp(100, 350),
         child: MaterialButton(
           onPressed: () => {displayStatsPopup(context)},
 
