@@ -1,9 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz.dart'
-    show DropDownQuiz;
-import 'package:my_quiz_ap/components/Stats/statistics.dart';
+import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz.dart' show DropDownQuiz;
+import 'package:my_quiz_ap/components/Stats/stats_button.dart' show StatisticsButton;
 import 'package:my_quiz_ap/helpers/quiz/get_quiz_list.dart' show getQuizList;
 
 class StudentPage extends StatefulWidget {
