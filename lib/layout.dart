@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/pages/auth/tmp_logout_btn.dart' show TmpLogoutBtn;
+import 'package:my_quiz_ap/components/my_quiz_background.dart';
+import 'components/appbar/my_quiz_appbar.dart' show MyQuizAppBar;
 import 'helpers/utils.dart' show getScreenType;
 
 
@@ -39,49 +40,28 @@ class _LayoutState extends State<Layout> {
   @override
   Widget build(BuildContext context) {
 
-    String screenType = getScreenType(context);
-
     return SafeArea(  // SafeArea is used to avoid the notch and the bottom bar
       bottom: false,
       child: Scaffold(
 
           // show the app bar if [hasAppBar] is true
-          appBar: widget.hasAppBar ? AppBar(
-            title: Text(widget.title),
-            actions: [
-
-              const TmpLogoutBtn(),  // TODO remove temporary logout button
-
-              IconButton(  // side drawer button
-                icon: const Icon(Icons.menu),
-                onPressed: () {},
-              ),
-            ],
+          appBar: widget.hasAppBar ? MyQuizAppBar(
+            title: widget.title,
           ) : null,
+          extendBodyBehindAppBar: true,
 
           body: Stack(
             children: [
 
               // background image with a gradient
-              SizedBox.expand(
-                child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        // switch background with type
-                        image: (screenType == "mobile")
-                            ? const AssetImage(
-                            "assets/images/BackgroundMobile.png")
-                            : const AssetImage(
-                            "assets/images/BackgroundDesktop.png"),
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                ),
-              ),
+              const MyQuizBackground(),
 
               // the page to display
-              SingleChildScrollView(
-                child: widget.page,
+              Padding(
+                padding: const EdgeInsets.only(top : 85.0),
+                child: SingleChildScrollView(
+                  child: widget.page,
+                ),
               ),
             ],
           )

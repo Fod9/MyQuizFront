@@ -3,7 +3,12 @@ import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT, JWTR;
 import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
 
 class TmpLogoutBtn extends StatefulWidget {
-  const TmpLogoutBtn({super.key});
+  const TmpLogoutBtn({
+    super.key,
+    this.size = 50.0,
+  });
+
+  final double size;
 
   @override
   State<TmpLogoutBtn> createState() => _TmpLogoutBtnState();
@@ -24,7 +29,10 @@ class _TmpLogoutBtnState extends State<TmpLogoutBtn> {
     final JWT jwt = JWT();
     final JWTR jwtr = JWTR();
 
-    return IconButton(
+    return SizedBox(
+      width: widget.size,
+      height: widget.size,
+      child: IconButton(
         onPressed: () async {
           // small fancy animation
           setState(() {
@@ -45,7 +53,15 @@ class _TmpLogoutBtnState extends State<TmpLogoutBtn> {
           // redirection to the auth page
           if (context.mounted) Navigator.pushReplacementNamed(context, '/');
         },
-        icon: Icon(_icon),
+
+        alignment: Alignment.center,
+        padding: EdgeInsets.zero,
+
+        icon: Icon(
+          _icon,
+          size: widget.size/2,
+        ),
+      ),
     );
   }
 }
