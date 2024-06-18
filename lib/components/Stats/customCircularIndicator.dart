@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/helpers/Colors.dart';
 
-class CustomCircularIndicator extends StatefulWidget {
-  const CustomCircularIndicator({
+class StatsCircularIndicator extends StatefulWidget {
+  const StatsCircularIndicator({
     super.key,
     required this.width,
     required this.percentage,
@@ -13,10 +13,10 @@ class CustomCircularIndicator extends StatefulWidget {
   final num percentage;
 
   @override
-  State<CustomCircularIndicator> createState() => _CustomCircularIndicatorState();
+  State<StatsCircularIndicator> createState() => _StatsCircularIndicatorState();
 }
 
-class _CustomCircularIndicatorState extends State<CustomCircularIndicator> {
+class _StatsCircularIndicatorState extends State<StatsCircularIndicator> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(

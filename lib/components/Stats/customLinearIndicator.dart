@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/helpers/Colors.dart';
 
-class CustomLinearIndicator extends StatefulWidget {
-  const CustomLinearIndicator({
+class StatsLinearIndicator extends StatefulWidget {
+  const StatsLinearIndicator({
     super.key,
     required this.percentage,
     this.text
@@ -12,10 +12,10 @@ class CustomLinearIndicator extends StatefulWidget {
   final num percentage;
 
   @override
-  State<CustomLinearIndicator> createState() => _CustomLinearIndicatorState();
+  State<StatsLinearIndicator> createState() => _StatsLinearIndicatorState();
 }
 
-class _CustomLinearIndicatorState extends State<CustomLinearIndicator> {
+class _StatsLinearIndicatorState extends State<StatsLinearIndicator> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(

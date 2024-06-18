@@ -124,7 +124,7 @@ class _MobileDisplayState extends State<MobileDisplay> {
           Center(
             child: Column(
               children: [
-                Statistics(togglePopup: displayResultPopup),
+                const StatisticsButton(),
                 ..._blocWidgets,
               ],
             ),
@@ -192,24 +192,4 @@ class DesktopDisplay extends StatelessWidget {
       ),
     );
   }
-}
-
-void displayResultPopup(BuildContext context) {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    barrierColor: const Color(0x00000000),
-    builder: (context) => Stack(
-      children: [
-        BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-            )),
-
-        const StatisticsPopUp(),
-      ],
-    ),
-  );
 }

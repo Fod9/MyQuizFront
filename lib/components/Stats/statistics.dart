@@ -1,53 +1,56 @@
-import 'dart:convert';
 import 'dart:ui';
 
-import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:my_quiz_ap/components/Stats/customCircularIndicator.dart';
-import 'package:my_quiz_ap/components/Stats/customLinearIndicator.dart';
-import 'package:my_quiz_ap/helpers/Colors.dart';
-import 'package:my_quiz_ap/helpers/http_extensions.dart';
+import 'package:blurrycontainer/blurrycontainer.dart' show BlurryContainer;
+import 'package:my_quiz_ap/components/Stats/customCircularIndicator.dart' show StatsCircularIndicator;
+import 'package:my_quiz_ap/components/Stats/customLinearIndicator.dart' show StatsLinearIndicator;
+import 'package:my_quiz_ap/helpers/Colors.dart' show darkGlass, electricBlue;
+import 'package:my_quiz_ap/helpers/stats/get_stats.dart' show getStats;
 
-import '../../constants.dart';
-import '../../helpers/jwt/jwt.dart';
-import '../../helpers/jwt/token_checker.dart';
-import '../../helpers/stats/get_stats.dart';
-import '../../helpers/utils.dart';
-
-class Statistics extends StatefulWidget {
-  const Statistics({
+class StatisticsButton extends StatefulWidget {
+  const StatisticsButton({
     super.key,
-    required this.togglePopup,
   });
 
-  final Function(BuildContext) togglePopup;
-
   @override
-  State<Statistics> createState() => _StatisticsState();
+  State<StatisticsButton> createState() => _StatisticsButtonState();
 }
 
-class _StatisticsState extends State<Statistics> {
+class _StatisticsButtonState extends State<StatisticsButton> {
+  
+  final Color baseColor = darkGlass.withOpacity(0.4);
+  final Color highlightColor = electricBlue.withOpacity(0.4);
+  
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 30, bottom: 30),
+    return Padding(
+      padding: const EdgeInsets.only(top: 30, bottom: 30),
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.6,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-              color: darkGlass, borderRadius: BorderRadius.circular(10)),
-          child: MaterialButton(
-            onPressed: () => {widget.togglePopup(context)},
-            child: const Padding(
-              padding: EdgeInsets.only(top: 10, bottom: 10),
-              child: Center(
-                child: Text(
-                  "Voir mes statistiques",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
+        child: MaterialButton(
+          onPressed: () => {displayStatsPopup(context)},
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+
+          color: baseColor,
+          disabledColor: baseColor,
+          focusColor: highlightColor,
+          hoverColor: highlightColor,
+          highlightColor: highlightColor,
+
+          elevation: 0,
+
+          child: const Padding(
+            padding: EdgeInsets.only(top: 10, bottom: 10),
+            child: Center(
+              child: Text(
+                "Voir mes statistiques",
+                style: TextStyle(
+                  fontFamily: "QuickSand",
+                  color: Colors.white,
+                  fontSize: 20,
                 ),
               ),
             ),
@@ -62,83 +65,92 @@ class StatisticsPopUp extends StatefulWidget {
   const StatisticsPopUp({super.key});
 
   @override
-  _StatisticsPopUpState createState() => _StatisticsPopUpState();
+  State<StatisticsPopUp> createState() => _StatisticsPopUpState();
 }
 
 class _StatisticsPopUpState extends State<StatisticsPopUp> {
-  Future<bool>? _statsFuture;
-
-  late Map<String, num> _stats = {
-    "average_note": 0,
-    "time_elapsed": 0,
-    "percentage_done_quizzes": 0,
-  };
-
-  @override
-  void initState() {
-    super.initState();
-    _loadStats();
-  }
-
-  void _loadStats() async {
-    Map response = await getStats();
-    if (response["error"] != null) {
-      _statsFuture = Future.value(false);
-    } else {
-      setState(() {
-        _stats = {
-          "average_note": response["average_note"],
-          "time_elapsed": response["time_elapsed"],
-          "percentage_done_quizzes": response["percentage_done_quizzes"],
-        };
-        print(_stats);
-      });
-      _statsFuture = Future.value(true);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: _statsFuture,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return const Center(
-              child: Text("Erreur de chargement des statistiques"));
-        } else if (snapshot.hasData && snapshot.data!) {
-          return PopScope(
-            canPop: false,
+    return FutureBuilder(
+      future: getStats(),
+      builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+        if (snapshot.hasError) {
+          return Expanded(
             child: Center(
-              child: BlurryContainer(
-                blur: 30,
-                color: Colors.black.withOpacity(0.4),
-                elevation: 15,
-                shadowColor: electricBlue,
-                borderRadius: BorderRadius.circular(20),
-                width: (MediaQuery.of(context).size.width * 0.75).clamp(0, 500),
-                height:
-                    (MediaQuery.of(context).size.height * 0.75).clamp(0, 500),
-                child: Stack(
+                child: Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(24.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Vos statistiques",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: "QuickSand",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25,
-                            ),
+                    const Text("Erreur de chargement des statistiques"),
+                    ElevatedButton(
+                      onPressed: () => {
+                        Navigator.of(context).pop(),
+                        displayStatsPopup(context),
+                      },
+                      child: const Text(
+                          "Réessayer",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "QuickSand",
+                            fontWeight: FontWeight.bold,
+                          )
+                      ),
+                    ),
+                  ],
+                )
+            ),
+          );
+        } else if (snapshot.connectionState == ConnectionState.done) {
+
+          final Map<String, dynamic> stats = snapshot.data!;
+
+          return Center(
+            child: BlurryContainer(
+              blur: 30,
+              color: Colors.black.withOpacity(0.4),
+              elevation: 15,
+              shadowColor: electricBlue,
+              borderRadius: BorderRadius.circular(20),
+              width: (MediaQuery.of(context).size.width * 0.75).clamp(0, 500),
+              height: (MediaQuery.of(context).size.height * 0.75).clamp(0, 500),
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Vos statistiques",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "QuickSand",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
                           ),
-                          const SizedBox(height: 20),
-                          const Text(
-                            "Moyenne",
+                        ),
+                        const SizedBox(height: 20),
+                        const Text(
+                          "Moyenne",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "QuickSand",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        StatsCircularIndicator(
+                            width: 90, percentage: stats["average_note"]!
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Temps passé",
                             style: TextStyle(
                               color: Colors.white,
                               fontFamily: "QuickSand",
@@ -146,71 +158,77 @@ class _StatisticsPopUpState extends State<StatisticsPopUp> {
                               fontSize: 20,
                             ),
                           ),
-                          const SizedBox(height: 20),
-                          CustomCircularIndicator(
-                              width: 90, percentage: _stats["average_note"]!),
-                          const SizedBox(height: 20),
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Temps passé",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "QuickSand",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
+                        ),
+
+                        StatsLinearIndicator(
+                            percentage: stats["time_elapsed"]!,
+                            text: "${stats["time_elapsed"]!} / 100"
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Quiz fait",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "QuickSand",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
                             ),
                           ),
-                          CustomLinearIndicator(
-                              percentage: _stats["time_elapsed"]!,
-                              text: "${_stats["time_elapsed"]!} / 100"),
-                          SizedBox(height: 20),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Quiz fait",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "QuickSand",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                          CustomLinearIndicator(
-                              percentage: _stats["percentage_done_quizzes"]!,
-                              text:
-                                  "${_stats["percentage_done_quizzes"]} / 100"),
-                        ],
-                      ),
+                        ),
+
+                        StatsLinearIndicator(
+                            percentage: stats["percentage_done_quizzes"]!,
+                            text: "${stats["percentage_done_quizzes"]} / 100"
+                        ),
+                      ],
                     ),
-                    Positioned(
-                      child: IconButton(
-                        icon: Icon(Icons.close, color: Colors.white),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                      top: 0,
-                      right: 0,
+                  ),
+
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: IconButton(
+                      icon: const Icon(Icons.close_rounded, color: Colors.white),
+                      onPressed: () => Navigator.of(context).pop(),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );
         } else {
-          return Center(
-              child: Column(
-            children: [
-              const Text("Erreur de chargement des statistiques"),
-              ElevatedButton(
-                onPressed: () => _loadStats(),
-                child: const Text("Réessayer"),
-              ),
-            ],
-          ));
+          return const CircularProgressIndicator(
+            color: Colors.white,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            strokeCap: StrokeCap.round,
+          );
         }
       },
     );
   }
+}
+
+
+void displayStatsPopup(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierColor: const Color(0x00000000),
+    builder: (context) => Stack(
+      children: [
+        BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+          ),
+        ),
+
+        const StatisticsPopUp(),
+      ],
+    ),
+  );
 }
