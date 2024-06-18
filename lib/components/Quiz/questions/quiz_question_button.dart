@@ -62,13 +62,18 @@ class QuizQuestionButtonState extends State<QuizQuestionButton>
       child: MaterialButton(
         onPressed: !_isEnabled ? null :  () {
           if (!_isNext) {
+            // toggle the button to "next" state
             widget.onPressed();
             setState(() {_isNext = true;});
           } else {
             if (widget.isLast) {
+              // Display the result popup
+              // and send the score to the server
+              final QuizData quizData = Provider.of<QuizData>(context, listen: false);
 
-              final int score = Provider.of<QuizData>(context, listen: false).score;
-              final total = Provider.of<QuizData>(context, listen: false).total;
+              final int score = quizData.score;
+              final total = quizData.total;
+              quizData.stopTimer();
 
               displayResultPopup(
                 context,
@@ -77,6 +82,7 @@ class QuizQuestionButtonState extends State<QuizQuestionButton>
                 sendScore: Provider.of<QuizData>(context, listen: false).sendScore,
               );
             } else {
+              // Go to the next question
               widget.pageController.nextPage(
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.easeInOut,

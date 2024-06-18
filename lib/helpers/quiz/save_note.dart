@@ -7,7 +7,7 @@ import 'package:my_quiz_ap/helpers/jwt/token_checker.dart' show checkToken;
 import 'package:my_quiz_ap/helpers/utils.dart' show printError;
 
 
-Future<bool> saveNote(double note, int userId, int quizId) async {
+Future<bool> saveNote(double note, int userId, int quizId, int timeElapsed) async {
 
   JWT jwt = JWT();
 
@@ -27,6 +27,7 @@ Future<bool> saveNote(double note, int userId, int quizId) async {
       'quiz_id': quizId,
       'student_id': userId,
       'note': parsedNote,
+      'time_elapsed': timeElapsed,
     }),
   );
 
