@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_quiz_ap/components/appbar/my_quiz_end_drawer.dart';
 import 'package:my_quiz_ap/components/my_quiz_background.dart';
 import 'components/appbar/my_quiz_appbar.dart' show MyQuizAppBar;
 import 'helpers/utils.dart' show getScreenType;
@@ -37,18 +38,24 @@ class Layout extends StatefulWidget {
 
 class _LayoutState extends State<Layout> {
 
+  final GlobalKey<ScaffoldState> _layoutKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
 
     return SafeArea(  // SafeArea is used to avoid the notch and the bottom bar
       bottom: false,
       child: Scaffold(
-
+          key: _layoutKey,
           // show the app bar if [hasAppBar] is true
           appBar: widget.hasAppBar ? MyQuizAppBar(
             title: widget.title,
+            scaffoldKey: _layoutKey,
           ) : null,
           extendBodyBehindAppBar: true,
+
+          endDrawer: const MyQuizEndDrawer(),
+          drawerScrimColor: Colors.transparent,
 
           body: Stack(
             children: [

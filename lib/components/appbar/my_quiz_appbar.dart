@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/appbar/appbar_menu_button.dart';
-import 'package:my_quiz_ap/pages/auth/tmp_logout_btn.dart' show TmpLogoutBtn;
 
 /// MyQuizNavbar is the navbar of the MyQuiz page.
 class MyQuizAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyQuizAppBar({
     Key? key,
     this.title = 'My Quiz',
+    required this.scaffoldKey,
   }) : super(key: key);
 
   final String title;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class MyQuizAppBar extends StatelessWidget implements PreferredSizeWidget {
 
               const Spacer(),
 
-              const AppbarMenuButton()
+              AppbarMenuButton(scaffoldKey: scaffoldKey),
             ],
           ),
         ),

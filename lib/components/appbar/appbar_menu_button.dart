@@ -4,9 +4,11 @@ class AppbarMenuButton extends StatelessWidget {
   const AppbarMenuButton({
     super.key,
     this.size = 50.0,
+    required this.scaffoldKey,
   });
 
   final double size;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class AppbarMenuButton extends StatelessWidget {
       child: IconButton(
 
         onPressed: () {
-          Scaffold.of(context).openDrawer();
+          scaffoldKey.currentState!.openEndDrawer();
         },
 
         padding: EdgeInsets.zero,
