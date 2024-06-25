@@ -17,6 +17,20 @@ class _QuizNameInputState extends State<QuizNameInput> {
 
   void unFocus() => _focusNode.unfocus();
 
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(() {
+      if (_focusNode.hasFocus) {  // select all text when focused
+        _controller.selection = TextSelection(
+          baseOffset: 0,
+          extentOffset: _controller.text.length,
+        );
+
+        setState(() {});  // Rebuild the widget to show the check icon
+      }
+    });
+  }
 
   @override
   void dispose() {
