@@ -34,11 +34,11 @@ Future<List<Map<String, dynamic>>> getQuizList() async {
   } else if (response.ok) {
     // if the response is successful, decode the data
     final data = jsonDecode(response.body);
-    printInfo(data.toString());
+    // printInfo(data.toString());
 
     // format the data
     final List<Map<String, dynamic>> formattedQuizList = quizListFormat(data);
-    printInfo(formattedQuizList.toString());
+    // printInfo(formattedQuizList.toString());
 
     return formattedQuizList;
   } else {

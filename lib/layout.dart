@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/appbar/my_quiz_end_drawer.dart';
-import 'package:my_quiz_ap/components/my_quiz_background.dart';
+import 'package:my_quiz_ap/components/appbar/my_quiz_end_drawer.dart' show MyQuizEndDrawer;
+import 'package:my_quiz_ap/components/my_quiz_background.dart' show MyQuizBackground;
 import 'components/appbar/my_quiz_appbar.dart' show MyQuizAppBar;
 import 'helpers/utils.dart' show getScreenType;
 
@@ -67,6 +67,8 @@ class _LayoutState extends State<Layout> {
               Padding(
                 padding: const EdgeInsets.only(top : 85.0),
                 child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   child: widget.page,
                 ),
               ),
