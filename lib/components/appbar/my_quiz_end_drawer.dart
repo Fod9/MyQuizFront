@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show Clip, Color, FontWeight, ImageFilter, Radius;
 
+import 'package:my_quiz_ap/components/appbar/drawer_trial_button.dart';
+
 class MyQuizEndDrawer extends StatelessWidget {
   const MyQuizEndDrawer({
     super.key,
@@ -26,7 +28,9 @@ class MyQuizEndDrawer extends StatelessWidget {
       }
   ) => MaterialButton(
     onPressed: () {
-      // TODO Navigator.of(context).pushNamedAndRemoveUntil(route, (route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          route, (route) => false
+      );
     },
 
     color: const Color(0x00000000),
@@ -93,11 +97,11 @@ class MyQuizEndDrawer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                   
-                        const Spacer(flex: 30,),
+                        const Spacer(flex: 30),
                   
                         _drawerButton(context, 'Accueil', '/home'),
                   
-                        const Spacer(flex: 15,),
+                        const Spacer(flex: 15),
                   
                         _drawerButton(context,
                             'Inscription/Connexion', '/auth',
@@ -111,41 +115,19 @@ class MyQuizEndDrawer extends StatelessWidget {
                             )
                         ),
                   
-                        const Spacer(flex: 15,),
+                        const Spacer(flex: 15),
                   
-                        MaterialButton(
-                          onPressed: () {
-                            // Navigator.of(context).pushNamed('/home');
-                          },
+                        DrawerTrialButton(textStyle: _textStyle),
                   
-                          color: const Color(0x806A0DAD),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 7.5,
-                            horizontal: 25.0,
-                          ),
-                  
-                          elevation: 0,
-                  
-                          child: Text(
-                            'Essai gratuit',
-                            style: _textStyle.copyWith(
-                              color: const Color(0xFFFFFFFF),
-                            ),
-                          ),
-                        ),
-                  
-                        const Spacer(flex: 30,),
+                        const Spacer(flex: 30),
                       ],
                     ),
                   ),
                 ),
 
                 Positioned(
-                  top: 5,
-                  left: 5,
+                  top: 10,
+                  left: 10,
                   child: SizedBox(
                     height: 50,
                     width: 50,
@@ -159,6 +141,7 @@ class MyQuizEndDrawer extends StatelessWidget {
                       icon:  Icon(
                         Icons.arrow_forward_rounded,
                         color: _highlightColor,
+                        size: 30,
                       ),
                     ),
                   ),
