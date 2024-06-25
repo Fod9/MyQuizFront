@@ -1,6 +1,6 @@
 import 'dart:math' show pi;
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/helpers/Colors.dart' show lightGreen;
+import 'package:my_quiz_ap/helpers/colors.dart' show lightGreen;
 
 class DropdownQuizHeader extends StatefulWidget {
   const DropdownQuizHeader({

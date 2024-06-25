@@ -1,7 +1,7 @@
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' show FontWeight, ImageFilter;
-import 'package:my_quiz_ap/helpers/Colors.dart' show electricBlue;
+import 'package:my_quiz_ap/helpers/colors.dart' show electricBlue;
 import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
 
 class QuizResultPopup extends StatefulWidget {

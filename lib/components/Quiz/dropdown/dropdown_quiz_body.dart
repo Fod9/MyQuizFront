@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:my_quiz_ap/components/Quiz/dropdown/add_quiz_button.dart';
 import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz_btn.dart';
+import 'package:my_quiz_ap/helpers/utils.dart';
 
 class DropdownQuizBody extends StatefulWidget {
   const DropdownQuizBody({
@@ -7,10 +9,12 @@ class DropdownQuizBody extends StatefulWidget {
     required this.width,
     required this.height,
     required this.quizList,
+    required this.subject,
   });
 
   final double width, height;
   final List<Map<String, dynamic>> quizList;
+  final String subject;
 
   @override
   State<DropdownQuizBody> createState() => DropdownQuizBodyState();
@@ -22,6 +26,9 @@ class DropdownQuizBodyState extends State<DropdownQuizBody>
   final double quizBtnHeight = 50;
   late double currentHeight = 0;
   final Duration _animationDuration = const Duration(milliseconds: 250);
+
+  late String currentRoute = ModalRoute.of(context)?.settings.name ?? '';
+  late bool isTeacherRoute = currentRoute == '/teacher';
 
   late final AnimationController _controller = AnimationController(
     duration: _animationDuration,
@@ -39,7 +46,7 @@ class DropdownQuizBodyState extends State<DropdownQuizBody>
 
   late final Animation<double> _animation = Tween<double>(
     begin: 0,
-    end: (quizBtnHeight + 20) * widget.quizList.length,
+    end: (quizBtnHeight + 20) * widget.quizList.length + (isTeacherRoute ? 75 : 0),
   ).animate(_animationCurve);
 
   void toggleExpand() {
@@ -71,6 +78,8 @@ class DropdownQuizBodyState extends State<DropdownQuizBody>
         child: Column(
           children: [
             ...getQuizList(),
+
+            if (isTeacherRoute) AddQuizButton(widget.subject),
           ],
         ),
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../helpers/Colors.dart';
+import '../../../helpers/colors.dart';
 
 class DropdownQuizButton extends StatefulWidget {
 

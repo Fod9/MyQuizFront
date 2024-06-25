@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:my_quiz_ap/helpers/Colors.dart' show lightGlassBlue;
 import 'package:my_quiz_ap/pages/AdminPage.dart' show AdminPage;
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
+import 'package:my_quiz_ap/pages/create_quiz_page.dart' show CreateQuizPage;
 import 'package:my_quiz_ap/pages/quiz/quiz_page.dart' show QuizPage;
 import 'package:my_quiz_ap/pages/teacher_page.dart' show TeacherPage;
 import 'package:my_quiz_ap/pages/landing_router.dart' show LandingRouter;
@@ -50,6 +51,7 @@ class MyQuizApp extends StatelessWidget {
           '/teacher': (context) => const Layout("Teacher", page: TeacherPage()),
           '/student': (context) => const Layout("Student", page: StudentPage()),
           '/quiz': (context) => const Layout("Quiz", page: QuizPage()),
+          '/create-quiz': (context) => const Layout("Create Quiz", page: CreateQuizPage()),
         }
     );
   }
