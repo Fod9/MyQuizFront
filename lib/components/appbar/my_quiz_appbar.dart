@@ -72,7 +72,7 @@ class _MyQuizAppBarState extends State<MyQuizAppBar> {
                   future: jwt.isLogged,
                   builder: (context, AsyncSnapshot<bool> snapshot) {
                     if (snapshot.hasData) {
-                      if (!snapshot.data!) {
+                      if (snapshot.data!) {
                         return MediaQuery.of(context).size.width < 685 ?
                           AppbarMenuButton(scaffoldKey: widget.scaffoldKey)
                               :
@@ -89,7 +89,7 @@ class _MyQuizAppBarState extends State<MyQuizAppBar> {
 
                                 SizedBox(width: 10.0),
 
-                                AppbarTextButton(route: '', text: 'Mon Profil', color: Colors.white),
+                                AppbarTextButton(route: '', text: 'Déconnexion', color: Colors.white),
                               ],
                             ),
                           );

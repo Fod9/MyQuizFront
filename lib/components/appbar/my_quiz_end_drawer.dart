@@ -3,6 +3,7 @@ import 'package:my_quiz_ap/components/appbar/appbar_text_button.dart';
 import 'dart:ui' show Clip, Color, FontWeight, ImageFilter, Radius;
 
 import 'package:my_quiz_ap/components/appbar/drawer_trial_button.dart';
+import 'package:my_quiz_ap/helpers/jwt/jwt.dart';
 
 class MyQuizEndDrawer extends StatefulWidget {
   const MyQuizEndDrawer({
@@ -17,6 +18,8 @@ class _MyQuizEndDrawerState extends State<MyQuizEndDrawer> {
   final Color _highlightColor = const Color(0xFF685374);
 
   final double _blur = 10.0;
+
+  final JWT jwt = JWT();
 
   late final TextStyle _textStyle = TextStyle(
     fontSize: 24,
@@ -67,35 +70,67 @@ class _MyQuizEndDrawerState extends State<MyQuizEndDrawer> {
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
 
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
+                    child: FutureBuilder(
+                        future: jwt.isLogged,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            if (snapshot.data!) {
+                              return const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
 
-                        const Spacer(flex: 30),
+                                  Spacer(flex: 30),
 
-                        const AppbarTextButton(text:'Accueil', route: '/home'),
+                                  AppbarTextButton(text:'Accueil', route: '/home'),
 
-                        const Spacer(flex: 15),
+                                  Spacer(flex: 15),
 
-                        AppbarTextButton(
-                            text: 'Inscription/Connexion', route: '/auth',
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text('Inscription/', style: _textStyle),
-                                const SizedBox(height: 5),
-                                Text('Connexion', style: _textStyle),
-                              ],
-                            )
-                        ),
+                                  AppbarTextButton(text:'Quiz', route: ''),
 
-                        const Spacer(flex: 15),
+                                  Spacer(flex: 15),
 
-                        DrawerTrialButton(),
+                                  AppbarTextButton(text:'Déconnexion', route: ''),
 
-                        const Spacer(flex: 30),
-                      ],
+                                  Spacer(flex: 30),
+                                ],
+                              );
+                            } else {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+
+                                  const Spacer(flex: 30),
+
+                                  const AppbarTextButton(text:'Accueil', route: '/home'),
+
+                                  const Spacer(flex: 15),
+
+                                  AppbarTextButton(
+                                      text: 'Inscription/Connexion', route: '/auth',
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text('Inscription/', style: _textStyle),
+                                          const SizedBox(height: 5),
+                                          Text('Connexion', style: _textStyle),
+                                        ],
+                                      )
+                                  ),
+
+                                  const Spacer(flex: 15),
+
+                                  const DrawerTrialButton(),
+
+                                  const Spacer(flex: 30),
+                                ],
+                              );
+                            }
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        }
                     ),
                   ),
                 ),
