@@ -1,5 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:my_quiz_ap/helpers/Colors.dart' show lightGlassBlue;
 import 'package:my_quiz_ap/pages/AdminPage.dart' show AdminPage;
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 import 'package:my_quiz_ap/pages/quiz/quiz_page.dart' show QuizPage;
@@ -32,7 +33,9 @@ class MyQuizApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          scaffoldBackgroundColor: lightGlassBlue,
           useMaterial3: true,
+          fontFamily: 'Quicksand',
         ),
 
         // initial route is the landing router page

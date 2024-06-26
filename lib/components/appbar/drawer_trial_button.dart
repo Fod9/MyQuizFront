@@ -3,14 +3,6 @@ import 'package:flutter/material.dart';
 class DrawerTrialButton extends StatelessWidget {
   const DrawerTrialButton({super.key});
 
-  final TextStyle _textStyle = const TextStyle(
-    fontSize: 24,
-    height: 1.2,
-    fontWeight: FontWeight.w600,
-    fontFamily: 'Quicksand',
-    color: Color(0xFF685374),
-  );
-
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
@@ -32,7 +24,11 @@ class DrawerTrialButton extends StatelessWidget {
 
       child: Text(
         'Essai gratuit',
-        style: _textStyle.copyWith(
+        style: TextStyle(
+          fontSize: MediaQuery.of(context).size.width < 600 ? 24 : 20,
+          height: 1.2,
+          fontWeight: FontWeight.w600,
+          fontFamily: 'Quicksand',
           color: const Color(0xFFFFFFFF),
         ),
       ),

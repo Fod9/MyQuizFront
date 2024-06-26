@@ -72,8 +72,8 @@ class _MyQuizAppBarState extends State<MyQuizAppBar> {
                   future: jwt.isLogged,
                   builder: (context, AsyncSnapshot<bool> snapshot) {
                     if (snapshot.hasData) {
-                      if (snapshot.data!) {
-                        return MediaQuery.of(context).size.width < 600 ?
+                      if (!snapshot.data!) {
+                        return MediaQuery.of(context).size.width < 685 ?
                           AppbarMenuButton(scaffoldKey: widget.scaffoldKey)
                               :
                           const Padding(
@@ -91,10 +91,10 @@ class _MyQuizAppBarState extends State<MyQuizAppBar> {
 
                                 AppbarTextButton(route: '', text: 'Mon Profil', color: Colors.white),
                               ],
-                                                    ),
+                            ),
                           );
                       } else {
-                        return MediaQuery.of(context).size.width < 600 ?
+                        return MediaQuery.of(context).size.width < 685 ?
                           AppbarMenuButton(scaffoldKey: widget.scaffoldKey)
                               :
                           const Padding(

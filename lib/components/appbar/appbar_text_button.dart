@@ -46,9 +46,8 @@ class _AppbarTextButtonState extends State<AppbarTextButton> {
       elevation: 0,
       highlightElevation: 0,
       hoverElevation: 0,
-      hoverColor: widget.color == Colors.white ? _highlightColor : const Color(0xFFFFFFFF),
-      highlightColor: widget.color == Colors.white ?
-        _highlightColor : const Color(0x60FFFFFF),
+      hoverColor: Colors.white.withOpacity(0.35),
+      highlightColor: Colors.white.withOpacity(0.35),
       splashColor: const Color(0x60FFFFFF),
 
       child: widget.child ?? Text(
