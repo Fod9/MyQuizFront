@@ -90,7 +90,7 @@ class _MyQuizEndDrawerState extends State<MyQuizEndDrawer> {
 
                                   Spacer(flex: 15),
 
-                                  AppbarTextButton(text:'Déconnexion', route: ''),
+                                  AppbarTextButton(text:'Déconnexion', route: '/logout'),
 
                                   Spacer(flex: 30),
                                 ],

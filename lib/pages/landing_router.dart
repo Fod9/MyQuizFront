@@ -5,7 +5,7 @@ import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/http_extensions.dart' show IsOk;
 import 'package:my_quiz_ap/helpers/jwt/token_checker.dart';
 import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
-import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT;
+import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT, JWTR;
 import 'package:http/http.dart' as http show Response, get;
 
 
@@ -20,7 +20,12 @@ import 'package:http/http.dart' as http show Response, get;
 /// if the token is found, checks Token with the server
 /// the user is redirected to the appropriate route
 class LandingRouter extends StatefulWidget {
-  const LandingRouter({super.key});
+  const LandingRouter({
+    super.key,
+    this.logout = false,
+  });
+
+  final bool logout;
 
   @override
   State<LandingRouter> createState() => _LandingRouterState();
@@ -41,6 +46,15 @@ class _LandingRouterState extends State<LandingRouter> {
 
     // read the token from the device
     String token = await jwt.read();
+
+    // if the user logs out, delete the token and redirect to the auth page
+    if (widget.logout) {
+      await jwt.delete();
+      JWTR jwtr = JWTR();
+      jwtr.delete();
+      redirectTo('/auth');
+      return <String, dynamic>{'role': ''};
+    }
 
     // if the token is not found, redirect to the auth page
     if (token.isEmpty) {

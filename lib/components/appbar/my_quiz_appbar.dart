@@ -89,7 +89,7 @@ class _MyQuizAppBarState extends State<MyQuizAppBar> {
 
                                 SizedBox(width: 10.0),
 
-                                AppbarTextButton(route: '', text: 'Déconnexion', color: Colors.white),
+                                AppbarTextButton(route: '/logout', text: 'Déconnexion', color: Colors.white),
                               ],
                             ),
                           );
