@@ -20,7 +20,7 @@ class _CreateQuizButtonState extends State<CreateQuizButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(  // TODO : change to custom button
       onPressed: () {
-        printInfo('Quiz Name: ${_provider.quizName}');
+        printInfo(_provider.toString());
       },
 
       child: const Text('Print Quiz Data'),

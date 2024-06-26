@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:ui' show Brightness, Color, FontWeight, ImageFilter;
 import 'package:my_quiz_ap/components/Quiz/creation/select_subject_class_popup.dart' show SelectSubjectClassPopup;
-import 'package:my_quiz_ap/helpers/colors.dart';
+import 'package:my_quiz_ap/helpers/colors.dart' show darkGlass, lightGlassBlue;
 import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationData;
 import 'package:provider/provider.dart' show Provider;
 
@@ -20,7 +21,7 @@ class SelectSubjectClassButton extends StatefulWidget {
 
 class _SelectSubjectClassButtonState extends State<SelectSubjectClassButton> {
 
-  late final QuizCreationData _provider = Provider.of<QuizCreationData>(context);
+  late final QuizCreationData _provider = Provider.of<QuizCreationData>(context, listen: true);
 
   late final bool isModeValid = ["subject", "class"].contains(widget.mode);
 
@@ -31,9 +32,11 @@ class _SelectSubjectClassButtonState extends State<SelectSubjectClassButton> {
 
   String getButtonText() {
     if (widget.mode == "subject") {
-      return _provider.selectedSubject != null ? _provider.selectedSubject! : buttonDefaultText;
+      return _provider.selectedSubject != null ? _provider.selectedSubject!['name']!
+          : buttonDefaultText;
     } else {
-      return _provider.selectedClass != null ? _provider.selectedClass! : buttonDefaultText;
+      return _provider.selectedClass != null ? _provider.selectedClass!['name']!
+          : buttonDefaultText;
     }
   }
 
@@ -49,13 +52,30 @@ class _SelectSubjectClassButtonState extends State<SelectSubjectClassButton> {
         child: MaterialButton(
           onPressed: !isModeValid ? null : () {
             showDialog(context: context,
+                barrierColor: Colors.transparent,
                 builder: (BuildContext context) {
-                  return SelectSubjectClassPopup(
-                    listOfSelections: widget.listOfSelections,
-                    title: buttonDefaultText,
-                    selectedValue: widget.mode == "subject" ?
-                    _provider.selectedSubject : _provider.selectedClass,
+
+                  return Stack(
+                    children: [
+
+                      BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height,
+                            width: MediaQuery.of(context).size.width,
+                          )
+                      ),
+
+                      SelectSubjectClassPopup(
+                        listOfSelections: widget.listOfSelections,
+                        mode: widget.mode,
+                        provider: _provider,
+                        selectedValue: widget.mode == "subject" ?
+                        _provider.selectedSubject : _provider.selectedClass,
+                      ),
+                    ],
                   );
+
                 }
             );
           },

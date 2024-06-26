@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/creation/create_quiz_button.dart';
-import 'package:my_quiz_ap/components/Quiz/creation/quiz_name_input.dart';
-import 'package:my_quiz_ap/components/Quiz/creation/select_subject_class_button.dart';
-import 'package:my_quiz_ap/helpers/quiz_creation/get_associate.dart';
-import 'package:my_quiz_ap/providers/quiz_creation_data.dart';
-import 'package:provider/provider.dart';
+import 'package:my_quiz_ap/components/Quiz/creation/create_quiz_button.dart' show CreateQuizButton;
+import 'package:my_quiz_ap/components/Quiz/creation/quiz_name_input.dart' show QuizNameInput;
+import 'package:my_quiz_ap/components/Quiz/creation/select_subject_class_button.dart' show SelectSubjectClassButton;
+import 'package:my_quiz_ap/components/full_page_loading.dart' show FullPageLoading;
+import 'package:my_quiz_ap/helpers/quiz_creation/get_associate.dart' show getAssociate;
+import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationData;
+import 'package:provider/provider.dart' show ChangeNotifierProvider;
 
 class CreateQuizPage extends StatefulWidget {
   const CreateQuizPage({super.key});
@@ -54,8 +55,6 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
                         child: QuizNameInput(),
                       ),
 
-                      Text(snapshot.data!.toString()),
-
                       SelectSubjectClassButton(mode: "class", listOfSelections: data["classes"]!),
                       SelectSubjectClassButton(mode: "subject", listOfSelections: data["matieres"]!),
 
@@ -66,33 +65,7 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
               ),
             );
           } else {
-            return SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "Loading...",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24.0,
-                      fontFamily: "QuickSand",
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-
-                  SizedBox(height: 20.0),
-
-                  CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    strokeCap: StrokeCap.round,
-                  ),
-                ],
-              ),
-            );
+            return const FullPageLoading(text: "Loading...");
           }
         }
     );
