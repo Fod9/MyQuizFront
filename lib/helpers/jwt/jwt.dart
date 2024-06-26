@@ -51,6 +51,13 @@ class JWT extends JWTBase {
   @override
   String get verboseName => 'JWT';
 
+  /// Check if the token is empty
+  /// returns a [bool]
+  Future<bool> get isLogged async {
+    final String token = await read();
+    return token.isNotEmpty;
+  }
+
   Future<void> refresh() async {
     final JWTR jwtr = JWTR();
     final String refreshToken = await jwtr.read();

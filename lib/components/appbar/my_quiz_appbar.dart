@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/appbar/appbar_menu_button.dart';
+import 'package:my_quiz_ap/components/appbar/appbar_text_button.dart';
+import 'package:my_quiz_ap/components/appbar/drawer_trial_button.dart';
+import 'package:my_quiz_ap/helpers/jwt/jwt.dart';
 
 /// MyQuizNavbar is the navbar of the MyQuiz page.
-class MyQuizAppBar extends StatelessWidget implements PreferredSizeWidget {
+class MyQuizAppBar extends StatefulWidget implements PreferredSizeWidget {
   const MyQuizAppBar({
     Key? key,
     this.title = 'My Quiz',
@@ -11,6 +14,17 @@ class MyQuizAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   final String title;
   final GlobalKey<ScaffoldState> scaffoldKey;
+
+  @override
+  State<MyQuizAppBar> createState() => _MyQuizAppBarState();
+
+  @override
+  Size get preferredSize => const Size.fromHeight(90.0);
+}
+
+class _MyQuizAppBarState extends State<MyQuizAppBar> {
+
+  final JWT jwt = JWT();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +56,7 @@ class MyQuizAppBar extends StatelessWidget implements PreferredSizeWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                title,
+                widget.title,
                 style: const TextStyle(
                   fontSize: 24,
                   height: 1.2,
@@ -54,14 +68,62 @@ class MyQuizAppBar extends StatelessWidget implements PreferredSizeWidget {
 
               const Spacer(),
 
-              AppbarMenuButton(scaffoldKey: scaffoldKey),
+              FutureBuilder(
+                  future: jwt.isLogged,
+                  builder: (context, AsyncSnapshot<bool> snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.data!) {
+                        return MediaQuery.of(context).size.width < 600 ?
+                          AppbarMenuButton(scaffoldKey: widget.scaffoldKey)
+                              :
+                          const Padding(
+                            padding: EdgeInsets.only(right: 20.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                AppbarTextButton(route: '/home', text: 'Accueil', color: Colors.white),
+
+                                SizedBox(width: 10.0),
+
+                                AppbarTextButton(route: '', text: 'Quiz', color: Colors.white),
+
+                                SizedBox(width: 10.0),
+
+                                AppbarTextButton(route: '', text: 'Mon Profil', color: Colors.white),
+                              ],
+                                                    ),
+                          );
+                      } else {
+                        return MediaQuery.of(context).size.width < 600 ?
+                          AppbarMenuButton(scaffoldKey: widget.scaffoldKey)
+                              :
+                          const Padding(
+                            padding: EdgeInsets.only(right: 20.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                AppbarTextButton(route: '/home', text: 'Accueil', color: Colors.white),
+
+                                SizedBox(width: 10.0),
+
+                                AppbarTextButton(route: '/auth', text: 'Inscription/Connexion', color: Colors.white),
+
+                                SizedBox(width: 10.0),
+
+                                DrawerTrialButton(),
+                              ],
+                            ),
+                          );
+                      }
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  }
+              )
             ],
           ),
         ),
       ),
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(90.0);
 }

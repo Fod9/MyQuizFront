@@ -88,7 +88,7 @@ class DropdownQuizHeaderState extends State<DropdownQuizHeader>
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'QuickSand',
+                  fontFamily: 'Quicksand',
                   color: Colors.white,
                 ),
               ),
