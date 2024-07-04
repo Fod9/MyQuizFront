@@ -51,6 +51,7 @@ class QuizCreationData extends ChangeNotifier {
     "- selectedSubject: $_selectedSubject,\n"
     "- selectedClass: $_selectedClass,\n"
     "- userId: $_userId\n"
-    "- questions: ${_questions.length}";
+    "- questions:\n"
+        "${_questions.map((e) => e.toString()).join('\n')}";
   }
 }

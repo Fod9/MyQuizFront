@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/creation/questions/delete_question_btn.dart';
+import 'package:my_quiz_ap/components/Quiz/creation/questions/delete_question_btn.dart' show DeleteQuestionButton;
+import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/propostions_section.dart';
+import 'package:my_quiz_ap/components/Quiz/creation/questions/question_name_input.dart' show QuestionNameInput;
 import 'package:my_quiz_ap/helpers/Colors.dart' show lightGlass;
-import 'package:my_quiz_ap/providers/question_creation_data.dart';
-import 'package:provider/provider.dart';
+import 'package:my_quiz_ap/providers/question_creation_data.dart' show QuestionCreationData;
+import 'package:provider/provider.dart' show Provider;
 
 class QuestionCreationBlock extends StatefulWidget {
   const QuestionCreationBlock({
@@ -40,9 +43,24 @@ class _QuestionCreationBlockState extends State<QuestionCreationBlock> {
 
         child: Stack(
           children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width - 48,
-              height: 450,
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                  minHeight: 450,
+                  maxWidth: MediaQuery.of(context).size.width - 48
+              ),
+
+              child: const Padding(
+                padding: EdgeInsets.all(24.0),
+                child: Column(
+                  children: [
+                    QuestionNameInput(),
+
+                    SizedBox(height: 32.0),
+
+                    PropositionsSection(),
+                  ],
+                ),
+              ),
             ),
 
             DeleteQuestionButton(widget.questionIndex),

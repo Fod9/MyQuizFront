@@ -5,7 +5,7 @@ class LayoutProvider extends ChangeNotifier {
 
   ScrollController get scrollController => _scrollController;
 
-  void scrollToTop({int duration = 500}) {
+  void scrollToTop({int duration = 250}) {
     _scrollController.animateTo(
       0,
       duration: Duration(milliseconds: duration),
@@ -13,11 +13,21 @@ class LayoutProvider extends ChangeNotifier {
     );
   }
 
-  void scrollToBottom({int duration = 500}) {
+  void scrollToBottom({int duration = 250}) {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
       duration: Duration(milliseconds: duration),
       curve: Curves.easeInOut,
     );
+  }
+
+  void scrollDown(double offset, {int duration = 250}) {
+    if (_scrollController.offset < _scrollController.position.maxScrollExtent) {
+      _scrollController.animateTo(
+        _scrollController.offset + offset,
+        duration: Duration(milliseconds: duration),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 }
