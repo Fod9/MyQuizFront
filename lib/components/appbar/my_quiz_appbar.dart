@@ -55,15 +55,33 @@ class _MyQuizAppBarState extends State<MyQuizAppBar> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                widget.title,
-                style: const TextStyle(
-                  fontSize: 24,
-                  height: 1.2,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Quicksand',
-                  color: Color(0xFFFFFFFF),
-                ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+
+                  Navigator.canPop(context) ? SizedBox(
+                    width: 40.0,
+                    height: 40.0,
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      alignment: Alignment.center,
+                      icon: const Icon(Icons.arrow_back_ios),
+                      onPressed: () => Navigator.pop(context),
+                      color: Colors.white,
+                    ),
+                  ) : const SizedBox.shrink(),
+
+                  Text(
+                    widget.title,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      height: 1.2,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Quicksand',
+                      color: Color(0xFFFFFFFF),
+                    ),
+                  ),
+                ],
               ),
 
               const Spacer(),
