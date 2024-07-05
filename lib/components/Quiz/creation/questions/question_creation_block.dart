@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/creation/questions/delete_question_btn.dart' show DeleteQuestionButton;
 import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/propostions_section.dart';
@@ -16,16 +15,19 @@ class QuestionCreationBlock extends StatefulWidget {
   final int questionIndex;
 
   @override
-  State<QuestionCreationBlock> createState() => _QuestionCreationBlockState();
+  State<QuestionCreationBlock> createState() => QuestionCreationBlockState();
 }
 
-class _QuestionCreationBlockState extends State<QuestionCreationBlock> {
+class QuestionCreationBlockState extends State<QuestionCreationBlock> {
 
   late final QuestionCreationData _questionProvider = Provider.of<QuestionCreationData>(context);
+
+  final GlobalKey<QuestionCreationBlockState> _questionBlockKey = GlobalKey<QuestionCreationBlockState>();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
+      key: _questionBlockKey,
       padding: const EdgeInsets.only(bottom: 24.0),
       child: DecoratedBox(
         decoration: BoxDecoration(
@@ -50,7 +52,7 @@ class _QuestionCreationBlockState extends State<QuestionCreationBlock> {
               ),
 
               child: const Padding(
-                padding: EdgeInsets.all(24.0),
+                padding: EdgeInsets.all(12.0),
                 child: Column(
                   children: [
                     QuestionNameInput(),
@@ -63,7 +65,7 @@ class _QuestionCreationBlockState extends State<QuestionCreationBlock> {
               ),
             ),
 
-            DeleteQuestionButton(widget.questionIndex),
+            DeleteQuestionButton(widget.questionIndex, questionBlockKey: _questionBlockKey),
           ],
         ),
       ),

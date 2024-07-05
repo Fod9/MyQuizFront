@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/delete_proposition_btn.dart';
 
 class PropositionCreation extends StatefulWidget {
   const PropositionCreation({
@@ -9,17 +11,32 @@ class PropositionCreation extends StatefulWidget {
   final int index;
 
   @override
-  State<PropositionCreation> createState() => _PropositionCreationState();
+  State<PropositionCreation> createState() => PropositionCreationState();
 }
 
-class _PropositionCreationState extends State<PropositionCreation> {
+class PropositionCreationState extends State<PropositionCreation> {
+
+  final GlobalKey<PropositionCreationState> _propositionKey = GlobalKey<PropositionCreationState>();
+
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(bottom: 16.0),
+    return Padding(
+      key: _propositionKey,
+      padding: const EdgeInsets.only(bottom: 16.0),
       child: SizedBox(
         height: 50,
-        child: Placeholder()
+        width: MediaQuery.of(context).size.width - 48,
+        child: Row(
+          children: [
+            DeletePropositionButton(index: widget.index, propositionKey: _propositionKey),
+
+            const SizedBox(width: 12.0),
+
+            const Flexible(
+                child: Placeholder()
+            ),
+          ],
+        )
       ),
     );
   }

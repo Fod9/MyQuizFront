@@ -30,4 +30,16 @@ class LayoutProvider extends ChangeNotifier {
       );
     }
   }
+
+  void scrollUp(double offset, {int duration = 250}) {
+    if (offset < _scrollController.offset) {
+      _scrollController.animateTo(
+        _scrollController.offset - offset,
+        duration: Duration(milliseconds: duration),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      scrollToTop(duration: duration);
+    }
+  }
 }
