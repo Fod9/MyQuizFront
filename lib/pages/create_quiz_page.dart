@@ -7,6 +7,7 @@ import 'package:my_quiz_ap/components/full_page_loading.dart' show FullPageLoadi
 import 'package:my_quiz_ap/helpers/get_user_info.dart' show getUserInfo;
 import 'package:my_quiz_ap/helpers/quiz_creation/get_associate.dart' show getAssociate;
 import 'package:my_quiz_ap/helpers/utils.dart' show printError;
+import 'package:my_quiz_ap/providers/layout_provider.dart';
 import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationData;
 import 'package:provider/provider.dart' show ChangeNotifierProvider, Consumer, Provider;
 
@@ -71,8 +72,11 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
 
                     return PopScope(
                       onPopInvoked: (_) {
-                        // TODO : unFocus all text fields
+                        // unFocus all text fields
+                        Provider.of<LayoutProvider>(context, listen: false).unFocusAll();
                       },
+
+                      canPop: false,
 
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width,

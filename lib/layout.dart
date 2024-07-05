@@ -38,8 +38,6 @@ class Layout extends StatefulWidget {
 
 class _LayoutState extends State<Layout> {
 
-  final GlobalKey<ScaffoldState> _layoutKey = GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
 
@@ -49,12 +47,13 @@ class _LayoutState extends State<Layout> {
         bottom: false,
         child: Consumer<LayoutProvider>(
             builder: (context, layoutProvider, child) {
+
             return Scaffold(
-                key: _layoutKey,
+                key: layoutProvider.layoutKey,
                 // show the app bar if [hasAppBar] is true
                 appBar: widget.hasAppBar ? MyQuizAppBar(
                   title: widget.title,
-                  scaffoldKey: _layoutKey,
+                  scaffoldKey: layoutProvider.layoutKey,
                 ) : null,
                 extendBodyBehindAppBar: true,
 

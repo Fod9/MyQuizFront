@@ -1,9 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart' show ScrollDirection;
 
 class LayoutProvider extends ChangeNotifier {
+
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey<ScaffoldState> layoutKey = GlobalKey<ScaffoldState>();
 
   ScrollController get scrollController => _scrollController;
+
+  LayoutProvider() {
+    _scrollController.addListener(unFocusAll);
+  }
+
+  void unFocusAll() {
+    if (_scrollController.position.userScrollDirection != ScrollDirection.idle) {
+      // This line removes focus from any text field when the user starts scrolling
+      if (FocusManager.instance.primaryFocus != null) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      }
+    }
+  }
 
   void scrollToTop({int duration = 250}) {
     _scrollController.animateTo(
