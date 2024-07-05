@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/delete_proposition_btn.dart' show DeletePropositionButton;
+import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/is_correct_switch.dart';
 import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/proposition_input.dart';
 import 'package:my_quiz_ap/providers/question_creation_data.dart' show Proposition, QuestionCreationData;
 import 'package:provider/provider.dart' show Provider;
@@ -19,8 +21,9 @@ class PropositionCreation extends StatefulWidget {
 class PropositionCreationState extends State<PropositionCreation> {
 
   final GlobalKey<PropositionCreationState> _propositionKey = GlobalKey<PropositionCreationState>();
+  final GlobalKey<PropositionInputState> _propositionInputKey = GlobalKey<PropositionInputState>();
+
   late final QuestionCreationData _provider = Provider.of<QuestionCreationData>(context);
-  late final List<Proposition> _propositions = _provider.propositions;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ class PropositionCreationState extends State<PropositionCreation> {
       key: _propositionKey,
       padding: const EdgeInsets.only(bottom: 16.0),
       child: SizedBox(
-        height: 50,
+        // height: 50,
         width: MediaQuery.of(context).size.width - 48,
         child: Row(
           children: [
@@ -36,8 +39,19 @@ class PropositionCreationState extends State<PropositionCreation> {
 
             const SizedBox(width: 12.0),
 
+            Flexible(
+              flex: 5,
+              child: PropositionInput(key: _propositionInputKey, index: widget.index)
+            ),
 
-            PropositionInput(index: widget.index),
+            const SizedBox(width: 12.0),
+
+            Flexible(
+              child: IsCorrectSwitch(
+                  propositionInputKey: _propositionInputKey,
+                  index: widget.index,
+              )
+            ),
           ],
         )
       ),
