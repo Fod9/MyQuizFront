@@ -45,10 +45,6 @@ class _DeletePropositionButtonState extends State<DeletePropositionButton> {
 
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            /*side: const BorderSide(
-              color: invalidColor,
-              width: 2,
-            ),*/
           ),
 
           padding: EdgeInsets.zero,

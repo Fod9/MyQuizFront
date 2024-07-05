@@ -1,6 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/delete_proposition_btn.dart';
+import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/delete_proposition_btn.dart' show DeletePropositionButton;
+import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/proposition_input.dart';
+import 'package:my_quiz_ap/providers/question_creation_data.dart' show Proposition, QuestionCreationData;
+import 'package:provider/provider.dart' show Provider;
 
 class PropositionCreation extends StatefulWidget {
   const PropositionCreation({
@@ -17,6 +19,8 @@ class PropositionCreation extends StatefulWidget {
 class PropositionCreationState extends State<PropositionCreation> {
 
   final GlobalKey<PropositionCreationState> _propositionKey = GlobalKey<PropositionCreationState>();
+  late final QuestionCreationData _provider = Provider.of<QuestionCreationData>(context);
+  late final List<Proposition> _propositions = _provider.propositions;
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +36,8 @@ class PropositionCreationState extends State<PropositionCreation> {
 
             const SizedBox(width: 12.0),
 
-            const Flexible(
-                child: Placeholder()
-            ),
+
+            PropositionInput(index: widget.index),
           ],
         )
       ),
