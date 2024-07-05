@@ -20,6 +20,8 @@ class _QuestionNameInputState extends State<QuestionNameInput> {
       width: double.infinity,
       child: TextField(
         controller: _controller,
+        focusNode: _provider.nameFocusNode,
+        onTapOutside: (_) => _provider.nameFocusNode.unfocus(),
         onChanged: (value) => _provider.name = value,
         maxLines: null,
         textAlign: TextAlign.center,

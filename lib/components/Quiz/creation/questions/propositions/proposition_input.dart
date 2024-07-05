@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/is_correct_indicator.dart';
+import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/is_correct_indicator.dart' show IsCorrectIndicator;
 import 'package:my_quiz_ap/helpers/Colors.dart' show invalidColor, validColor;
 import 'package:my_quiz_ap/providers/question_creation_data.dart' show Proposition, QuestionCreationData;
 import 'package:provider/provider.dart' show Provider;
@@ -21,7 +21,7 @@ class PropositionInputState extends State<PropositionInput>
 
   late final QuestionCreationData _provider = Provider.of<QuestionCreationData>(context);
   late final Proposition _proposition = _provider.propositions.elementAt(widget.index);
-  late final TextEditingController _textController = _provider.propositions.elementAt(widget.index).controller;
+  late final TextEditingController _textController = _proposition.controller;
 
   late final AnimationController _animationController = AnimationController(
     duration: const Duration(milliseconds: 250),
@@ -48,11 +48,6 @@ class PropositionInputState extends State<PropositionInput>
     } else {
       _animationController.forward();
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -83,8 +78,11 @@ class PropositionInputState extends State<PropositionInput>
           ),
           child: Padding(
             padding: const EdgeInsets.only(bottom: 2.0),
+
             child: TextField(
               controller: _textController,
+              focusNode: _proposition.focusNode,
+              onTapOutside: (_) => _proposition.focusNode.unfocus(),
               onChanged: (String value) {
                 _provider.propositions.elementAt(widget.index).text = value;
               },

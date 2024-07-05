@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart' show ChangeNotifier;
-import 'package:my_quiz_ap/helpers/utils.dart';
-import 'package:my_quiz_ap/providers/question_creation_data.dart';
+import 'package:my_quiz_ap/providers/question_creation_data.dart' show QuestionCreationData;
 
 class QuizCreationData extends ChangeNotifier {
 
   QuizCreationData() {
     // add initial question when creating a quiz
-    addQuestion(QuestionCreationData());
+    addQuestion(QuestionCreationData(focus: false));
   }
 
   String _quizName = '';
