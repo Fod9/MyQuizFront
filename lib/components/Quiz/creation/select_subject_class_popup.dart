@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:blurrycontainer/blurrycontainer.dart' show BlurryContainer;
+import 'package:my_quiz_ap/helpers/Colors.dart' show lightGlass;
 import 'package:my_quiz_ap/helpers/colors.dart' show darkGlass, electricBlue, lightGlassBlue;
 import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationData;
 
@@ -73,13 +74,13 @@ class _SelectSubjectClassPopupState extends State<SelectSubjectClassPopup> {
     return Center(
       child: BlurryContainer(
         borderRadius: BorderRadius.circular(20),
-        color: darkGlass,
+        color: lightGlass,
         elevation: 15,
         blur: 30,
         padding: const EdgeInsets.all(20),
         width: (MediaQuery.of(context).size.width * 0.8).clamp(0, 500),
         height: 500,
-        shadowColor: electricBlue,
+        shadowColor: electricBlue.withOpacity(0.5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

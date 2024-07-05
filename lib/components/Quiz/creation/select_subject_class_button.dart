@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show Brightness, Color, FontWeight, ImageFilter;
 import 'package:my_quiz_ap/components/Quiz/creation/select_subject_class_popup.dart' show SelectSubjectClassPopup;
-import 'package:my_quiz_ap/helpers/colors.dart' show darkGlass, lightGlassBlue;
+import 'package:my_quiz_ap/helpers/Colors.dart' show lightGlass;
+import 'package:my_quiz_ap/helpers/colors.dart' show lightGlassBlue;
 import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationData;
 import 'package:provider/provider.dart' show Provider;
 
@@ -80,7 +81,7 @@ class _SelectSubjectClassButtonState extends State<SelectSubjectClassButton> {
             );
           },
 
-          color: darkGlass,
+          color: lightGlass,
           elevation: 2.5,
 
           splashColor: effectColor,

@@ -16,7 +16,7 @@ class PropositionInput extends StatefulWidget {
 
 class _PropositionInputState extends State<PropositionInput> {
 
-  late final QuestionCreationData _provider = Provider.of<QuestionCreationData>(context, listen: false);
+  late final QuestionCreationData _provider = Provider.of<QuestionCreationData>(context);
 
   @override
   Widget build(BuildContext context) {
