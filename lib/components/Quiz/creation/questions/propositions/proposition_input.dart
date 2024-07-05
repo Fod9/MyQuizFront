@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/helpers/Colors.dart';
+import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/is_correct_indicator.dart';
+import 'package:my_quiz_ap/helpers/Colors.dart' show invalidColor, validColor;
 import 'package:my_quiz_ap/providers/question_creation_data.dart' show Proposition, QuestionCreationData;
 import 'package:provider/provider.dart' show Provider;
 
@@ -23,7 +24,7 @@ class PropositionInputState extends State<PropositionInput>
   late final TextEditingController _textController = _provider.propositions.elementAt(widget.index).controller;
 
   late final AnimationController _animationController = AnimationController(
-    duration: const Duration(milliseconds: 500),
+    duration: const Duration(milliseconds: 250),
     vsync: this,
     value: _proposition.isCorrect ? 0 : 1,
   )..addListener(() {
@@ -62,32 +63,46 @@ class PropositionInputState extends State<PropositionInput>
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(11),
-        color: _color,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 2.0),
-        child: TextField(
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
 
-          controller: _textController,
-          onChanged: (String value) {
-            _provider.propositions.elementAt(widget.index).text = value;
-          },
-          maxLines: null,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.all(10),
-            hintText: 'Proposition',
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide.none,
+        Positioned(
+            bottom: -18,
+            right: 0,
+            child: IsCorrectIndicator(
+                index: widget.index,
+                color: _color,
+            ),
+        ),
+
+        DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(11),
+            color: _color,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 2.0),
+            child: TextField(
+              controller: _textController,
+              onChanged: (String value) {
+                _provider.propositions.elementAt(widget.index).text = value;
+              },
+              maxLines: null,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(10),
+                hintText: 'Proposition',
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+              ),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

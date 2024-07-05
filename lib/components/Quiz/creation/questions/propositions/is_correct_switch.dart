@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/proposition_input.dart' show PropositionInputState;
-import 'package:my_quiz_ap/helpers/Colors.dart';
+import 'package:my_quiz_ap/helpers/Colors.dart' show invalidColor, validColor;
 import 'package:my_quiz_ap/providers/question_creation_data.dart' show Proposition, QuestionCreationData;
 import 'package:provider/provider.dart' show Provider;
 

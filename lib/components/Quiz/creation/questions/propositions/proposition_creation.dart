@@ -29,7 +29,7 @@ class PropositionCreationState extends State<PropositionCreation> {
   Widget build(BuildContext context) {
     return Padding(
       key: _propositionKey,
-      padding: const EdgeInsets.only(bottom: 16.0),
+      padding: const EdgeInsets.only(bottom: 24.0),
       child: SizedBox(
         // height: 50,
         width: MediaQuery.of(context).size.width - 48,
