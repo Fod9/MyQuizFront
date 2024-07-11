@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/creation/create_quiz_popup.dart';
+import 'package:my_quiz_ap/components/Quiz/creation/end_validation/create_quiz_popup.dart' show displayCreateQuizPopup;
 import 'package:my_quiz_ap/helpers/Colors.dart' show electricBlue;
 import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationData;
 import 'package:provider/provider.dart' show Provider;
