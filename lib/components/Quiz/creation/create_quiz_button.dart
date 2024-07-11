@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/helpers/utils.dart';
+import 'package:my_quiz_ap/components/Quiz/creation/create_quiz_popup.dart';
+import 'package:my_quiz_ap/helpers/Colors.dart' show electricBlue;
 import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationData;
 import 'package:provider/provider.dart' show Provider;
 
@@ -18,12 +19,28 @@ class _CreateQuizButtonState extends State<CreateQuizButton> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(  // TODO : change to custom button
-      onPressed: () {
-        printInfo(_provider.toString());
-      },
+    return MaterialButton(
+      onPressed: () => displayCreateQuizPopup(context, _provider),
 
-      child: const Text('Print Quiz Data'),
+      color: electricBlue.withOpacity(0.5),
+
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+
+      padding: const EdgeInsets.symmetric(
+        horizontal: 25,
+        vertical: 10,
+      ),
+
+      child: const Text(
+        'Create Quiz',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 }
