@@ -1,16 +1,29 @@
 import 'package:flutter/cupertino.dart' show ChangeNotifier, FocusNode, TextEditingController;
+import 'package:my_quiz_ap/helpers/utils.dart';
 
 class QuestionCreationData extends ChangeNotifier {
 
-  QuestionCreationData({bool focus = true}) {
-    addProposition(text: '', isCorrect: true, focus: false);
-    addProposition(text: '', isCorrect: false, focus: false);
+  QuestionCreationData({bool focus = true, Map<String,dynamic>? questionData}) {
+    if (questionData == null) {
+      addProposition(text: '', isCorrect: true, focus: false);
+      addProposition(text: '', isCorrect: false, focus: false);
 
-    if (focus) {
-      Future.delayed(
-          const Duration(milliseconds: 500),
-          () => _nameFocusNode.requestFocus()
-      );
+      if (focus) {
+        Future.delayed(
+            const Duration(milliseconds: 500),
+            () => _nameFocusNode.requestFocus()
+        );
+      }
+    } else {
+      printOrder(questionData.toString());
+      name = questionData['Question_text'];
+      for (Map<String, dynamic> propositionData in questionData['Propositions']) {
+        addProposition(
+            text: propositionData['Proposition_text'],
+            isCorrect: propositionData['Is_correct'],
+            focus: false,
+        );
+      }
     }
   }
 
@@ -53,7 +66,9 @@ class Proposition {
   TextEditingController get controller => _controller;
   FocusNode get focusNode => _focusNode;
 
-  Proposition(this.text, this.isCorrect);
+  Proposition(this.text, this.isCorrect) {
+    _controller.text = text;
+  }
 
   @override
   String toString() {

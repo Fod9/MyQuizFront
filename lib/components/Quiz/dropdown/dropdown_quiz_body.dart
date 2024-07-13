@@ -10,11 +10,13 @@ class DropdownQuizBody extends StatefulWidget {
     required this.height,
     required this.quizList,
     required this.subject,
+    required this.isTeacher,
   });
 
   final double width, height;
   final List<Map<String, dynamic>> quizList;
   final String subject;
+  final bool isTeacher;
 
   @override
   State<DropdownQuizBody> createState() => DropdownQuizBodyState();
@@ -63,7 +65,8 @@ class DropdownQuizBodyState extends State<DropdownQuizBody>
           quizName: quiz['name']!,
           quizId: quiz['id']!,
           height: quizBtnHeight,
-          width: widget.width * 0.75,
+          width: widget.width * 0.75 - (widget.isTeacher ? 18 : 0) ,
+          isTeacher: widget.isTeacher,
       );
     }
   }

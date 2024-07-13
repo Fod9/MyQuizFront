@@ -60,6 +60,7 @@ class _DropDownQuizState extends State<DropDownQuiz> {
               height: widget.height,
               quizList: widget.quizList,
               subject: widget.blockName,
+              isTeacher: widget.mode == "teacher",
             ),
           ],
         ),

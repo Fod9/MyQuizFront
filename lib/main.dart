@@ -52,6 +52,7 @@ class MyQuizApp extends StatelessWidget {
           '/student': (context) => const Layout("Student", page: StudentPage()),
           '/quiz': (context) => const Layout("Quiz", page: QuizPage()),
           '/create-quiz': (context) => const Layout("Create Quiz", page: CreateQuizPage()),
+          '/modify-quiz': (context) => const Layout("Modify Quiz", page: CreateQuizPage(isModify: true)),
         }
     );
   }

@@ -7,12 +7,15 @@ import 'package:my_quiz_ap/components/full_page_loading.dart' show FullPageLoadi
 import 'package:my_quiz_ap/helpers/get_user_info.dart' show getUserInfo;
 import 'package:my_quiz_ap/helpers/quiz_creation/get_associate.dart' show getAssociate;
 import 'package:my_quiz_ap/helpers/utils.dart' show printError;
-import 'package:my_quiz_ap/providers/layout_provider.dart';
+import 'package:my_quiz_ap/providers/layout_provider.dart' show LayoutProvider;
 import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationData;
 import 'package:provider/provider.dart' show ChangeNotifierProvider, Consumer, Provider;
+import 'package:my_quiz_ap/helpers/quiz/get_quiz.dart' show getQuiz;
 
 class CreateQuizPage extends StatefulWidget {
-  const CreateQuizPage({super.key});
+  const CreateQuizPage({super.key, this.isModify = false});
+
+  final bool isModify;
 
   @override
   State<CreateQuizPage> createState() => _CreateQuizPageState();
@@ -22,6 +25,8 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
 
   late final Map<String, dynamic> _teacherData;  // teacher classes and subjects
   late final Map<String, dynamic> _userInfo;  // user info (used for its ID)
+  late final int? quizId;  // quiz ID if we are modifying a quiz
+  late final Map<String, dynamic>? quizData;  // quiz data if we are modifying a quiz
 
   // used in dev mode to avoid data reload after a hot reload
   bool _isPageLoaded = false;
@@ -35,6 +40,17 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
     if (!_isPageLoaded) {
       _teacherData = await getAssociate();
       _userInfo = await getUserInfo();
+
+      if (widget.isModify && mounted) {
+        // get the quiz ID from the arguments
+        quizId = ModalRoute.of(context)!.settings.arguments as int?;
+        // get the quiz data
+        quizData = await getQuiz(quizId!);
+      } else {
+        quizId = null;
+        quizData = null;
+      }
+
       _isPageLoaded = true;
     }
     return true;
@@ -64,7 +80,7 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
             Map<String, dynamic> data = _teacherData;
 
             return ChangeNotifierProvider(
-              create: (context) => QuizCreationData(),
+              create: (context) => QuizCreationData(quizData),
               child: Consumer<QuizCreationData>(
                   builder: (context, value, child) {
 

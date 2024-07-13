@@ -1,16 +1,28 @@
 import 'package:flutter/cupertino.dart' show ChangeNotifier;
+import 'package:my_quiz_ap/helpers/utils.dart';
 import 'package:my_quiz_ap/providers/question_creation_data.dart' show QuestionCreationData;
 
 class QuizCreationData extends ChangeNotifier {
 
-  QuizCreationData() {
-    // add initial question when creating a quiz
-    addQuestion(QuestionCreationData(focus: false));
+  QuizCreationData(Map<String, dynamic>? quizData) {
+    if (quizData == null) {
+      // add initial question when creating a quiz
+      addQuestion(QuestionCreationData(focus: false));
+    } else {
+      printInfo(quizData.toString());
+      _quizId = quizData['Quiz_id'];
+      _quizName = quizData['Quiz_name'];
+
+      for (Map<String, dynamic> questionData in quizData['Questions']) {
+        addQuestion(QuestionCreationData(questionData: questionData));
+      }
+    }
   }
 
   String _quizName = '';
   Map<String, dynamic>? _selectedSubject, _selectedClass;
   int _userId = -1;
+  int? _quizId;  // used only if modifying a quiz
   final List<QuestionCreationData> _questions = [];
 
   String get quizName => _quizName;
