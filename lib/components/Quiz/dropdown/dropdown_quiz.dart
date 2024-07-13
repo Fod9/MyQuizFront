@@ -59,6 +59,7 @@ class _DropDownQuizState extends State<DropDownQuiz> {
               width: widget.width,
               height: widget.height,
               quizList: widget.quizList,
+              subject: widget.blockName,
             ),
           ],
         ),

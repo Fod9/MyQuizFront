@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/helpers/Colors.dart';
+import 'package:my_quiz_ap/helpers/colors.dart' show electricBlue, invalidColor, validColor;
 
 
 /// A widget that displays a quiz proposition.
@@ -35,8 +35,8 @@ class QuizPropositionState extends State<QuizProposition>
   late final isCorrect = widget.proposition['Is_correct'];
 
   // colors for highlighting the proposition
-  final Color _validColor = const Color(0xff37ae28);
-  final Color _invalidColor = const Color(0xffe74c3c);
+  final Color _validColor = validColor;
+  final Color _invalidColor = invalidColor;
   late final Color _highlightColor = (isCorrect) ?
     _validColor : _invalidColor;
 

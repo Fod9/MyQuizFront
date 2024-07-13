@@ -129,7 +129,6 @@ class _LandingRouterState extends State<LandingRouter> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(error),
-          if (kDebugMode) resetJwtBtn,  // TODO : remove this button
         ],
       ),
     );

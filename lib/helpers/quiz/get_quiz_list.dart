@@ -1,11 +1,11 @@
 import 'dart:convert' show jsonDecode;
 import 'package:http/http.dart' as http;
+import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/http_extensions.dart';
 import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT;
 import 'package:my_quiz_ap/helpers/jwt/token_checker.dart' show checkToken;
 import 'package:my_quiz_ap/helpers/quiz/quiz_list_format.dart' show quizListFormat;
 import 'package:my_quiz_ap/helpers/utils.dart' show printError, printInfo;
-import 'package:my_quiz_ap/constants.dart' show apiUrl;
 
 /// Get the list of quiz
 /// returns a [Future<List<Map<String, dynamic>>]
@@ -34,11 +34,11 @@ Future<List<Map<String, dynamic>>> getQuizList() async {
   } else if (response.ok) {
     // if the response is successful, decode the data
     final data = jsonDecode(response.body);
-    printInfo(data.toString());
+    // printInfo(data.toString());
 
     // format the data
     final List<Map<String, dynamic>> formattedQuizList = quizListFormat(data);
-    printInfo(formattedQuizList.toString());
+    // printInfo(formattedQuizList.toString());
 
     return formattedQuizList;
   } else {

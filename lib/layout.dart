@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/appbar/my_quiz_end_drawer.dart';
-import 'package:my_quiz_ap/components/my_quiz_background.dart';
+import 'package:my_quiz_ap/components/appbar/my_quiz_end_drawer.dart' show MyQuizEndDrawer;
+import 'package:my_quiz_ap/components/my_quiz_background.dart' show MyQuizBackground;
+import 'package:my_quiz_ap/providers/layout_provider.dart' show LayoutProvider;
+import 'package:provider/provider.dart' show ChangeNotifierProvider, Consumer;
 import 'components/appbar/my_quiz_appbar.dart' show MyQuizAppBar;
-import 'helpers/utils.dart' show getScreenType;
-
 
 /// This widget is used to display the layout of the app
 /// It contains the [AppBar] and the [page]
@@ -38,40 +38,49 @@ class Layout extends StatefulWidget {
 
 class _LayoutState extends State<Layout> {
 
-  final GlobalKey<ScaffoldState> _layoutKey = GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
 
-    return SafeArea(  // SafeArea is used to avoid the notch and the bottom bar
-      bottom: false,
-      child: Scaffold(
-          key: _layoutKey,
-          // show the app bar if [hasAppBar] is true
-          appBar: widget.hasAppBar ? MyQuizAppBar(
-            title: widget.title,
-            scaffoldKey: _layoutKey,
-          ) : null,
-          extendBodyBehindAppBar: true,
+    return ChangeNotifierProvider(
+      create: (context) => LayoutProvider(),
+      child: SafeArea(  // SafeArea is used to avoid the notch and the bottom bar
+        bottom: false,
+        child: Consumer<LayoutProvider>(
+            builder: (context, layoutProvider, child) {
 
-          endDrawer: const MyQuizEndDrawer(),
-          drawerScrimColor: Colors.transparent,
+            return Scaffold(
+                key: layoutProvider.layoutKey,
+                // show the app bar if [hasAppBar] is true
+                appBar: widget.hasAppBar ? MyQuizAppBar(
+                  title: widget.title,
+                  scaffoldKey: layoutProvider.layoutKey,
+                ) : null,
+                extendBodyBehindAppBar: true,
 
-          body: Stack(
-            children: [
+                endDrawer: const MyQuizEndDrawer(),
+                drawerScrimColor: Colors.transparent,
 
-              // background image with a gradient
-              const MyQuizBackground(),
+                body: Stack(
+                  children: [
 
-              // the page to display
-              Padding(
-                padding: const EdgeInsets.only(top : 85.0),
-                child: SingleChildScrollView(
-                  child: widget.page,
-                ),
-              ),
-            ],
-          )
+                    // background image with a gradient
+                    const MyQuizBackground(),
+
+                    // the page to display
+                    Padding(
+                      padding: const EdgeInsets.only(top : 85.0),
+                      child: SingleChildScrollView(
+                        controller: layoutProvider.scrollController,
+                        physics: const BouncingScrollPhysics(),
+                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                        child: widget.page,
+                      ),
+                    ),
+                  ],
+                )
+            );
+          }
+        ),
       ),
     );
   }

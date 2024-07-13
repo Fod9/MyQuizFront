@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Stats/customLinearIndicator.dart';
 import 'package:my_quiz_ap/components/sizedBlock.dart';
-import 'package:my_quiz_ap/helpers/Colors.dart';
+import 'package:my_quiz_ap/helpers/colors.dart';
 
 import 'customCircularIndicator.dart';
 

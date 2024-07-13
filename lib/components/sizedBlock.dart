@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/helpers/Colors.dart';
+import 'package:my_quiz_ap/helpers/colors.dart';
 
 class SizedBlock extends StatefulWidget {
   const SizedBlock({

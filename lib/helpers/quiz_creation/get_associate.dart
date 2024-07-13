@@ -6,20 +6,14 @@ import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT;
 import 'package:my_quiz_ap/helpers/jwt/token_checker.dart' show checkToken;
 
 
-/// Get a quiz by its id.
-/// Perform a token check and return the response.
-/// If the response is ok, return the data.
-/// If the response is an error, return the error message.
-///
-/// params: [int] [id]
-Future<Map<String, dynamic>> getQuiz(int id) async {
+Future<Map<String, dynamic>> getAssociate() async {
 
   // create a JWT instance
   final JWT jwt = JWT();
 
   // request to get the quiz using the id
   Future<http.Response> fResponse() async => http.get(
-    Uri.parse('$apiUrl/quiz/getQuizById/$id'),
+    Uri.parse('$apiUrl/teacher/getAssociate'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'authorization': await jwt.read(),
@@ -31,7 +25,7 @@ Future<Map<String, dynamic>> getQuiz(int id) async {
 
   // if the response is an error, return the error message
   if (response.error && response.body.contains("Unauthorized")) {
-    return Future.value({"error": "Unauthorized request, please login again"});
+    return Future.value({"error": "Unauthorized request"});
   } else if (response.ok) {  // if the response is ok, return the data
     dynamic data = jsonDecode(response.body);
     return Future.value(data);

@@ -4,39 +4,36 @@ import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/http_extensions.dart';
 import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT;
 import 'package:my_quiz_ap/helpers/jwt/token_checker.dart' show checkToken;
-import 'package:my_quiz_ap/helpers/utils.dart' show printError;
+import 'package:my_quiz_ap/helpers/quiz_creation/quiz_data_formatter.dart';
+import 'package:my_quiz_ap/helpers/utils.dart' show printError, printOrder, printSuccess;
+import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationData;
 
 
-Future<bool> saveNote(double note, int userId, int quizId, int timeElapsed) async {
+Future<bool> createQuiz(QuizCreationData quizData) async {
 
   final JWT jwt = JWT();
 
-  double parsedNote = note;
+  final Map<String, dynamic> quizDataFormated = quizData.backendFormat;
 
-  if (note == 0.0) {
-    parsedNote = -1.0;
-  }
+  // printOrder(jsonEncode(quizDataFormated));
+  printOrder("Sending quiz data to server...");
 
   Future<http.Response> fResponse() async => http.post(
-    Uri.parse('$apiUrl/quiz/saveNote/'),
+    Uri.parse('$apiUrl/quiz/create/'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'authorization': await jwt.read(),
     },
-    body: jsonEncode(<String, dynamic>{
-      'quiz_id': quizId,
-      'student_id': userId,
-      'note': parsedNote,
-      'time_elapsed': timeElapsed,
-    }),
+    body: jsonEncode(quizDataFormated),
   );
 
   final http.Response response = await checkToken(fResponse);
 
   if (response.error) {
-    printError("saveNote Error: ${response.body}");
+    printError("createQuiz Error: ${response.body}");
     return false;
   } else {
+    printSuccess("Quiz created successfully!");
     return true;
   }
 }
