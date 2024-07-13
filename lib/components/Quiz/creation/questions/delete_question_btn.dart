@@ -40,7 +40,8 @@ class _DeleteQuestionButtonState extends State<DeleteQuestionButton> {
         child: MaterialButton(
           onPressed: () {
 
-            final RenderBox renderBox = widget.questionBlockKey.currentContext!.findRenderObject() as RenderBox;
+            final RenderBox renderBox =
+              widget.questionBlockKey.currentContext!.findRenderObject() as RenderBox;
             final Size size = renderBox.size;
             final double height = size.height;
 

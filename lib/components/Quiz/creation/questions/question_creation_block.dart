@@ -20,15 +20,13 @@ class QuestionCreationBlock extends StatefulWidget {
 
 class QuestionCreationBlockState extends State<QuestionCreationBlock> {
 
-  late final QuestionCreationData _questionProvider = Provider.of<QuestionCreationData>(context);
-
   final GlobalKey<QuestionCreationBlockState> _questionBlockKey = GlobalKey<QuestionCreationBlockState>();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       key: _questionBlockKey,
-      padding: const EdgeInsets.only(bottom: 24.0),
+      padding: const EdgeInsets.only(bottom: 24.0, left: 24.0, right: 24.0),
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: lightGlass,
@@ -46,9 +44,9 @@ class QuestionCreationBlockState extends State<QuestionCreationBlock> {
         child: Stack(
           children: [
             ConstrainedBox(
-              constraints: BoxConstraints(
+              constraints: const BoxConstraints(
                   minHeight: 450,
-                  maxWidth: MediaQuery.of(context).size.width - 48
+                  maxWidth: 600,
               ),
 
               child: const Padding(
