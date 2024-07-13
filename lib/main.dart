@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:my_quiz_ap/helpers/Colors.dart' show lightGlassBlue;
 import 'package:my_quiz_ap/pages/AdminPage.dart' show AdminPage;
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 import 'package:my_quiz_ap/pages/quiz/quiz_page.dart' show QuizPage;
@@ -8,6 +7,7 @@ import 'package:my_quiz_ap/pages/teacher_page.dart' show TeacherPage;
 import 'package:my_quiz_ap/pages/landing_router.dart' show LandingRouter;
 import 'package:my_quiz_ap/pages/student_page.dart' show StudentPage;
 import 'package:my_quiz_ap/pages/auth/auth_page.dart' show AuthPage;
+import 'helpers/Colors.dart' show lightGlassBlue;
 import 'layout.dart' show Layout;
 
 void main() {

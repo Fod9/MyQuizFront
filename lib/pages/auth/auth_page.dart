@@ -91,7 +91,7 @@ class _AuthPageState extends State<AuthPage> {
 //create a widget
 class MobileDisplay extends StatelessWidget {
   const MobileDisplay({
-    Key? key,
+    super.key,
     required this.width,
     required this.height,
     required this.toggleForm,
@@ -99,7 +99,7 @@ class MobileDisplay extends StatelessWidget {
     required this.formController,
     required this.setErrorMessage,
     required this.errorMessage,
-  }) : super(key: key);
+  });
 
   final double width;
   final double height;
