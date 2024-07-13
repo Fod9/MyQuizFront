@@ -27,10 +27,10 @@ class _QuestionsSectionState extends State<QuestionsSection> {
       children: [
 
         for (int i = 0; i < questions.length; i++)
-          ChangeNotifierProvider(
-            create: (context) => questions[i],
+          ChangeNotifierProvider.value(  // fixes deletion issue
+            value: questions[i],
             child: QuestionCreationBlock(
-              key: ValueKey(questions[i]),
+              key: UniqueKey(),  // unique key for updating the widget each refresh
               questionIndex: i,
             ),
           ),
