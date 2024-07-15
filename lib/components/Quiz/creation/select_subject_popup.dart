@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:blurrycontainer/blurrycontainer.dart' show BlurryContainer;
 import 'package:my_quiz_ap/helpers/Colors.dart' show lightGlass;
-import 'package:my_quiz_ap/helpers/colors.dart' show darkGlass, electricBlue, lightGlassBlue;
+import 'package:my_quiz_ap/helpers/colors.dart' show electricBlue, lightGlassBlue;
 import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationData;
 
-class SelectSubjectClassPopup extends StatefulWidget {
-  const SelectSubjectClassPopup({
+class SelectSubjectPopup extends StatefulWidget {
+  const SelectSubjectPopup({
     super.key,
     required this.listOfSelections,
     required this.mode,
@@ -19,10 +19,10 @@ class SelectSubjectClassPopup extends StatefulWidget {
   final QuizCreationData provider;
 
   @override
-  State<SelectSubjectClassPopup> createState() => _SelectSubjectClassPopupState();
+  State<SelectSubjectPopup> createState() => _SelectSubjectPopupState();
 }
 
-class _SelectSubjectClassPopupState extends State<SelectSubjectClassPopup> {
+class _SelectSubjectPopupState extends State<SelectSubjectPopup> {
 
   late final QuizCreationData _provider = widget.provider;
 
@@ -50,7 +50,7 @@ class _SelectSubjectClassPopupState extends State<SelectSubjectClassPopup> {
               if (widget.mode == "subject") {
                 _provider.setSelectedSubject(selection);
               } else {
-                _provider.setSelectedClass(selection);
+                _provider.addClass(selection);
               }
               Navigator.of(context).pop();
             },

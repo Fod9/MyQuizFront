@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show Brightness, Color, FontWeight, ImageFilter;
-import 'package:my_quiz_ap/components/Quiz/creation/select_subject_class_popup.dart' show SelectSubjectClassPopup;
+import 'package:my_quiz_ap/components/Quiz/creation/select_subject_popup.dart'
+    show SelectSubjectPopup;
 import 'package:my_quiz_ap/helpers/Colors.dart' show lightGlass;
 import 'package:my_quiz_ap/helpers/colors.dart' show lightGlassBlue;
 import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationData;
 import 'package:provider/provider.dart' show Provider;
 
-class SelectSubjectClassButton extends StatefulWidget {
-  const SelectSubjectClassButton({
+class SelectSubjectButton extends StatefulWidget {
+  const SelectSubjectButton({
     super.key,
-    required this.mode,
+    this.mode = "subject",
     required this.listOfSelections,
   });
 
@@ -17,28 +18,18 @@ class SelectSubjectClassButton extends StatefulWidget {
   final List<dynamic> listOfSelections;
 
   @override
-  State<SelectSubjectClassButton> createState() => _SelectSubjectClassButtonState();
+  State<SelectSubjectButton> createState() => _SelectSubjectButtonState();
 }
 
-class _SelectSubjectClassButtonState extends State<SelectSubjectClassButton> {
+class _SelectSubjectButtonState extends State<SelectSubjectButton> {
 
   late final QuizCreationData _provider = Provider.of<QuizCreationData>(context, listen: true);
 
-  late final bool isModeValid = ["subject", "class"].contains(widget.mode);
-
-  late final String buttonDefaultText = isModeValid ?
-  widget.mode == "subject" ? "Select subject" : "Select class"
-      :
-  "Invalid mode";
+  late final String buttonDefaultText = "Select Subject";
 
   String getButtonText() {
-    if (widget.mode == "subject") {
-      return _provider.selectedSubject != null ? _provider.selectedSubject!['name']!
-          : buttonDefaultText;
-    } else {
-      return _provider.selectedClass != null ? _provider.selectedClass!['name']!
-          : buttonDefaultText;
-    }
+    return _provider.selectedSubject != null ?
+      _provider.selectedSubject!['name']! : buttonDefaultText;
   }
 
   final Color effectColor = lightGlassBlue.withOpacity(0.4);
@@ -51,7 +42,7 @@ class _SelectSubjectClassButtonState extends State<SelectSubjectClassButton> {
         width: 200,
         height: 50,
         child: MaterialButton(
-          onPressed: !isModeValid ? null : () {
+          onPressed: () {
             showDialog(context: context,
                 barrierColor: Colors.transparent,
                 builder: (BuildContext context) {
@@ -67,12 +58,11 @@ class _SelectSubjectClassButtonState extends State<SelectSubjectClassButton> {
                           )
                       ),
 
-                      SelectSubjectClassPopup(
+                      SelectSubjectPopup(
                         listOfSelections: widget.listOfSelections,
                         mode: widget.mode,
                         provider: _provider,
-                        selectedValue: widget.mode == "subject" ?
-                        _provider.selectedSubject : _provider.selectedClass,
+                        selectedValue: _provider.selectedSubject,
                       ),
                     ],
                   );

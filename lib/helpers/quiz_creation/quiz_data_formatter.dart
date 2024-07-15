@@ -7,11 +7,18 @@ extension QuizDataFormatter on QuizCreationData {
     final Map<String, dynamic> formatedQuiz = <String, dynamic>{
       "name" : quizName,
       "matiere" : selectedSubject?["name"] ?? -1,
-      "classes" : [selectedClass?["id"] ?? -1],
       "created_by" : userId,
     };
 
     formatedQuiz['created_at'] = DateTime.now().toIso8601String().substring(0, 10);
+
+    final List<int> formatedClasses = [];
+
+    for (final class_ in selectedClasses) {
+      formatedClasses.add(class_["id"]);
+    }
+
+    formatedQuiz["classes"] = formatedClasses;
 
     final List<Map<String, dynamic>> formatedQuestions = [];
 
@@ -20,6 +27,14 @@ extension QuizDataFormatter on QuizCreationData {
     }
 
     formatedQuiz["questions"] = formatedQuestions;
+
+    return formatedQuiz;
+  }
+
+  Map<String, dynamic> get backendFormatForUpdate {
+    final Map<String, dynamic> formatedQuiz = backendFormat;
+
+    formatedQuiz["quiz_id"] = quizId;
 
     return formatedQuiz;
   }

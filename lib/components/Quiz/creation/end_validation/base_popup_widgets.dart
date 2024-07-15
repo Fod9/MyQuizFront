@@ -8,7 +8,11 @@ const TextStyle _textStyle = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-List<Widget> baseWidgets (void Function() onPressed, BuildContext context) => [
+List<Widget> baseWidgets(
+    void Function() onPressed,
+    BuildContext context,
+    bool isModify
+  ) => [
 
   Text(
     'Are you sure your quiz is ready?',
@@ -31,8 +35,8 @@ List<Widget> baseWidgets (void Function() onPressed, BuildContext context) => [
       vertical: 10,
     ),
 
-    child: const Text(
-      'Create quiz',
+    child: Text(
+      '${isModify ? "Modify" : "Create"} quiz',
       style: _textStyle,
     ),
   ),

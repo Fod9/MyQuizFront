@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/creation/end_validation/base_popup_widgets.dart' show baseWidgets;
 
-List<Widget> failedWidgets (BuildContext context) => [
+List<Widget> failedWidgets (BuildContext context, bool isModify) => [
   const Text(
     'Failed to create quiz',
     style: TextStyle(
@@ -26,7 +26,7 @@ List<Widget> failedWidgets (BuildContext context) => [
 
   const Spacer(),
 
-  baseWidgets(() => Navigator.pop(context), context)[4],
+  baseWidgets(() => Navigator.pop(context), context, isModify)[4],
 
   const Spacer(),
 ];

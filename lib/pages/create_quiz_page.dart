@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/Quiz/creation/end_validation/create_quiz_button.dart' show CreateQuizButton;
 import 'package:my_quiz_ap/components/Quiz/creation/questions/questions_section.dart' show QuestionsSection;
 import 'package:my_quiz_ap/components/Quiz/creation/quiz_name_input.dart' show QuizNameInput;
-import 'package:my_quiz_ap/components/Quiz/creation/select_subject_class_button.dart' show SelectSubjectClassButton;
+import 'package:my_quiz_ap/components/Quiz/creation/select_subject_button.dart'
+    show SelectSubjectButton;
 import 'package:my_quiz_ap/components/full_page_loading.dart' show FullPageLoading;
 import 'package:my_quiz_ap/helpers/get_user_info.dart' show getUserInfo;
 import 'package:my_quiz_ap/helpers/quiz_creation/get_associate.dart' show getAssociate;
@@ -25,7 +26,7 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
 
   late final Map<String, dynamic> _teacherData;  // teacher classes and subjects
   late final Map<String, dynamic> _userInfo;  // user info (used for its ID)
-  int? quizId;  // quiz ID if we are modifying a quiz
+  late final int? quizId;  // quiz ID if we are modifying a quiz
   late final Map<String, dynamic>? quizData;  // quiz data if we are modifying a quiz
   final QuizCreationData _quizProvider = QuizCreationData();
 
@@ -43,27 +44,30 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
   }
 
   /// Load the data for the page
-  /// This method is the future for the FutureBuilder
-  /// Needs [context] to use the Provider
+  /// If we are modifying a quiz, it gets the [quizData]
+  /// This method is the [future] for the [FutureBuilder]
   Future<bool> _loadData() async {
 
+    // avoid reloading the data after a hot reload
     if (_quizProvider.quizId != null) {
       return true;
     }
 
+    // get the teacher data and the user info
     if (!_isPageLoaded) {
       _teacherData = await getAssociate();
       _userInfo = await getUserInfo();
 
+      // if we are modifying a quiz, get the quiz data
       if (widget.isModify && mounted) {
         // get the quiz ID from the arguments
         quizId = ModalRoute.of(context)!.settings.arguments as int;
         // get the quiz data
         quizData = await getQuiz(quizId!);
-
         // set the quiz data in the provider
         _quizProvider.setQuizData(quizData!);
       } else {
+        // if we are creating a new quiz, no need for the quiz data
         quizId = null;
         quizData = null;
       }
@@ -80,14 +84,18 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             printError(snapshot.error.toString());
-            return const Center(
-              child: Text(
-                'An error occurred, please try again later',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
-                  fontFamily: 'QuickSand',
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height - 200.0,
+              child: const Center(
+                child: Text(
+                  'An error occurred, please try again later',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                    fontFamily: 'QuickSand',
+                  ),
                 ),
               ),
             );
@@ -105,7 +113,6 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
 
                     return PopScope(
                       onPopInvoked: (_) {
-                        // unFocus all text fields
                         Provider.of<LayoutProvider>(context, listen: false).unFocusAll();
                       },
 
@@ -120,9 +127,7 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
                               padding: EdgeInsets.symmetric(vertical: 24.0),
                               child: QuizNameInput(),
                             ),
-
-                            SelectSubjectClassButton(mode: "class", listOfSelections: data["classes"]!),
-                            SelectSubjectClassButton(mode: "subject", listOfSelections: data["matieres"]!),
+                            SelectSubjectButton(listOfSelections: data["matieres"]!),
 
                             _spacer,
 

@@ -6,10 +6,11 @@ import 'package:my_quiz_ap/components/Quiz/creation/end_validation/failed_popup_
 import 'package:my_quiz_ap/helpers/Colors.dart' show electricBlue;
 import 'package:my_quiz_ap/helpers/colors.dart' show darkGlass;
 import 'package:my_quiz_ap/helpers/quiz_creation/create_quiz.dart' show createQuiz;
+import 'package:my_quiz_ap/helpers/quiz_creation/modify_quiz.dart';
 import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationData;
 
 class _CreateQuizPopup extends StatefulWidget {
-  const _CreateQuizPopup(this.quizData, {super.key});
+  const _CreateQuizPopup(this.quizData);
 
   final QuizCreationData quizData;
 
@@ -21,10 +22,13 @@ class _CreateQuizPopupState extends State<_CreateQuizPopup> {
 
   bool _failed = false;
   bool _loading = false;
+  late final bool isModify = widget.quizData.quizId != null;
 
-  void _createQuiz() async {
+  void _createModifyQuiz() async {
     setState(() => _loading = true);
-    final bool success = await createQuiz(widget.quizData);
+    final bool success = isModify ?
+      await modifyQuiz(widget.quizData) : await createQuiz(widget.quizData);
+
     if (success && mounted) {
       Navigator.pushNamedAndRemoveUntil(context, '/teacher', (route) => false);
     } else {
@@ -32,7 +36,7 @@ class _CreateQuizPopupState extends State<_CreateQuizPopup> {
     }
   }
 
-  late final List<Widget> _baseWidgets = baseWidgets(_createQuiz, context);
+  late final List<Widget> _baseWidgets = baseWidgets(_createModifyQuiz, context, isModify);
 
   List<Widget> get _displayedWidgets {
     if (_loading) {
@@ -48,9 +52,9 @@ class _CreateQuizPopupState extends State<_CreateQuizPopup> {
           )
         ),
         const Spacer(flex: 1),
-        const Text(
-          'Creating quiz...',
-          style: TextStyle(
+        Text(
+          '${isModify ? "Modifying" : "Creating"} quiz...',
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -60,7 +64,7 @@ class _CreateQuizPopupState extends State<_CreateQuizPopup> {
         const Spacer(flex: 5),
       ];
     } else if (_failed) {
-      return failedWidgets(context);
+      return failedWidgets(context, isModify);
     } else {
       return _baseWidgets;
     }

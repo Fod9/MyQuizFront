@@ -12,14 +12,15 @@ class QuizCreationData extends ChangeNotifier {
   }
 
   String _quizName = '';
-  Map<String, dynamic>? _selectedSubject, _selectedClass;
+  Map<String, dynamic>? _selectedSubject;
+  List<Map<String, dynamic>> _selectedClasses = [];
   int _userId = -1;
   int? quizId;  // used only if modifying a quiz
   final List<QuestionCreationData> _questions = [];
 
   String get quizName => _quizName;
   Map<String, dynamic>? get selectedSubject => _selectedSubject;
-  Map<String, dynamic>? get selectedClass => _selectedClass;
+  List<Map<String, dynamic>> get selectedClasses => _selectedClasses;
   int get userId => _userId;
   List<QuestionCreationData> get questions => _questions;
 
@@ -30,8 +31,13 @@ class QuizCreationData extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setSelectedClass(Map<String, dynamic> class_) {
-    _selectedClass = class_;
+  void addClass(Map<String, dynamic> class_) {
+    _selectedClasses.add(class_);
+    notifyListeners();
+  }
+
+  void removeClass(int index) {
+    _selectedClasses.removeAt(index);
     notifyListeners();
   }
 
@@ -48,9 +54,12 @@ class QuizCreationData extends ChangeNotifier {
   }
 
   void setQuizData(Map<String, dynamic> quizData) {
-    printInfo(quizData.toString());
+    printInfo("Setting quiz data: $quizData");
     quizId = quizData['Quiz_id'];
     _quizName = quizData['Quiz_name'];
+    // _selectedSubject = quizData['Matiere'];
+    // _selectedClass = quizData['Classes'][0];
+    // TODO ADD class and subject
 
     _questions.clear();
     for (Map<String, dynamic> questionData in quizData['Questions']) {
@@ -64,7 +73,7 @@ class QuizCreationData extends ChangeNotifier {
     return "QuizCreationData:\n"
     "- quizName: $_quizName\n"
     "- selectedSubject: $_selectedSubject,\n"
-    "- selectedClass: $_selectedClass,\n"
+    "- selectedClass: $_selectedClasses,\n"
     "- userId: $_userId\n"
     "- questions:\n"
         "${_questions.map((e) => e.toString()).join('\n')}";

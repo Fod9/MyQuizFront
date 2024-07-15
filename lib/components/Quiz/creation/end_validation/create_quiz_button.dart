@@ -31,9 +31,9 @@ class _CreateQuizButtonState extends State<CreateQuizButton> {
         vertical: 10,
       ),
 
-      child: const Text(
-        'Create Quiz',
-        style: TextStyle(
+      child: Text(
+        '${_provider.quizId != null ? "Modify" : "Create"} Quiz',
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 20,
           fontWeight: FontWeight.bold,

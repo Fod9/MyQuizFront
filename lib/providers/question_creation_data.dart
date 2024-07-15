@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart' show ChangeNotifier, FocusNode, TextEditingController;
-import 'package:my_quiz_ap/helpers/utils.dart';
 
 class QuestionCreationData extends ChangeNotifier {
 
@@ -15,7 +14,6 @@ class QuestionCreationData extends ChangeNotifier {
         );
       }
     } else {
-      printOrder(questionData.toString());
       name = questionData['Question_text'];
       for (Map<String, dynamic> propositionData in questionData['Propositions']) {
         addProposition(
