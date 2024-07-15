@@ -13,8 +13,6 @@ class CreateQuizButton extends StatefulWidget {
 
 class _CreateQuizButtonState extends State<CreateQuizButton> {
 
-  // TODO add pop-up dialog to confirm quiz creation
-
   late final _provider = Provider.of<QuizCreationData>(context, listen: false);
 
   @override

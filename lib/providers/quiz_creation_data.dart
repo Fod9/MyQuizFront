@@ -4,25 +4,17 @@ import 'package:my_quiz_ap/providers/question_creation_data.dart' show QuestionC
 
 class QuizCreationData extends ChangeNotifier {
 
-  QuizCreationData(Map<String, dynamic>? quizData) {
-    if (quizData == null) {
-      // add initial question when creating a quiz
-      addQuestion(QuestionCreationData(focus: false));
-    } else {
-      printInfo(quizData.toString());
-      _quizId = quizData['Quiz_id'];
-      _quizName = quizData['Quiz_name'];
+  QuizCreationData() {
+    printOrder("QuizCreationData constructor called");
 
-      for (Map<String, dynamic> questionData in quizData['Questions']) {
-        addQuestion(QuestionCreationData(questionData: questionData));
-      }
-    }
+    // add initial question when creating a quiz
+    addQuestion(QuestionCreationData(focus: false));
   }
 
   String _quizName = '';
   Map<String, dynamic>? _selectedSubject, _selectedClass;
   int _userId = -1;
-  int? _quizId;  // used only if modifying a quiz
+  int? quizId;  // used only if modifying a quiz
   final List<QuestionCreationData> _questions = [];
 
   String get quizName => _quizName;
@@ -52,6 +44,18 @@ class QuizCreationData extends ChangeNotifier {
 
   void removeQuestion(int index) {
     _questions.removeAt(index);
+    notifyListeners();
+  }
+
+  void setQuizData(Map<String, dynamic> quizData) {
+    printInfo(quizData.toString());
+    quizId = quizData['Quiz_id'];
+    _quizName = quizData['Quiz_name'];
+
+    _questions.clear();
+    for (Map<String, dynamic> questionData in quizData['Questions']) {
+      addQuestion(QuestionCreationData(questionData: questionData));
+    }
     notifyListeners();
   }
 
