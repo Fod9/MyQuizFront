@@ -13,7 +13,7 @@ class QuizCreationData extends ChangeNotifier {
 
   String _quizName = '';
   Map<String, dynamic>? _selectedSubject;
-  List<Map<String, dynamic>> _selectedClasses = [];
+  final List<Map<String, dynamic>> _selectedClasses = [];
   int _userId = -1;
   int? quizId;  // used only if modifying a quiz
   final List<QuestionCreationData> _questions = [];
@@ -36,8 +36,8 @@ class QuizCreationData extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeClass(int index) {
-    _selectedClasses.removeAt(index);
+  void removeClass(Map<String, dynamic> class_) {
+    _selectedClasses.remove(class_);
     notifyListeners();
   }
 
