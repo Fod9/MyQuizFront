@@ -19,7 +19,7 @@ Future<bool> modifyQuiz(QuizCreationData quizData) async {
   printOrder("Updating quiz on the server...");
 
   Future<http.Response> fResponse() async => http.post(
-    Uri.parse('$apiUrl/quiz/create/'),
+    Uri.parse('$apiUrl/quiz/modify/'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'authorization': await jwt.read(),
@@ -30,10 +30,10 @@ Future<bool> modifyQuiz(QuizCreationData quizData) async {
   final http.Response response = await checkToken(fResponse);
 
   if (response.error) {
-    printError("createQuiz Error: ${response.body}");
+    printError("modifyQuiz Error: ${response.body}");
     return false;
   } else {
-    printSuccess("Quiz created successfully!");
+    printSuccess("Quiz updated successfully!");
     return true;
   }
 }

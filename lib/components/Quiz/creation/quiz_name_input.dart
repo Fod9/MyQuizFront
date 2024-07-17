@@ -60,7 +60,7 @@ class _QuizNameInputState extends State<QuizNameInput> {
                 controller: _controller,
                 focusNode: _focusNode,
 
-                onChanged: (String value) => _provider.setQuizName(value),
+                onChanged: (String value) => _provider.quizName = value,
 
                 maxLines: null,
 

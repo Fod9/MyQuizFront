@@ -13,7 +13,12 @@ import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationD
 import 'package:provider/provider.dart' show ChangeNotifierProvider, Consumer, Provider;
 import 'package:my_quiz_ap/helpers/quiz/get_quiz.dart' show getQuiz;
 
+
+/// Page to create a new quiz
+/// Can be used to modify a quiz if [isModify] is true
 class CreateQuizPage extends StatefulWidget {
+
+  /// If [isModify] is true, the page will be used to modify a quiz
   const CreateQuizPage({super.key, this.isModify = false});
 
   final bool isModify;
@@ -40,6 +45,7 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
   @override
   void initState() {
     super.initState();
+    // init the page data on page load
     _pageFuture = _loadData();
   }
 
@@ -102,14 +108,15 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
 
           } else if (snapshot.connectionState == ConnectionState.done) {
 
-            Map<String, dynamic> data = _teacherData;
-
             return ChangeNotifierProvider.value(
               value:  _quizProvider,
+
+              // Consumer is needed to set the user id in the provider after page load
               child: Consumer<QuizCreationData>(
                   builder: (context, value, child) {
 
-                    value.setUserId(_userInfo['id']);
+                    // set the user ID in the provider
+                    value.userId = _userInfo['id'];
 
                     return PopScope(
                       onPopInvoked: (_) {
@@ -128,8 +135,8 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
                               child: QuizNameInput(),
                             ),
 
-                            SelectSubjectButton(listOfSelections: data["matieres"]!),
-                            SelectClassesButton(listOfSelections: data["classes"]!),
+                            SelectSubjectButton(listOfSelections: _teacherData["matieres"]!),
+                            SelectClassesButton(listOfSelections: _teacherData["classes"]!),
 
                             _spacer,
 

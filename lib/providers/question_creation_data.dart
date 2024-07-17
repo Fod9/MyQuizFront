@@ -1,19 +1,26 @@
 import 'package:flutter/cupertino.dart' show ChangeNotifier, FocusNode, TextEditingController;
 
+/// Data used to create a question,
+/// used in the [CreateQuestionPage]
 class QuestionCreationData extends ChangeNotifier {
 
+  /// Create a new [QuestionCreationData] object.
+  /// Can be initialized with a [questionData] map.
+  /// If [questionData] is null, it creates a new question with two propositions.
+  /// If [focus] is true, it focuses the name field.
   QuestionCreationData({bool focus = true, Map<String,dynamic>? questionData}) {
-    if (questionData == null) {
+
+    if (questionData == null) {  // create a new question with two propositions
       addProposition(text: '', isCorrect: true, focus: false);
       addProposition(text: '', isCorrect: false, focus: false);
 
-      if (focus) {
+      if (focus) {  // focus the name field
         Future.delayed(
             const Duration(milliseconds: 500),
             () => _nameFocusNode.requestFocus()
         );
       }
-    } else {
+    } else {  // create a question from a map
       name = questionData['Question_text'];
       for (Map<String, dynamic> propositionData in questionData['Propositions']) {
         addProposition(
@@ -25,15 +32,19 @@ class QuestionCreationData extends ChangeNotifier {
     }
   }
 
-  String name = '';
-  int difficulty = 1;
+  String name = '';  // the question text
+  int difficulty = 1;  // (deprecated but needed for the backend)
 
-  final List<Proposition> _propositions = [];
-  final FocusNode _nameFocusNode = FocusNode();
+  final List<Proposition> _propositions = [];  // List of propositions
+  final FocusNode _nameFocusNode = FocusNode();  // Focus node for the name field
 
   List<Proposition> get propositions => _propositions;
   FocusNode get nameFocusNode => _nameFocusNode;
 
+  /// Add a new proposition to the question and notify listeners.
+  /// If [text] is null, it creates an empty proposition.
+  /// If [isCorrect] is null, it creates a false proposition.
+  /// If [focus] is true, it focuses the new proposition.
   void addProposition({String? text, bool? isCorrect, bool focus = true}) {
     Proposition newProposition = Proposition(text ?? '', isCorrect ?? false);
     _propositions.add(newProposition);
@@ -42,6 +53,7 @@ class QuestionCreationData extends ChangeNotifier {
     if (focus) newProposition.focusNode.requestFocus();
   }
 
+  /// Remove a proposition from the question and notify listeners.
   void removeProposition(int index) {
     _propositions.removeAt(index);
     notifyListeners();
@@ -54,18 +66,24 @@ class QuestionCreationData extends ChangeNotifier {
   }
 }
 
-class Proposition {
-  String text;
-  bool isCorrect;
 
+/// Proposition data for a question.
+class Proposition {
+  String text;  // the proposition text
+  bool isCorrect;  // true if the proposition is correct
+
+  // Controller and focus node for the proposition text field
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
   TextEditingController get controller => _controller;
   FocusNode get focusNode => _focusNode;
 
+  /// Create a new [Proposition] object.
+  /// Can be initialized with a [text] and an [isCorrect] value.
   Proposition(this.text, this.isCorrect) {
     _controller.text = text;
+    isCorrect = isCorrect;
   }
 
   @override
