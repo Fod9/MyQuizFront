@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:blurrycontainer/blurrycontainer.dart' show BlurryContainer;
 import 'package:my_quiz_ap/helpers/Colors.dart' show lightGlass;
 import 'package:my_quiz_ap/helpers/colors.dart' show electricBlue, darkGlass, validColor;
+import 'package:my_quiz_ap/helpers/utils.dart';
 import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationData;
 
 class SelectClassesPopup extends StatefulWidget {
@@ -32,6 +33,9 @@ class _SelectClassesPopupState extends State<SelectClassesPopup> {
   Iterable<Widget> _getSelectionList() sync* {
     for (dynamic selection in widget.listOfSelections) {
 
+      final bool isSelected = _provider.selectedClasses.map((e) => e["id"])
+          .contains(selection["id"]);
+
       String selectionName = selection["name"]!;
 
       yield Padding(
@@ -43,15 +47,14 @@ class _SelectClassesPopupState extends State<SelectClassesPopup> {
           ),
           child: MaterialButton(
             onPressed: () {
-              if (_provider.selectedClasses.contains(selection)) {
+              if (isSelected) {
                 _provider.removeClass(selection);
               } else {
                 _provider.addClass(selection);
               }
               setState(() {});
             },
-            color: _provider.selectedClasses.contains(selection) ?
-              validColor : darkGlass,
+            color: isSelected ? validColor : darkGlass,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),

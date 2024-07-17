@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart' show ChangeNotifier;
+import 'package:my_quiz_ap/helpers/utils.dart';
 import 'package:my_quiz_ap/providers/question_creation_data.dart' show QuestionCreationData;
 
 /// Data used to create a quiz in the quiz creation page
@@ -56,11 +57,20 @@ class QuizCreationData extends ChangeNotifier {
   /// Sets the quiz data,
   /// used when modifying a quiz
   void setQuizData(Map<String, dynamic> quizData) {
+    printInfo("Setting quiz data: $quizData");
     quizId = quizData['Quiz_id'];
     quizName = quizData['Quiz_name'];
-    // _selectedSubject = quizData['Matiere'];
-    // _selectedClass = quizData['Classes'][0];
-    // TODO ADD class and subject
+    _selectedSubject = {
+      "id": quizData['Matiere']['id'],
+      "name": quizData['Matiere']['nom']
+    };
+
+    for (Map<String, dynamic> class_ in quizData['Classes']) {
+      addClass({
+        "id": class_['id'],
+        "name": class_['nom']
+      });
+    }
 
     _questions.clear();
     for (Map<String, dynamic> questionData in quizData['Questions']) {
