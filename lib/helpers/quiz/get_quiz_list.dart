@@ -5,7 +5,7 @@ import 'package:my_quiz_ap/helpers/http_extensions.dart';
 import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT;
 import 'package:my_quiz_ap/helpers/jwt/token_checker.dart' show checkToken;
 import 'package:my_quiz_ap/helpers/quiz/quiz_list_format.dart' show quizListFormat;
-import 'package:my_quiz_ap/helpers/utils.dart' show printError, printInfo;
+import 'package:my_quiz_ap/helpers/utils.dart' show printError;
 
 /// Get the list of quiz
 /// returns a [Future<List<Map<String, dynamic>>]

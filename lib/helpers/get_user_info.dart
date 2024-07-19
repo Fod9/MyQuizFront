@@ -4,8 +4,6 @@ import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/http_extensions.dart';
 import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT;
 import 'package:my_quiz_ap/helpers/jwt/token_checker.dart' show checkToken;
-import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
-
 
 /// Get a quiz by its id.
 /// Perform a token check and return the response.

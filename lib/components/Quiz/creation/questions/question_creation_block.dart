@@ -3,8 +3,6 @@ import 'package:my_quiz_ap/components/Quiz/creation/questions/delete_question_bt
 import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/propostions_section.dart';
 import 'package:my_quiz_ap/components/Quiz/creation/questions/question_name_input.dart' show QuestionNameInput;
 import 'package:my_quiz_ap/helpers/Colors.dart' show lightGlass;
-import 'package:my_quiz_ap/providers/question_creation_data.dart' show QuestionCreationData;
-import 'package:provider/provider.dart' show Provider;
 
 class QuestionCreationBlock extends StatefulWidget {
   const QuestionCreationBlock({

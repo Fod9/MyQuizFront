@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:convert' show jsonDecode;
-import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/http_extensions.dart' show IsOk;
 import 'package:my_quiz_ap/helpers/jwt/token_checker.dart';
