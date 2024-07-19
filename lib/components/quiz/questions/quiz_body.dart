@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/questions/quiz_question_block.dart' show QuizQuestionBlock;
+import 'package:my_quiz_ap/components/quiz/questions/quiz_question_block.dart' show QuizQuestionBlock;
 
 
 /// The body of the quiz page.

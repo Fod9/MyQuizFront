@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/creation/questions/question_creation_block.dart';
+import 'package:my_quiz_ap/components/quiz/creation/questions/question_creation_block.dart';
 import 'package:my_quiz_ap/helpers/utils.dart';
 import 'package:provider/provider.dart' show Provider;
 import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationData;

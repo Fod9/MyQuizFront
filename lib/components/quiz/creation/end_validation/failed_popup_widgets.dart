@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/creation/end_validation/base_popup_widgets.dart' show baseWidgets;
+import 'package:my_quiz_ap/components/quiz/creation/end_validation/base_popup_widgets.dart' show baseWidgets;
 
 List<Widget> failedWidgets (BuildContext context, bool isModify) => [
   const Text(

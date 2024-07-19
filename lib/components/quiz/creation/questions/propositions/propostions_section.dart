@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/add_proposition_btn.dart' show AddPropositionButton;
-import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/proposition_creation.dart' show PropositionCreation;
+import 'package:my_quiz_ap/components/quiz/creation/questions/propositions/add_proposition_btn.dart' show AddPropositionButton;
+import 'package:my_quiz_ap/components/quiz/creation/questions/propositions/proposition_creation.dart' show PropositionCreation;
 import 'package:my_quiz_ap/providers/question_creation_data.dart' show Proposition, QuestionCreationData;
 import 'package:provider/provider.dart' show Provider;
 

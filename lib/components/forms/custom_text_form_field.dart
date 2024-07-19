@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './FormController.dart';
+import 'package:my_quiz_ap/components/forms/custom_form_controller.dart' show FormController;
 
 
 class CustomTextFormField extends StatelessWidget {
@@ -12,7 +12,7 @@ class CustomTextFormField extends StatelessWidget {
   final String fontFamily;
 
   const CustomTextFormField({
-    Key? key,
+    super.key,
     required this.type,
     required this.label,
     required this.hintText,
@@ -20,7 +20,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.controller,
     required this.formController,
     this.fontFamily = 'QuickSand',
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

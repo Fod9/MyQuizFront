@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/proposition_creation.dart' show PropositionCreationState;
+import 'package:my_quiz_ap/components/quiz/creation/questions/propositions/proposition_creation.dart' show PropositionCreationState;
 import 'package:my_quiz_ap/helpers/Colors.dart' show invalidColor;
 import 'package:my_quiz_ap/providers/layout_provider.dart' show LayoutProvider;
 import 'package:my_quiz_ap/providers/question_creation_data.dart' show QuestionCreationData;

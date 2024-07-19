@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Forms/FormController.dart';
-import 'package:my_quiz_ap/helpers/colors.dart';
-import 'package:my_quiz_ap/components/Forms/TextFormField.dart';
+import 'package:my_quiz_ap/components/forms/custom_form_controller.dart' show FormController;
+import 'package:my_quiz_ap/helpers/colors.dart' show darkGlass;
+import 'package:my_quiz_ap/components/forms/custom_text_form_field.dart' show CustomTextFormField;
 
 enum FormMode {
   login,
@@ -10,13 +10,13 @@ enum FormMode {
 
 class CustomForm extends StatelessWidget {
   const CustomForm({
-    Key? key,
+    super.key,
     required this.height,
     required this.width,
     required this.formController,
     required this.mode,
     required this.errorMessage,
-  }) : super(key: key);
+  });
 
   final double height;
   final double width;

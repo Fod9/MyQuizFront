@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/creation/end_validation/create_quiz_button.dart' show CreateQuizButton;
-import 'package:my_quiz_ap/components/Quiz/creation/questions/questions_section.dart' show QuestionsSection;
-import 'package:my_quiz_ap/components/Quiz/creation/quiz_name_input.dart' show QuizNameInput;
-import 'package:my_quiz_ap/components/Quiz/creation/subject_and_classes/select_classes_button.dart';
-import 'package:my_quiz_ap/components/Quiz/creation/subject_and_classes/select_subject_button.dart' show SelectSubjectButton;
+import 'package:my_quiz_ap/components/quiz/creation/end_validation/create_quiz_button.dart' show CreateQuizButton;
+import 'package:my_quiz_ap/components/quiz/creation/questions/questions_section.dart' show QuestionsSection;
+import 'package:my_quiz_ap/components/quiz/creation/quiz_name_input.dart' show QuizNameInput;
+import 'package:my_quiz_ap/components/quiz/creation/subject_and_classes/select_classes_button.dart';
+import 'package:my_quiz_ap/components/quiz/creation/subject_and_classes/select_subject_button.dart' show SelectSubjectButton;
 import 'package:my_quiz_ap/components/full_page_loading.dart' show FullPageLoading;
 import 'package:my_quiz_ap/helpers/get_user_info.dart' show getUserInfo;
 import 'package:my_quiz_ap/helpers/quiz_creation/get_associate.dart' show getAssociate;

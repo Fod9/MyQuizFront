@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/creation/questions/delete_question_btn.dart' show DeleteQuestionButton;
-import 'package:my_quiz_ap/components/Quiz/creation/questions/propositions/propostions_section.dart';
-import 'package:my_quiz_ap/components/Quiz/creation/questions/question_name_input.dart' show QuestionNameInput;
+import 'package:my_quiz_ap/components/quiz/creation/questions/delete_question_btn.dart' show DeleteQuestionButton;
+import 'package:my_quiz_ap/components/quiz/creation/questions/propositions/propostions_section.dart';
+import 'package:my_quiz_ap/components/quiz/creation/questions/question_name_input.dart' show QuestionNameInput;
 import 'package:my_quiz_ap/helpers/Colors.dart' show lightGlass;
 
 class QuestionCreationBlock extends StatefulWidget {

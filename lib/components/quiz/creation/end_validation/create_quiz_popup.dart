@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show ImageFilter;
 import 'package:blurrycontainer/blurrycontainer.dart' show BlurryContainer;
-import 'package:my_quiz_ap/components/Quiz/creation/end_validation/base_popup_widgets.dart' show baseWidgets;
-import 'package:my_quiz_ap/components/Quiz/creation/end_validation/failed_popup_widgets.dart' show failedWidgets;
+import 'package:my_quiz_ap/components/quiz/creation/end_validation/base_popup_widgets.dart' show baseWidgets;
+import 'package:my_quiz_ap/components/quiz/creation/end_validation/failed_popup_widgets.dart' show failedWidgets;
 import 'package:my_quiz_ap/helpers/Colors.dart' show electricBlue;
 import 'package:my_quiz_ap/helpers/colors.dart' show darkGlass;
 import 'package:my_quiz_ap/helpers/quiz_creation/create_quiz.dart' show createQuiz;

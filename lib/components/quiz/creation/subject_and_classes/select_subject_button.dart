@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show Brightness, Color, FontWeight, ImageFilter;
-import 'package:my_quiz_ap/components/Quiz/creation/subject_and_classes/select_subject_popup.dart' show SelectSubjectPopup;
+import 'package:my_quiz_ap/components/quiz/creation/subject_and_classes/select_subject_popup.dart' show SelectSubjectPopup;
 import 'package:my_quiz_ap/helpers/Colors.dart' show lightGlass;
 import 'package:my_quiz_ap/helpers/colors.dart' show lightGlassBlue;
 import 'package:my_quiz_ap/providers/quiz_creation_data.dart' show QuizCreationData;

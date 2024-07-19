@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz_body.dart';
-import 'package:my_quiz_ap/components/Quiz/dropdown/dropdown_quiz_header.dart';
+import 'package:my_quiz_ap/components/quiz/dropdown/dropdown_quiz_body.dart';
+import 'package:my_quiz_ap/components/quiz/dropdown/dropdown_quiz_header.dart';
 
 class DropDownQuiz extends StatefulWidget {
   const DropDownQuiz({

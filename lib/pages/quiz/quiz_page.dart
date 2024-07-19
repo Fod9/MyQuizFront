@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Quiz/questions/quiz_body.dart' show QuizBody;
+import 'package:my_quiz_ap/components/quiz/questions/quiz_body.dart' show QuizBody;
 import 'package:my_quiz_ap/helpers/get_user_info.dart' show getUserInfo;
 import 'package:my_quiz_ap/helpers/quiz/get_quiz.dart' show getQuiz;
 import 'package:my_quiz_ap/helpers/utils.dart' show printError, printInfo;

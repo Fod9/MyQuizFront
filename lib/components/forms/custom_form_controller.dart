@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
-
-import '../../helpers/validators.dart';
+import 'package:my_quiz_ap/helpers/validators.dart' show Validator;
 
 class FormController with ChangeNotifier {
   final TextEditingController nameController = TextEditingController();
