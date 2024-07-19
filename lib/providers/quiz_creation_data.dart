@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart' show ChangeNotifier;
-import 'package:my_quiz_ap/helpers/utils.dart';
+import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
 import 'package:my_quiz_ap/providers/question_creation_data.dart' show QuestionCreationData;
 
 /// Data used to create a quiz in the quiz creation page
