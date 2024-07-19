@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:my_quiz_ap/components/sizedBlock.dart';
+import 'package:my_quiz_ap/components/sized_block.dart';
 import 'dart:convert';
 
 class AdminPage extends StatefulWidget {

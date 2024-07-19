@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/helpers/colors.dart';
+import 'package:my_quiz_ap/helpers/colors.dart' show lightGlassBlue, lightGreen;
 
 class CustomLinearIndicator extends StatefulWidget {
   const CustomLinearIndicator({
@@ -53,7 +53,7 @@ class _CustomLinearIndicatorState extends State<CustomLinearIndicator> {
           ),
           Text(
             widget.text,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20,
               color: Colors.white,
             ),

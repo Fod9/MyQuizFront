@@ -1,14 +1,10 @@
-// ignore_for_file: unused_import
-
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Stats/customLinearIndicator.dart';
-import 'package:my_quiz_ap/components/sizedBlock.dart';
-import 'package:my_quiz_ap/helpers/colors.dart';
-
-import 'customCircularIndicator.dart';
+import 'package:my_quiz_ap/components/Stats/custom_linear_indicator.dart' show CustomLinearIndicator;
+import 'package:my_quiz_ap/components/sized_block.dart' show SizedBlock;
+import 'package:my_quiz_ap/components/stats/custom_circular_indicator.dart' show CustomCircularIndicator;
 
 class StatisticsBlock extends StatefulWidget {
-  StatisticsBlock({
+  const StatisticsBlock({
     super.key,
     this.blockName = "Student Statistics",
     required this.height,
@@ -101,7 +97,7 @@ class MobileDisplay extends StatelessWidget {
 }
 
 class DesktopDisplay extends StatelessWidget {
-  DesktopDisplay({super.key, required this.parentWidget});
+  const DesktopDisplay({super.key, required this.parentWidget});
 
   final parentWidget;
 

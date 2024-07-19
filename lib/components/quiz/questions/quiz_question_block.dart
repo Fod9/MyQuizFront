@@ -1,12 +1,10 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart' show listEquals;
 import 'package:my_quiz_ap/components/quiz/questions/quiz_proposition.dart' show QuizProposition, QuizPropositionState;
 import 'package:my_quiz_ap/components/quiz/questions/quiz_question_button.dart' show QuizQuestionButton, QuizQuestionButtonState;
-import 'package:my_quiz_ap/helpers/utils.dart';
-import 'package:my_quiz_ap/providers/quiz_data.dart';
-import 'package:provider/provider.dart';
+import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
+import 'package:my_quiz_ap/providers/quiz_data.dart' show QuizData;
+import 'package:provider/provider.dart' show Provider;
 
 /// A widget that displays a question, its propositions
 /// and a button to validate the answer.

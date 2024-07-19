@@ -7,10 +7,10 @@ import 'package:my_quiz_ap/helpers/jwt/jwt.dart';
 /// MyQuizNavbar is the navbar of the MyQuiz page.
 class MyQuizAppBar extends StatefulWidget implements PreferredSizeWidget {
   const MyQuizAppBar({
-    Key? key,
+    super.key,
     this.title = 'My Quiz',
     required this.scaffoldKey,
-  }) : super(key: key);
+  });
 
   final String title;
   final GlobalKey<ScaffoldState> scaffoldKey;

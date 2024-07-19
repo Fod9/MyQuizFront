@@ -122,7 +122,7 @@ class _SizedBlockState extends State<SizedBlock>
                     color: Colors.black.withOpacity(0.2),
                     spreadRadius: 2,
                     blurRadius: 2,
-                    offset: Offset(2, 2),
+                    offset: const Offset(2, 2),
                   ),
                 ]
                     : null,
@@ -132,7 +132,7 @@ class _SizedBlockState extends State<SizedBlock>
                 child: Container(
                   color: Colors.transparent, // Apply the background color here
                   child: Center(
-                    child: Container(
+                    child: SizedBox(
                       width: widget.width,
                       height: widget.height,
                       child: Column(

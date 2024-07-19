@@ -33,7 +33,7 @@ class _IsCorrectSwitchState extends State<IsCorrectSwitch> {
         activeTrackColor: validColor,
         inactiveTrackColor: invalidColor,
         inactiveThumbColor: Colors.white,
-        trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
+        trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
         onChanged: (bool value) {
           setState(() {
             widget.propositionInputKey.currentState!.updateColor(value);
