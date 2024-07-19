@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/forms/custom_form.dart' show CustomForm, FormMode;
-import 'package:my_quiz_ap/helpers/utils.dart';
-import 'package:my_quiz_ap/pages/auth/auth_btn.dart';
+import 'package:my_quiz_ap/helpers/utils.dart' show getScreenType;
 import 'package:my_quiz_ap/helpers/colors.dart' show darkGlass;
 import 'package:my_quiz_ap/components/forms/custom_form_controller.dart' show FormController;
+import 'package:my_quiz_ap/components/auth/auth_btn.dart' show AuthBtn;
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
