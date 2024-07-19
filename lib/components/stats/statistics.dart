@@ -51,7 +51,7 @@ class _StatisticsBlockState extends State<StatisticsBlock> {
 class MobileDisplay extends StatelessWidget {
   const MobileDisplay({super.key, required this.parentWidget});
 
-  final parentWidget;
+  final StatisticsBlock parentWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +99,7 @@ class MobileDisplay extends StatelessWidget {
 class DesktopDisplay extends StatelessWidget {
   const DesktopDisplay({super.key, required this.parentWidget});
 
-  final parentWidget;
+  final StatisticsBlock parentWidget;
 
 
   @override

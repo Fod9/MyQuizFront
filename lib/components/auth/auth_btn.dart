@@ -1,15 +1,14 @@
-import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:my_quiz_ap/constants.dart';
+import 'dart:convert' show jsonDecode, jsonEncode;
+import 'package:flutter/foundation.dart' show Brightness, kDebugMode;
+import 'package:flutter/services.dart' show Brightness, Color, TextInput;
+import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/colors.dart' show lightGlassBlue;
 import 'package:my_quiz_ap/components/forms/custom_form_controller.dart' show FormController;
 import 'package:http/http.dart' as http;
+import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT, JWTR;
+import 'package:my_quiz_ap/helpers/utils.dart' show printError, printInfo;
 import 'package:my_quiz_ap/helpers/http_extensions.dart';
-import 'package:my_quiz_ap/helpers/utils.dart';
-import 'package:my_quiz_ap/helpers/jwt/jwt.dart';
 
 class AuthBtn extends StatefulWidget {
 
