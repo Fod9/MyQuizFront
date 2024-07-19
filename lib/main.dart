@@ -14,9 +14,10 @@ import 'layout.dart' show Layout;
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   if (!kIsWeb) {
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]
-    ).then((_) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]).then((_) {
       runApp(const MyQuizApp());
     });
   } else {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:my_quiz_ap/components/sized_block.dart';
-import 'dart:convert';
+import 'package:my_quiz_ap/components/sized_block.dart' show SizedBlock;
+import 'dart:convert' show jsonDecode;
 
 class AdminPage extends StatefulWidget {
   const AdminPage({
@@ -13,7 +13,7 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
-  List<Map<String, dynamic>> Data = [];
+  List<Map<String, dynamic>> _data = [];
 
   Future<void> getSchools() async {
     http.Response response =
@@ -24,10 +24,11 @@ class _AdminPageState extends State<AdminPage> {
     List<dynamic> jsonData = jsonDecode(body);
     List<Map<String, dynamic>> data = jsonData.cast<Map<String, dynamic>>();
     setState(() {
-      Data = data;
+      _data = data;
     });
   }
 
+  @override
   void initState() {
     super.initState();
     getSchools();
@@ -35,15 +36,15 @@ class _AdminPageState extends State<AdminPage> {
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width * 0.4;
-    double _height = MediaQuery.of(context).size.height * 0.1;
+    double width = MediaQuery.of(context).size.width * 0.4;
+    double height = MediaQuery.of(context).size.height * 0.1;
 
     return Center(
         child: Column(
       children: [
         SizedBlock(
-          height: _height,
-          width: _width,
+          height: height,
+          width: width,
           clickEvent: () {},
           child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -54,10 +55,10 @@ class _AdminPageState extends State<AdminPage> {
               ]),
         ),
         Column(
-            children: Data.map((school) {
+            children: _data.map((school) {
           return SizedBlock(
-            height: _height,
-            width: _width,
+            height: height,
+            width: width,
             clickEvent: () {},
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
