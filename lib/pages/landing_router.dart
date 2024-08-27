@@ -100,16 +100,24 @@ class _LandingRouterState extends State<LandingRouter> {
   /// returns [true] if the [user] is redirected
   /// returns [false] if the [user] is not redirected
   bool redirectFromRole(String role) {
-    if (role == 'admin') {
-      redirectTo('/admin');
-    } else if (role == 'teacher') {
-      redirectTo('/teacher');
-    } else if (role == 'student') {
-      redirectTo('/student');
-    } else {
-      return false;
+
+    switch (role) {
+      case 'admin':
+        redirectTo('/admin');
+        return true;
+      case 'teacher':
+        redirectTo('/teacher');
+        return true;
+      case 'student':
+        redirectTo('/student');
+        return true;
+      case 'school':
+        redirectTo('/school');
+        return true;
+      default:
+        printInfo(role);
+        return false;
     }
-    return true;
   }
 
   late Widget resetJwtBtn = ElevatedButton(
