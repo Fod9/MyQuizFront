@@ -11,6 +11,7 @@ class StudentProvider with ChangeNotifier {
   }
 
   final List<Student> _students = [];
+  final List<Student> _selectedStudents = [];
   bool _isStudentListLoading = false;
 
   List<Student> get students => _students;
@@ -51,6 +52,16 @@ class StudentProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void selectStudent(Student student) {
+    student.selected = !student.selected;
+    if (student.selected) {
+      _selectedStudents.add(student);
+    } else {
+      _selectedStudents.remove(student);
+    }
+    notifyListeners();
+  }
+
   void removeStudent(Student student) {
     _students.remove(student);
     notifyListeners();
@@ -59,15 +70,17 @@ class StudentProvider with ChangeNotifier {
 
 class Student {
 
-  const Student({
+  Student({
     required this.firstName,
     required this.lastName,
     required this.email,
+    this.selected = false,
   });
 
   final String firstName;
   final String lastName;
   final String email;
+  bool selected = false;
 
   @override
   String toString() {
