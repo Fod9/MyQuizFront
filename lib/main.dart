@@ -1,112 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/pages/homePage.dart';
-// import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:my_quiz_ap/pages/auth_page.dart' show AuthPage;
+import 'package:my_quiz_ap/pages/admin_page.dart' show AdminPage;
+import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
+import 'package:my_quiz_ap/pages/create_quiz_page.dart' show CreateQuizPage;
+import 'package:my_quiz_ap/pages/quiz_page.dart' show QuizPage;
+import 'package:my_quiz_ap/pages/teacher_page.dart' show TeacherPage;
+import 'package:my_quiz_ap/pages/landing_router.dart' show LandingRouter;
+import 'package:my_quiz_ap/pages/student_page.dart' show StudentPage;
+import 'helpers/Colors.dart' show lightGlassBlue;
+import 'layout.dart' show Layout;
+import 'package:my_quiz_ap/pages/homePage.dart' show HomePage;
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  if (!kIsWeb) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]).then((_) {
+      runApp(const MyQuizApp());
+    });
+  } else {
+    runApp(const MyQuizApp());
+  }
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
+class MyQuizApp extends StatelessWidget {
+  const MyQuizApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'MyQuiz'),
-    );
-  }
-}
+        title: 'MyQuiz',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          scaffoldBackgroundColor: lightGlassBlue,
+          useMaterial3: true,
+          fontFamily: 'Quicksand',
+        ),
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title});
+        // initial route is the landing router page
+        // the landing router page will redirect to the correct page
+        initialRoute: '/home',
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  String _screenType = "mobile";
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth > 600) {
-          _screenType = "desktop";
-        } else {
-          _screenType = "mobile";
+        routes: {
+          '/': (context) => const Layout("MyQuiz", page: LandingRouter(), hasAppBar: false),
+          '/auth': (context) => const Layout("MyQuiz", page: AuthPage(), hasAppBar: false),
+          '/logout': (context) => const Layout("MyQuiz", page: LandingRouter(logout: true), hasAppBar: false),
+          '/admin': (context) => const Layout("Admin", page: AdminPage()),
+          '/teacher': (context) => const Layout("Teacher", page: TeacherPage()),
+          '/student': (context) => const Layout("Student", page: StudentPage()),
+          '/quiz': (context) => const Layout("Quiz", page: QuizPage()),
+          '/create-quiz': (context) => const Layout("Create Quiz", page: CreateQuizPage()),
+          '/modify-quiz': (context) => const Layout("Modify Quiz", page: CreateQuizPage(isModify: true)),
+          '/home': (context) => const Layout("MyQuiz", page: HomePage(), hasAppBar: false),
         }
-
-        return Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(60.0),
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(30)),
-                child: Container(
-                  color: Colors.white.withOpacity(0.35),
-                  child: AppBar(
-                    backgroundColor: Colors.transparent,
-                    elevation: 0,
-                    title: Text(
-                      widget.title,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        // fontFamily: GoogleFonts.quicksand().fontFamily,
-                      ),
-                    ),
-                    actions: [
-                      IconButton(
-                        onPressed: () {
-                        },
-                        icon: Image.asset(
-                          'assets/images/menu-burger.png', 
-                          width:
-                              24, 
-                          height:
-                              24, 
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          body: Stack(
-            children: [
-              Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: (_screenType == "mobile")
-                        ? const AssetImage("assets/images/BackgroundMobile.png")
-                        : const AssetImage(
-                            "assets/images/BackgroundDesktop.png"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              SingleChildScrollView(
-                child: HomePage(
-                  screenType: _screenType,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

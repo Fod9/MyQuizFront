@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import '../helpers/Colors.dart';
+import 'package:my_quiz_ap/helpers/utils.dart' show getScreenType;
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.screenType}) : super(key: key);
-
-  final String screenType;
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -13,21 +12,30 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   double _width = 300;
   double _height = 150;
-  double _verticalPosition = 70; // Variable pour ajuster la position verticale de l'image
+  double _verticalPosition =
+      70; // Variable pour ajuster la position verticale de l'image
 
   @override
   Widget build(BuildContext context) {
-    if (widget.screenType == "mobile") {
+    String screenType = getScreenType(context);
+
+    if (screenType == "mobile") {
       _width = MediaQuery.of(context).size.width * 0.8;
       _height = MediaQuery.of(context).size.height * 0.1;
     }
 
-    return MobileDisplay(width: _width, height: _height, verticalPosition: _verticalPosition);
+    return MobileDisplay(
+        width: _width, height: _height, verticalPosition: _verticalPosition);
   }
 }
 
 class MobileDisplay extends StatelessWidget {
-  MobileDisplay({Key? key, required this.width, required this.height, required this.verticalPosition}) : super(key: key);
+  MobileDisplay(
+      {Key? key,
+      required this.width,
+      required this.height,
+      required this.verticalPosition})
+      : super(key: key);
 
   final double width;
   final double height;
@@ -42,7 +50,9 @@ class MobileDisplay extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: verticalPosition), // Utiliser la variable pour ajuster la position verticale
+            padding: EdgeInsets.only(
+                top:
+                    verticalPosition), // Utiliser la variable pour ajuster la position verticale
             child: Image.asset(
               'assets/images/image1.png',
               fit: BoxFit.cover,
