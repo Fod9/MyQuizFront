@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:my_quiz_ap/pages/add_students_page.dart';
+import 'package:my_quiz_ap/pages/manage_students_page.dart';
 import 'package:my_quiz_ap/pages/auth_page.dart' show AuthPage;
 import 'package:my_quiz_ap/pages/admin_page.dart' show AdminPage;
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
@@ -58,7 +58,7 @@ class MyQuizApp extends StatelessWidget {
           '/create-quiz': (context) => const Layout("Create Quiz", page: CreateQuizPage()),
           '/modify-quiz': (context) => const Layout("Modify Quiz", page: CreateQuizPage(isModify: true)),
           '/add_pdf_quiz': (context) => const Layout("Add PDF Quiz", page: Placeholder(color: Colors.red,)),
-          '/add-students': (context) => const Layout("Add Students", page: AddStudentsPage()),
+          '/manage-students': (context) => const Layout("Add Students", page: ManageStudentsPage()),
         }
     );
   }

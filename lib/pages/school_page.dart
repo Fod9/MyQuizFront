@@ -14,7 +14,7 @@ class SchoolPage extends StatelessWidget {
           height: 50,
           child: MaterialButton(
             onPressed: () {
-              Navigator.pushNamed(context, "/add-students");
+              Navigator.pushNamed(context, "/manage-students");
             },
             color: lightGlassBlue,
             shape: RoundedRectangleBorder(

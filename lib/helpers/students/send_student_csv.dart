@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:my_quiz_ap/helpers/http_extensions.dart';
 import 'package:my_quiz_ap/helpers/utils.dart';
-import 'jwt/jwt.dart';
-import 'jwt/token_checker.dart';
-import '../constants.dart';
+import '../jwt/jwt.dart';
+import '../jwt/token_checker.dart';
+import '../../constants.dart';
 
 Future<List<dynamic>> sendStudentCsv(File file) async {
   final JWT jwt = JWT();
