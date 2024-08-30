@@ -2,8 +2,9 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/helpers/colors.dart' show lightGlassBlue;
-import 'package:my_quiz_ap/helpers/students/send_student_csv.dart';
 import 'package:my_quiz_ap/helpers/utils.dart';
+import 'package:my_quiz_ap/providers/student_provider.dart';
+import 'package:provider/provider.dart';
 
 class AddStudentFromCsv extends StatefulWidget {
   const AddStudentFromCsv({super.key});
@@ -15,15 +16,16 @@ class AddStudentFromCsv extends StatefulWidget {
 class _AddStudentFromCsvState extends State<AddStudentFromCsv> {
 
   File? _file;
-  List<dynamic> _result = [];
+  late final StudentProvider _provider = Provider.of<StudentProvider>(context, listen: false);
 
   getFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
       final file = File(result.files.single.path!);
-      _file = file;
-      setState(() {});
+      setState(() {
+        _file = file;
+      });
     } else {
 
       if (mounted) {
@@ -80,7 +82,7 @@ class _AddStudentFromCsvState extends State<AddStudentFromCsv> {
             child: MaterialButton(
               onPressed: () async {
                 printOrder("Sending file");
-                _result = await sendStudentCsv(_file!);
+                _provider.addStudentFromCsv(_file);
               },
               color: lightGlassBlue,
               shape: RoundedRectangleBorder(

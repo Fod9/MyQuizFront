@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../helpers/students/get_student_list.dart';
-import '../../providers/student_provider.dart';
+import 'package:provider/provider.dart' show Provider;
+import 'package:my_quiz_ap/providers/student_provider.dart' show StudentProvider;
 
 class StudentList extends StatefulWidget {
   const StudentList({super.key});
@@ -11,38 +10,26 @@ class StudentList extends StatefulWidget {
 }
 
 class _StudentListState extends State<StudentList> {
-
-  late final StudentProvider _provider;
-
-  @override
-  void initState() {
-    super.initState();
-    _provider = Provider.of<StudentProvider>(context);
-  }
+  late final StudentProvider _provider = Provider.of<StudentProvider>(context);
 
   // After
   Widget rowCell(
-      String text, {
-        FontWeight? fontWeight,
-        double fontSize = 14,
-      }
-  ) => Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Text(
-        text,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: fontSize,
-          fontWeight: fontWeight,
-        )
-    ),
-  );
+    String text, {
+    FontWeight? fontWeight,
+    double fontSize = 14,
+  }) =>
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(text,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: fontSize,
+              fontWeight: fontWeight,
+            )),
+      );
 
-  Widget firstRowCell(String text) => rowCell(
-      text,
-      fontWeight: FontWeight.w700,
-      fontSize: 16
-  );
+  Widget firstRowCell(String text) =>
+      rowCell(text, fontWeight: FontWeight.w700, fontSize: 16);
 
   @override
   Widget build(BuildContext context) {
@@ -51,35 +38,47 @@ class _StudentListState extends State<StudentList> {
         minHeight: MediaQuery.of(context).size.height * 0.7,
       ),
       child: _provider.isStudentListLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: SizedBox(
+                width: 50,
+                height: 50,
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeCap: StrokeCap.round,
+                  ),
+                ),
+              ),
+            )
           : _provider.students.isEmpty
-          ? const Center(child: Text('No students found'))
-          : Table(
-        border: TableBorder.all(color: Colors.white),
-        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        columnWidths: const {
-          0: FlexColumnWidth(1),
-          1: FlexColumnWidth(1),
-          2: FlexColumnWidth(2),
-        },
-        children: [
-          TableRow(
-            children: [
-              firstRowCell("Nom"),
-              firstRowCell("Prénom"),
-              firstRowCell("Email"),
-            ],
-          ),
-          for (var student in _provider.students)
-            TableRow(
-              children: [
-                rowCell(student.lastName),
-                rowCell(student.firstName),
-                rowCell(student.email),
-              ],
-            ),
-        ],
-      ),
+              ? const Center(child: Text('No students found'))
+              : Table(
+                  border: TableBorder.all(color: Colors.white),
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  columnWidths: const {
+                    0: FlexColumnWidth(1),
+                    1: FlexColumnWidth(1),
+                    2: FlexColumnWidth(2),
+                  },
+                  children: [
+                    TableRow(
+                      children: [
+                        firstRowCell("Nom"),
+                        firstRowCell("Prénom"),
+                        firstRowCell("Email"),
+                      ],
+                    ),
+                    for (var student in _provider.students)
+                      TableRow(
+                        children: [
+                          rowCell(student.lastName),
+                          rowCell(student.firstName),
+                          rowCell(student.email),
+                        ],
+                      ),
+                  ],
+                ),
     );
   }
 }

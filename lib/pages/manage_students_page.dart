@@ -17,8 +17,8 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: StudentProvider(),
+    return ChangeNotifierProvider<StudentProvider>(
+      create: (context) => StudentProvider(),
       child: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: const Column(

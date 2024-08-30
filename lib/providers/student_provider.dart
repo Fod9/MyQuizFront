@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/helpers/students/get_student_list.dart';
+import 'package:my_quiz_ap/helpers/students/send_student_csv.dart';
 
 class StudentProvider with ChangeNotifier {
 
@@ -13,7 +16,7 @@ class StudentProvider with ChangeNotifier {
   List<Student> get students => _students;
   bool get isStudentListLoading => _isStudentListLoading;
 
-  void fetchStudentList() async {
+  Future<void> fetchStudentList() async {
     _isStudentListLoading = true;
     notifyListeners();
 
@@ -22,11 +25,7 @@ class StudentProvider with ChangeNotifier {
     List<Student> students = [];
 
     for (var student in rawStudentList) {
-      students.add(Student(
-        firstName: student['prenom'],
-        lastName: student['nom'],
-        email: student['email'],
-      ));
+      students.add(Student.fromJson(student));
     }
 
     _students.clear();
@@ -38,6 +37,17 @@ class StudentProvider with ChangeNotifier {
 
   void addAllStudents(List<Student> students) {
     _students.addAll(students);
+    notifyListeners();
+  }
+
+  Future<void> addStudentFromCsv(File? file) async {
+    if (file == null) return;
+
+    _isStudentListLoading = true;
+    notifyListeners();
+    await sendStudentCsv(file);
+    await fetchStudentList();
+
     notifyListeners();
   }
 
@@ -62,5 +72,13 @@ class Student {
   @override
   String toString() {
     return 'Student{firstName: $firstName, lastName: $lastName, email: $email}';
+  }
+
+  factory Student.fromJson(Map<String, dynamic> json) {
+    return Student(
+      firstName: json['prenom'],
+      lastName: json['nom'],
+      email: json['email'],
+    );
   }
 }
