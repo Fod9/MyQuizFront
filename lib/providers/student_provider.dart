@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:my_quiz_ap/helpers/students/delete_student.dart';
 import 'package:my_quiz_ap/helpers/students/get_student_list.dart';
 import 'package:my_quiz_ap/helpers/students/send_student_csv.dart';
 
@@ -12,10 +12,13 @@ class StudentProvider with ChangeNotifier {
 
   final List<Student> _students = [];
   final List<Student> _selectedStudents = [];
+  Student? _deletingStudent;
   bool _isStudentListLoading = false;
 
   List<Student> get students => _students;
   bool get isStudentListLoading => _isStudentListLoading;
+  Student? get deletingStudent => _deletingStudent;
+  bool get hasSelectedStudents => _selectedStudents.isNotEmpty;
 
   Future<void> fetchStudentList() async {
     _isStudentListLoading = true;
@@ -65,6 +68,23 @@ class StudentProvider with ChangeNotifier {
   void removeStudent(Student student) {
     _students.remove(student);
     notifyListeners();
+  }
+
+  Future<bool> deleteSelectedStudents() async {
+    bool success = true;
+    for (var student in _selectedStudents) {
+      _deletingStudent = student;
+      success = await deleteStudent(student.email);
+      removeStudent(student);
+      notifyListeners();
+
+      if (!success) return false;
+    }
+
+    _selectedStudents.clear();
+    notifyListeners();
+    _deletingStudent = null;
+    return true;
   }
 }
 
