@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/helpers/colors.dart' show lightGlassBlue;
 import 'package:my_quiz_ap/helpers/students/send_student_csv.dart';
 import 'package:my_quiz_ap/helpers/utils.dart';
-import 'package:flutter/material.dart';
 
 class AddStudentFromCsv extends StatefulWidget {
   const AddStudentFromCsv({super.key});
@@ -79,8 +79,8 @@ class _AddStudentFromCsvState extends State<AddStudentFromCsv> {
             height: 50,
             child: MaterialButton(
               onPressed: () async {
+                printOrder("Sending file");
                 _result = await sendStudentCsv(_file!);
-                setState(() {});
               },
               color: lightGlassBlue,
               shape: RoundedRectangleBorder(
@@ -96,13 +96,6 @@ class _AddStudentFromCsvState extends State<AddStudentFromCsv> {
                   fontSize: 16,
                 ),
               ),
-            ),
-          ),
-          Text(
-            _result.map((key) => key.toString()).join('\n'),
-            style: TextStyle(
-              color: _result.isEmpty ? Colors.red : Colors.black,
-              fontSize: 16,
             ),
           ),
         ],

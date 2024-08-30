@@ -6,7 +6,7 @@ import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT;
 import 'package:my_quiz_ap/helpers/jwt/token_checker.dart' show checkToken;
 
 
-Future<Map<String, dynamic>> getStudentList() async {
+Future<List<dynamic>> getStudentList() async {
 
   // create a JWT instance
   final JWT jwt = JWT();
@@ -25,11 +25,11 @@ Future<Map<String, dynamic>> getStudentList() async {
 
   // if the response is an error, return the error message
   if (response.error && response.body.contains("Unauthorized")) {
-    return Future.value({"error": "Unauthorized request, please login again"});
+    return Future.error("Unauthorized");
   } else if (response.ok) {  // if the response is ok, return the data
     dynamic data = jsonDecode(response.body);
     return Future.value(data);
   } else {  // if an error occurred, return an error message
-    return Future.value({"error": "An error occurred, please try again later"});
+    return Future.error("An error occurred");
   }
 }

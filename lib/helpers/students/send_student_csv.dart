@@ -26,6 +26,7 @@ Future<List<dynamic>> sendStudentCsv(File file) async {
     printError("sendStudentCsv Error: ${response.body}");
     return [];
   } else {
+    printInfo("sendStudentCsv: ${response.body}");
     final dynamic data = jsonDecode(response.body);
     return data;
   }
