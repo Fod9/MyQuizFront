@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/helpers/utils.dart' show getScreenType;
+import '../helpers/Colors.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,7 +12,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   double _width = 300;
   double _height = 150;
-  final double _verticalPosition = 70; // Variable pour ajuster la position verticale de l'image
+  final double _verticalPosition = 70;
 
   @override
   Widget build(BuildContext context) {
@@ -105,26 +106,41 @@ class DesktopDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SingleChildScrollView(
+    return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 18.0),
+        padding: const EdgeInsets.symmetric(vertical: 18.0),
         child: Column(
           children: [
-            ContentRow(
+            const ContentRow(
               text: 'Découvrez MyQuiz : votre compagnon d\'apprentissage',
               description:
               'Bienvenue sur MyQuiz, l\'application conçue pour transformer votre expérience d\'apprentissage. Destinée aux étudiants du supérieur, MyQuiz vous offre un accès direct à des quiz personnalisés qui vous aident à renforcer vos connaissances et à mieux vous préparer pour vos examens. Grâce à des contenus spécialement élaborés par vos enseignants, vous pouvez réviser de manière ciblée et interactive.',
               imagePath: 'assets/images/image1.png',
               isImageFirst: false,
             ),
-            ContentRow(
-              text: 'Des quiz personnalisés créés par vos enseignants',
-              description:
-              "Avec MyQuiz, les enseignants ont la possibilité de créer des quiz de manière simple et rapide. Ils peuvent soit générer des questions manuellement, soit utiliser notre intelligence artificielle pour créer des quiz à partir de documents PDF de leurs cours. Cette technologie permet de transformer le contenu des cours en questions pertinentes et adaptées au niveau de chaque étudiant, garantissant ainsi une expérience d'apprentissage optimisée.",
-              imagePath: 'assets/images/image2.png',
-              isImageFirst: true,
+            Stack(
+              children: [
+                ClipPath(
+                  clipper: DiagonalClipper(),
+                  child: Container(
+                    width: double.infinity,
+                    height: 600.0,
+                    color: darkGlass,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 40.0),
+                  child: ContentRow(
+                    text: 'Des quiz personnalisés créés par vos enseignants',
+                    description:
+                    "Avec MyQuiz, les enseignants ont la possibilité de créer des quiz de manière simple et rapide. Ils peuvent soit générer des questions manuellement, soit utiliser notre intelligence artificielle pour créer des quiz à partir de documents PDF de leurs cours. Cette technologie permet de transformer le contenu des cours en questions pertinentes et adaptées au niveau de chaque étudiant, garantissant ainsi une expérience d'apprentissage optimisée.",
+                    imagePath: 'assets/images/image2.png',
+                    isImageFirst: true,
+                  ),
+                ),
+              ],
             ),
-            ContentRow(
+            const ContentRow(
               text: 'Améliorez vos résultats en toute simplicité',
               description:
               "MyQuiz est plus qu'un simple outil d'évaluation ; c'est un véritable atout pour maximiser vos performances académiques. En vous offrant des quiz accessibles à tout moment et sur n'importe quel appareil, MyQuiz vous permet de vous entraîner régulièrement et de mesurer vos progrès. Que vous soyez en déplacement ou à la maison, votre révision est à portée de main, vous aidant à atteindre vos objectifs académiques avec succès.",
@@ -152,7 +168,7 @@ class MobileDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double paddingValue = 12.0; // Constante pour l'espacement
+    const double paddingValue = 12.0;
 
     return SingleChildScrollView(
       child: Column(
@@ -167,12 +183,12 @@ class MobileDisplay extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.all(paddingValue),
             child: Text(
-              'Découvrez MyQuiz : votre compagnon d\'apprentissage personnalisé',
+              'Découvrez MyQuiz : votre compagnon d\'apprentissage',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.white, // Couleur du texte en blanc
+                color: Colors.white,
               ),
             ),
           ),
@@ -183,39 +199,58 @@ class MobileDisplay extends StatelessWidget {
               textAlign: TextAlign.justify,
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.white, // Couleur du texte en blanc
+                color: Colors.white,
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: paddingValue / 2),
-            child: Image.asset(
-              'assets/images/image2.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(paddingValue),
-            child: Text(
-              'Des quiz personnalisés créés par vos enseignants',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white, // Couleur du texte en blanc
+          Stack(
+            children: [
+              ClipPath(
+                clipper: DiagonalClipper(),
+                child: Container(
+                  width: double.infinity,
+                  height: 750.0,
+                  color: darkGlass,
+                ),
               ),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: paddingValue, horizontal: paddingValue * 2),
-            child: Text(
-              "Avec MyQuiz, les enseignants ont la possibilité de créer des quiz de manière simple et rapide. Ils peuvent soit générer des questions manuellement, soit utiliser notre intelligence artificielle pour créer des quiz à partir de documents PDF de leurs cours. Cette technologie permet de transformer le contenu des cours en questions pertinentes et adaptées au niveau de chaque étudiant, garantissant ainsi une expérience d'apprentissage optimisée.",
-              textAlign: TextAlign.justify,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white, // Couleur du texte en blanc
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: paddingValue * 5),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: paddingValue / 2),
+                      child: Image.asset(
+                        'assets/images/image2.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(paddingValue),
+                      child: Text(
+                        'Des quiz personnalisés créés par vos enseignants',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: paddingValue, horizontal: paddingValue * 2),
+                      child: Text(
+                        "Avec MyQuiz, les enseignants ont la possibilité de créer des quiz de manière simple et rapide. Ils peuvent soit générer des questions manuellement, soit utiliser notre intelligence artificielle pour créer des quiz à partir de documents PDF de leurs cours. Cette technologie permet de transformer le contenu des cours en questions pertinentes et adaptées au niveau de chaque étudiant, garantissant ainsi une expérience d'apprentissage optimisée.",
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: paddingValue / 2),
@@ -232,7 +267,7 @@ class MobileDisplay extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.white, // Couleur du texte en blanc
+                color: Colors.white,
               ),
             ),
           ),
@@ -243,20 +278,7 @@ class MobileDisplay extends StatelessWidget {
               textAlign: TextAlign.justify,
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.white, // Couleur du texte en blanc
-              ),
-            ),
-          ),
-          SizedBox(
-            width: width,
-            height: height,
-            child: Form(
-              key: formKey,
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Ajoutez les autres widgets ici
-                ],
+                color: Colors.white,
               ),
             ),
           ),
@@ -265,3 +287,21 @@ class MobileDisplay extends StatelessWidget {
     );
   }
 }
+
+class DiagonalClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.moveTo(0, size.height * 0.1);
+    path.lineTo(size.width, 0);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0.0, size.height * 0.9);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
