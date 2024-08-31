@@ -29,7 +29,8 @@ Future<Map<String, dynamic>> getAssociate() async {
   } else if (response.ok) {  // if the response is ok, return the data
     dynamic data = jsonDecode(response.body);
     return Future.value(data);
-  } else {  // if an error occurred, return an error message
+  } else {
+    print (response.statusCode);// if an error occurred, return an error message
     return Future.value({"error": "An error occurred, please try again later"});
   }
 }

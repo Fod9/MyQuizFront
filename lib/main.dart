@@ -43,7 +43,7 @@ class MyQuizApp extends StatelessWidget {
 
         // initial route is the landing router page
         // the landing router page will redirect to the correct page
-        initialRoute: '/home',
+        initialRoute: '/',
 
         routes: {
           '/': (context) => const Layout("MyQuiz", page: LandingRouter(), hasAppBar: false),

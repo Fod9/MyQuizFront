@@ -78,6 +78,8 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
         quizData = null;
       }
 
+      print ("teacher data: $_teacherData");
+
       _isPageLoaded = true;
     }
     return true;

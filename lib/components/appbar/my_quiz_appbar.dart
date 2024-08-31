@@ -103,7 +103,7 @@ class _MyQuizAppBarState extends State<MyQuizAppBar> {
 
                                 SizedBox(width: 10.0),
 
-                                AppbarTextButton(route: '', text: 'Quiz', color: Colors.white),
+                                AppbarTextButton(route: '/', text: 'Quiz', color: Colors.white),
 
                                 SizedBox(width: 10.0),
 
