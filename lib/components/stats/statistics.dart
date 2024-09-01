@@ -104,7 +104,7 @@ class DesktopDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double blockHeight = MediaQuery.of(context).size.height * 0.3;
+    final double blockHeight = MediaQuery.of(context).size.height * 0.25;
     final double blockWidth  = MediaQuery.of(context).size.width * 0.8;
     return SizedBlock(
       blockName: parentWidget.blockName,

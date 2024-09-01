@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/quiz/dropdown/dropdown_quiz.dart' show DropDownQuiz;
 import 'package:my_quiz_ap/helpers/quiz/get_quiz_list.dart' show getQuizList;
 
+import '../components/stats/statistics.dart';
+
 class StudentPage extends StatefulWidget {
   const StudentPage({super.key});
 
@@ -74,9 +76,7 @@ class _StudentPageState extends State<StudentPage> {
                 ),
               ),
             );
-
           }
-
         }
     );
   }
@@ -122,6 +122,7 @@ class MobileDisplay extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          const StatisticsBlock(height: 400, width: 330, mode: "mobile"),
           ..._blocWidgets
         ],
       ),
@@ -172,9 +173,10 @@ class DesktopDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.only(top:75),
+        padding: const EdgeInsets.only(top:45),
         child: Column(
           children: [
+            const StatisticsBlock(height: 400, width: 330, mode: "desktop", isExpandable: false, isExpanded: true),
             Wrap(
               spacing: 100,
               runSpacing: 75,
