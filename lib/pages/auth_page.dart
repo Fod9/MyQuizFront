@@ -62,22 +62,6 @@ class _AuthPageState extends State<AuthPage> {
       setErrorMessage: setErrorMessage,
       errorMessage: errorMessage,
     );
-
-    // return (screenType == "mobile" || _width > 600) ?
-    //   MobileDisplay(
-    //     width: _width,
-    //     height: _height,
-    //     toggleForm: toggleForm,
-    //     isLoginFormDisplayed: isLoginFormDisplayed,
-    //     formController: formController,
-    //     setErrorMessage: setErrorMessage,
-    //     errorMessage: errorMessage,
-    //   )
-    //     :
-    //   DesktopDisplay(
-    //     width: _width,
-    //     height: _height
-    //   );
   }
 
   void toggleForm() {

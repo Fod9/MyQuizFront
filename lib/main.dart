@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:my_quiz_ap/pages/homePage.dart' show HomePage;
+import 'package:my_quiz_ap/pages/home_page.dart' show HomePage;
 import 'package:my_quiz_ap/pages/auth_page.dart' show AuthPage;
 import 'package:my_quiz_ap/pages/admin_page.dart' show AdminPage;
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
@@ -43,7 +43,7 @@ class MyQuizApp extends StatelessWidget {
 
         // initial route is the landing router page
         // the landing router page will redirect to the correct page
-        initialRoute: '/home',
+        initialRoute: '/',
 
         routes: {
           '/': (context) => const Layout("MyQuiz", page: LandingRouter(), hasAppBar: false),

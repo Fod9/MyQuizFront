@@ -124,12 +124,12 @@ class DesktopDisplay extends StatelessWidget {
                   clipper: DiagonalClipper(),
                   child: Container(
                     width: double.infinity,
-                    height: 600.0,
+                    height: MediaQuery.of(context).size.height * 0.7,
                     color: darkGlass,
                   ),
                 ),
                 const Padding(
-                  padding: EdgeInsets.only(top: 40.0),
+                  padding: EdgeInsets.only(top: 60.0),
                   child: ContentRow(
                     text: 'Des quiz personnalisés créés par vos enseignants',
                     description:
@@ -209,7 +209,7 @@ class MobileDisplay extends StatelessWidget {
                 clipper: DiagonalClipper(),
                 child: Container(
                   width: double.infinity,
-                  height: 750.0,
+                  height: MediaQuery.of(context).size.height * 0.75,
                   color: darkGlass,
                 ),
               ),
