@@ -48,7 +48,7 @@ class MyQuizApp extends StatelessWidget {
         routes: {
           '/': (context) => const Layout("MyQuiz", page: LandingRouter(), hasAppBar: false),
           '/home': (context) => const Layout("MyQuiz", page: HomePage(), hasAppBar: true),
-          '/auth': (context) => const Layout("MyQuiz", page: AuthPage(), hasAppBar: false),
+          '/auth': (context) => const Layout("MyQuiz", page: AuthPage(), hasAppBar: true),
           '/logout': (context) => const Layout("MyQuiz", page: LandingRouter(logout: true), hasAppBar: false),
           '/admin': (context) => const Layout("Admin", page: AdminPage()),
           '/teacher': (context) => const Layout("Teacher", page: TeacherPage()),

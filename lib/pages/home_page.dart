@@ -209,7 +209,7 @@ class MobileDisplay extends StatelessWidget {
                 clipper: DiagonalClipper(),
                 child: Container(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.75,
+                  height: 750,
                   color: darkGlass,
                 ),
               ),
@@ -282,6 +282,9 @@ class MobileDisplay extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(
+            height: height / 1.5,
+          )
         ],
       ),
     );
