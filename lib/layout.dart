@@ -20,17 +20,19 @@ import 'components/appbar/my_quiz_appbar.dart' show MyQuizAppBar;
 /// returns a [Scaffold] with the [AppBar] and the [page]
 class Layout extends StatefulWidget {
   const Layout(
-      this.title,  // positional parameter
-          {
+      this.title,
+      {
         super.key,
         required this.page,
         this.hasAppBar = true,
+        this.hasTopOffset = true,
       }
-      );
+  );
 
   final String title;  // title of the page
   final Widget page;  // the page to display
   final bool hasAppBar;  // show the app bar
+  final bool hasTopOffset;  // show the top offset
 
   @override
   State<Layout> createState() => _LayoutState();
@@ -48,38 +50,38 @@ class _LayoutState extends State<Layout> {
         child: Consumer<LayoutProvider>(
             builder: (context, layoutProvider, child) {
 
-            return Scaffold(
-                key: layoutProvider.layoutKey,
-                // show the app bar if [hasAppBar] is true
-                appBar: widget.hasAppBar ? MyQuizAppBar(
-                  title: widget.title,
-                  scaffoldKey: layoutProvider.layoutKey,
-                ) : null,
-                extendBodyBehindAppBar: true,
+              return Scaffold(
+                  key: layoutProvider.layoutKey,
+                  // show the app bar if [hasAppBar] is true
+                  appBar: widget.hasAppBar ? MyQuizAppBar(
+                    title: widget.title,
+                    scaffoldKey: layoutProvider.layoutKey,
+                  ) : null,
+                  extendBodyBehindAppBar: true,
 
-                endDrawer: const MyQuizEndDrawer(),
-                drawerScrimColor: Colors.transparent,
+                  endDrawer: const MyQuizEndDrawer(),
+                  drawerScrimColor: Colors.transparent,
 
-                body: Stack(
-                  children: [
+                  body: Stack(
+                    children: [
 
-                    // background image with a gradient
-                    const MyQuizBackground(),
+                      // background image with a gradient
+                      const MyQuizBackground(),
 
-                    // the page to display
-                    Padding(
-                      padding: const EdgeInsets.only(top : 85.0),
-                      child: SingleChildScrollView(
-                        controller: layoutProvider.scrollController,
-                        physics: const BouncingScrollPhysics(),
-                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                        child: widget.page,
+                      // the page to display
+                      Padding(
+                        padding: EdgeInsets.only(top : widget.hasTopOffset ? 85.0 : 0.0),
+                        child: SingleChildScrollView(
+                          controller: layoutProvider.scrollController,
+                          physics: const BouncingScrollPhysics(),
+                          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                          child: widget.page,
+                        ),
                       ),
-                    ),
-                  ],
-                )
-            );
-          }
+                    ],
+                  )
+              );
+            }
         ),
       ),
     );

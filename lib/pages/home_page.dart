@@ -108,7 +108,7 @@ class DesktopDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 18.0),
+        padding: const EdgeInsets.symmetric(vertical: 60.0),
         child: Column(
           children: [
             const ContentRow(
@@ -174,7 +174,7 @@ class MobileDisplay extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: verticalPosition / 3, bottom: verticalPosition / 10), // Utiliser la variable pour ajuster la position verticale
+            padding: EdgeInsets.only(top: (verticalPosition / 3) + 50.0, bottom: verticalPosition / 10), // Utiliser la variable pour ajuster la position verticale
             child: Image.asset(
               'assets/images/image1.png',
               fit: BoxFit.cover,
