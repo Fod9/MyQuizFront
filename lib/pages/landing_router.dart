@@ -51,13 +51,13 @@ class _LandingRouterState extends State<LandingRouter> {
       await jwt.delete();
       JWTR jwtr = JWTR();
       jwtr.delete();
-      redirectTo('/auth');
+      redirectTo('/home');
       return <String, dynamic>{'role': ''};
     }
 
     // if the token is not found, redirect to the auth page
     if (token.isEmpty) {
-      redirectTo('/auth');
+      redirectTo('/home');
       return <String, dynamic>{'role': ''};
     }
 

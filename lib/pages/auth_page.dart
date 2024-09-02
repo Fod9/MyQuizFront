@@ -62,22 +62,6 @@ class _AuthPageState extends State<AuthPage> {
       setErrorMessage: setErrorMessage,
       errorMessage: errorMessage,
     );
-
-    // return (screenType == "mobile" || _width > 600) ?
-    //   MobileDisplay(
-    //     width: _width,
-    //     height: _height,
-    //     toggleForm: toggleForm,
-    //     isLoginFormDisplayed: isLoginFormDisplayed,
-    //     formController: formController,
-    //     setErrorMessage: setErrorMessage,
-    //     errorMessage: errorMessage,
-    //   )
-    //     :
-    //   DesktopDisplay(
-    //     width: _width,
-    //     height: _height
-    //   );
   }
 
   void toggleForm() {
@@ -112,7 +96,7 @@ class MobileDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 100.0),
+        padding: const EdgeInsets.symmetric(vertical: 25.0),
         child: Column(
           children: [
             isLoginFormDisplayed ?
