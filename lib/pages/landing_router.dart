@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'dart:convert' show jsonDecode;
 import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/http_extensions.dart' show IsOk;
 import 'package:my_quiz_ap/helpers/jwt/token_checker.dart' show checkToken;
-import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
+import 'package:my_quiz_ap/helpers/utils.dart' show printError, printInfo;
 import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT, JWTR;
 import 'package:http/http.dart' as http show Response, get;
 
@@ -70,7 +72,10 @@ class _LandingRouterState extends State<LandingRouter> {
         }
       );
 
-    final http.Response response = await checkToken(fResponse);
+    final http.Response response = await checkToken(fResponse).timeout(
+        const Duration(seconds: 20),
+        onTimeout: () => throw TimeoutException("getUserData timeout"),
+    );
 
     // if the response is successful, return the user data
     if (response.ok) {
@@ -78,8 +83,9 @@ class _LandingRouterState extends State<LandingRouter> {
 
     // if the response is not successful, return the error
     } else {
+      redirectTo('/home');
       return <String, dynamic>{
-        'error': response.body,
+        'error': "Une erreur s'est produite, veuillez réessayer plus tard",
       };
     }
   }
@@ -146,7 +152,7 @@ class _LandingRouterState extends State<LandingRouter> {
 
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * 0.9,
+      height: MediaQuery.of(context).size.height * 0.8,
 
       child: FutureBuilder(
           future: getUserData(), // fetch the user data
@@ -154,6 +160,11 @@ class _LandingRouterState extends State<LandingRouter> {
 
             // if the snapshot has an error, return the error message
             if (snapshot.hasError) {
+
+              if (snapshot.error is TimeoutException) {
+                return loadingError("Aucune connexion internet, veuillez réessayer plus tard");
+              }
+
               return loadingError(snapshot.error.toString());
 
             // if the snapshot is done, check the role

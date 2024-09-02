@@ -7,30 +7,34 @@ class SchoolPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          width: 200,
-          height: 50,
-          child: MaterialButton(
-            onPressed: () {
-              Navigator.pushNamed(context, "/manage-students");
-            },
-            color: lightGlassBlue,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-            ),
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 200,
+            height: 50,
+            child: MaterialButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/manage-students");
+              },
+              color: lightGlassBlue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
+              ),
 
-            child: const Text(
-              "Manage Students",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
+              child: const Text(
+                "Manage Students",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
