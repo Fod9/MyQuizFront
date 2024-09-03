@@ -149,9 +149,9 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
 
                             _spacer,
 
-                            const GeneratePdfQuizBtn(),
+                            if (!widget.isModify) const GeneratePdfQuizBtn(),
 
-                            _spacer,
+                            if (!widget.isModify) _spacer,
                           ],
                         ),
                       ),

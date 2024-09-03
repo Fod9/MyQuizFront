@@ -124,7 +124,6 @@ class MobileDisplay extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ..._blocWidgets,
-          const AddPDFQuizButton(),
         ],
       ),
     );
@@ -182,39 +181,9 @@ class DesktopDisplay extends StatelessWidget {
               runSpacing: 75,
               children: [
                 ..._blocWidgets,
-                const AddPDFQuizButton()
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class AddPDFQuizButton extends StatelessWidget {
-  const AddPDFQuizButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 200,
-      height: 50,
-      child: MaterialButton(
-        onPressed: () {
-          Navigator.pushNamed(context, "/add_pdf_quiz");
-        },
-        color: lightGlassBlue,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
-
-        child: const Text(
-          "Add a quiz from PDF",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-          ),
         ),
       ),
     );

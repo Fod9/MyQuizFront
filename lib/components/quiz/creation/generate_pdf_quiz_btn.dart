@@ -1,12 +1,12 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:my_quiz_ap/helpers/colors.dart' show electricBlue, lightGlassBlue;
 import 'package:my_quiz_ap/helpers/quiz/generate_quiz_pdf.dart';
+import 'package:my_quiz_ap/providers/layout_provider.dart';
 import 'package:my_quiz_ap/providers/quiz_creation_data.dart';
 import 'package:provider/provider.dart';
-
-import '../../../helpers/colors.dart';
 
 class GeneratePdfQuizBtn extends StatefulWidget {
   const GeneratePdfQuizBtn({super.key});
@@ -15,9 +15,22 @@ class GeneratePdfQuizBtn extends StatefulWidget {
   State<GeneratePdfQuizBtn> createState() => _GeneratePdfQuizBtnState();
 }
 
-class _GeneratePdfQuizBtnState extends State<GeneratePdfQuizBtn> {
+class _GeneratePdfQuizBtnState extends State<GeneratePdfQuizBtn>  with SingleTickerProviderStateMixin {
+
+  late final _animationController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 500),
+  )..addListener(() {
+    setState(() {});
+  })..repeat(reverse: true);
+
+  late final Animation<double> _animation = CurvedAnimation(
+    parent: _animationController,
+    curve: Curves.easeInOut,
+  );
 
   late final QuizCreationData _quizProvider = Provider.of<QuizCreationData>(context, listen: false);
+  late final LayoutProvider _layoutProvider = Provider.of<LayoutProvider>(context, listen: false);
 
   File? _file;
   bool _loading = false;
@@ -33,65 +46,152 @@ class _GeneratePdfQuizBtnState extends State<GeneratePdfQuizBtn> {
     } else {
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Please select file'),
-        ));
+        snackBar("Aucun fichier sélectionné");
       }
     }
+  }
+
+  void snackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 200,
-      height: 50,
       child: MaterialButton(
-        onPressed: () async {
-          await getFile();
-          
-          if (_file != null) {
-            setState(() {
-              _loading = true;
-            });
+          onPressed: () async {
 
-            final int quizId = await generateQuizPdf(
-              file: _file!,
-              matiere: _quizProvider.selectedSubject!['name'],
-              name: _quizProvider.quizName,
-              userId: _quizProvider.userId,
-              classes: _quizProvider.selectedClasses.map((e) => e['id'] as int).toList(),
-            );
-
-            if (quizId != -1) {
-              Navigator.pushNamedAndRemoveUntil(context, "/modify-quiz", (route) => false, arguments: quizId);
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text('An error occurred while generating the quiz'),
-              ));
+            if (_quizProvider.selectedSubject == null) {
+              snackBar("Veuillez sélectionner une matière");
+              _layoutProvider.scrollToTop();
+              return;
             }
 
-            setState(() {
-              _loading = false;
-            });
-          }
-        },
-        color: lightGlassBlue,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
+            if (_quizProvider.selectedClasses.isEmpty) {
+              snackBar("Veuillez sélectionner au moins une classe");
+              _layoutProvider.scrollToTop();
+              return;
+            }
 
-        child: _loading ?
-        const CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-        ) :
-        const Text(
-          "Sélectionner un fichier PDF",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
+            if (_quizProvider.quizName.isEmpty) {
+              snackBar("Veuillez donner un nom au quiz");
+              _layoutProvider.scrollToTop();
+              return;
+            }
+
+            await getFile();
+
+            if (_file != null) {
+              setState(() {
+                _loading = true;
+              });
+
+              final int quizId = await generateQuizPdf(
+                file: _file!,
+                matiere: _quizProvider.selectedSubject!['name'],
+                name: _quizProvider.quizName,
+                userId: _quizProvider.userId,
+                classes: _quizProvider.selectedClasses.map((e) => e['id'] as int).toList(),
+              );
+
+              if (quizId != -1 && context.mounted) {
+                Navigator.pushNamedAndRemoveUntil(context, "/modify-quiz", (route) => false, arguments: quizId);
+                _file = null;
+              } else {
+                if (context.mounted) {
+                  snackBar("Une erreur s'est produite lors de la création du quiz, veuillez réessayer");
+                  _file = null;
+                }
+              }
+
+              setState(() {
+                _loading = false;
+              });
+            }
+          },
+          color: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-        ),
+
+          padding: EdgeInsets.zero,
+
+          child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    lightGlassBlue,
+                    electricBlue,
+                  ],
+                ),
+              ),
+
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+
+                child: _loading ? SizedBox(
+                  width: 200,
+                  height: 40,
+                  child: SvgPicture.asset(
+                    'assets/icons/icon_ai.svg',
+                    width: 20, height: 20,
+                    colorFilter: ColorFilter.mode(
+                        Color.lerp(
+                            Colors.white,
+                            Colors.white30,
+                            _animation.value
+                        )!,
+                        BlendMode.srcIn
+                    ),
+                  ),
+                ) : RichText(
+                  textAlign: TextAlign.center,
+
+                  text: TextSpan(
+                    style: const TextStyle(
+                      height: 1.5,
+                      fontFamily: 'QuickSand',
+                      fontWeight: FontWeight.w600,
+                    ),
+                    children: [
+                      const TextSpan(
+                        text: "Créer à partir d'un PDF",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+
+                      WidgetSpan(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: SvgPicture.asset(
+                              'assets/icons/icon_ai.svg',
+                              width: 20, height: 20,
+                              colorFilter: const ColorFilter.mode(
+                                  Colors.white,
+                                  BlendMode.srcIn
+                              ),
+                            ),
+                          )
+                      ),
+                    ],
+                  ),
+                ),
+              )
+          )
       ),
     );
   }
