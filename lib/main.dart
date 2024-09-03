@@ -59,7 +59,6 @@ class MyQuizApp extends StatelessWidget {
           '/quiz': (context) => const Layout("Quiz", page: QuizPage()),
           '/create-quiz': (context) => const Layout("Create Quiz", page: CreateQuizPage()),
           '/modify-quiz': (context) => const Layout("Modify Quiz", page: CreateQuizPage(isModify: true)),
-          '/add_pdf_quiz': (context) => const Layout("Add PDF Quiz", page: Placeholder(color: Colors.red,)),
           '/manage-students': (context) => const Layout("Manage Students", page: ManageStudentsPage()),
         }
     );
