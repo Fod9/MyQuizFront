@@ -52,6 +52,7 @@ class _AppbarTextButtonState extends State<AppbarTextButton> {
 
       child: widget.child ?? Text(
         widget.text,
+        textAlign: TextAlign.center,
         style: _textStyle,
       ),
     );

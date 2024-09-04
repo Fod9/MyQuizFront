@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/appbar/my_quiz_end_drawer.dart' show MyQuizEndDrawer;
 import 'package:my_quiz_ap/components/my_quiz_background.dart' show MyQuizBackground;
 import 'package:my_quiz_ap/providers/layout_provider.dart' show LayoutProvider;
-import 'package:provider/provider.dart' show ChangeNotifierProvider, Consumer;
+import 'package:my_quiz_ap/providers/user_provider.dart';
+import 'package:provider/provider.dart' show ChangeNotifierProvider, Consumer, Provider;
 import 'components/appbar/my_quiz_appbar.dart' show MyQuizAppBar;
 
 /// This widget is used to display the layout of the app
@@ -40,6 +41,8 @@ class Layout extends StatefulWidget {
 
 class _LayoutState extends State<Layout> {
 
+  late final UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+
   @override
   Widget build(BuildContext context) {
 
@@ -56,10 +59,11 @@ class _LayoutState extends State<Layout> {
                   appBar: widget.hasAppBar ? MyQuizAppBar(
                     title: widget.title,
                     scaffoldKey: layoutProvider.layoutKey,
+                    userRole: userProvider.userRole,
                   ) : null,
                   extendBodyBehindAppBar: true,
 
-                  endDrawer: const MyQuizEndDrawer(),
+                  endDrawer: MyQuizEndDrawer(userRole: userProvider.userRole),
                   drawerScrimColor: Colors.transparent,
 
                   body: Stack(

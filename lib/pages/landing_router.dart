@@ -1,13 +1,17 @@
 import 'dart:async';
-
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'dart:convert' show jsonDecode;
 import 'package:my_quiz_ap/constants.dart' show apiUrl;
 import 'package:my_quiz_ap/helpers/http_extensions.dart' show IsOk;
 import 'package:my_quiz_ap/helpers/jwt/token_checker.dart' show checkToken;
-import 'package:my_quiz_ap/helpers/utils.dart' show printError, printInfo;
+import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
 import 'package:my_quiz_ap/helpers/jwt/jwt.dart' show JWT, JWTR;
 import 'package:http/http.dart' as http show Response, get;
+import 'package:my_quiz_ap/providers/user_provider.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/layout_provider.dart';
 
 
 /// This widget is used to redirect the user to the appropriate route
@@ -33,6 +37,8 @@ class LandingRouter extends StatefulWidget {
 }
 
 class _LandingRouterState extends State<LandingRouter> {
+
+  late final UserProvider _userProvider = Provider.of<UserProvider>(context, listen: false);
 
   final JWT jwt = JWT();
 
@@ -177,6 +183,11 @@ class _LandingRouterState extends State<LandingRouter> {
                 // if the role is found, redirect the user
                 } else {
                   final String role = snapshot.data!['role'] ?? '';
+
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _userProvider.userRole = role;
+                  });
+
                   final bool hasRedirected = redirectFromRole(role);
 
                   // if the user is redirected, return an empty widget

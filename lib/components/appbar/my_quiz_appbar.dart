@@ -3,17 +3,20 @@ import 'package:my_quiz_ap/components/appbar/appbar_menu_button.dart';
 import 'package:my_quiz_ap/components/appbar/appbar_text_button.dart';
 import 'package:my_quiz_ap/components/appbar/drawer_trial_button.dart';
 import 'package:my_quiz_ap/helpers/jwt/jwt.dart';
+import 'package:my_quiz_ap/helpers/utils.dart';
 
 /// MyQuizNavbar is the navbar of the MyQuiz page.
 class MyQuizAppBar extends StatefulWidget implements PreferredSizeWidget {
   const MyQuizAppBar({
     super.key,
     this.title = 'My Quiz',
+    this.userRole,
     required this.scaffoldKey,
   });
 
   final String title;
   final GlobalKey<ScaffoldState> scaffoldKey;
+  final String? userRole;
 
   @override
   State<MyQuizAppBar> createState() => _MyQuizAppBarState();
@@ -28,6 +31,23 @@ class _MyQuizAppBarState extends State<MyQuizAppBar> {
 
   @override
   Widget build(BuildContext context) {
+
+    Widget userRolePage() {
+      printInfo('userRole: ${widget.userRole}');
+      switch (widget.userRole) {
+        case 'admin':
+          return const AppbarTextButton(text:'Admin', route: '/admin', color: Colors.white);
+        case 'teacher':
+          return const AppbarTextButton(text:'Gérer les quiz', route: '/teacher', color: Colors.white);
+        case 'student':
+          return const AppbarTextButton(text:'Quiz', route: '/student', color: Colors.white);
+        case 'school':
+          return const AppbarTextButton(text:'Gérer votre établissement', route: '/school', color: Colors.white);
+        default:
+          return const SizedBox.shrink();
+      }
+    }
+
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: DecoratedBox(
@@ -94,20 +114,20 @@ class _MyQuizAppBarState extends State<MyQuizAppBar> {
                         return MediaQuery.of(context).size.width < 685 ?
                           AppbarMenuButton(scaffoldKey: widget.scaffoldKey)
                               :
-                          const Padding(
-                            padding: EdgeInsets.only(right: 20.0),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 20.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                AppbarTextButton(route: '/home', text: 'Accueil', color: Colors.white),
+                                const AppbarTextButton(route: '/home', text: 'Accueil', color: Colors.white),
 
-                                SizedBox(width: 10.0),
+                                const SizedBox(width: 10.0),
 
-                                AppbarTextButton(route: '', text: 'Quiz', color: Colors.white),
+                                userRolePage(),
 
-                                SizedBox(width: 10.0),
+                                const SizedBox(width: 10.0),
 
-                                AppbarTextButton(route: '/logout', text: 'Déconnexion', color: Colors.white),
+                                const AppbarTextButton(route: '/logout', text: 'Déconnexion', color: Colors.white),
                               ],
                             ),
                           );

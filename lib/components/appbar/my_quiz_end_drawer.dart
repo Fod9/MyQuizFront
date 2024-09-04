@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/appbar/appbar_text_button.dart';
 import 'dart:ui' show Clip, Color, FontWeight, ImageFilter, Radius;
-
 import 'package:my_quiz_ap/components/appbar/drawer_trial_button.dart';
 import 'package:my_quiz_ap/helpers/jwt/jwt.dart';
+import 'package:my_quiz_ap/helpers/utils.dart';
+
+import '../../providers/layout_provider.dart';
 
 class MyQuizEndDrawer extends StatefulWidget {
   const MyQuizEndDrawer({
     super.key,
+    this.userRole,
   });
+
+  final String? userRole;
 
   @override
   State<MyQuizEndDrawer> createState() => _MyQuizEndDrawerState();
 }
 
 class _MyQuizEndDrawerState extends State<MyQuizEndDrawer> {
+
   final Color _highlightColor = const Color(0xFF685374);
 
   final double _blur = 10.0;
@@ -31,6 +37,22 @@ class _MyQuizEndDrawerState extends State<MyQuizEndDrawer> {
 
   @override
   Widget build(BuildContext context) {
+
+    Widget userRolePage() {
+      switch (widget.userRole) {
+        case 'admin':
+          return const AppbarTextButton(text:'Admin', route: '/admin');
+        case 'teacher':
+          return const AppbarTextButton(text:'Gérer les quiz', route: '/teacher');
+        case 'student':
+          return const AppbarTextButton(text:'Quiz', route: '/student');
+        case 'school':
+          return const AppbarTextButton(text:'Gérer votre établissement', route: '/school');
+        default:
+          return const SizedBox.shrink();
+      }
+    }
+
     return Material(
       type: MaterialType.transparency,
       clipBehavior: Clip.antiAlias,
@@ -75,24 +97,24 @@ class _MyQuizEndDrawerState extends State<MyQuizEndDrawer> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             if (snapshot.data!) {
-                              return const Column(
+                              return Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
 
-                                  Spacer(flex: 30),
+                                  const Spacer(flex: 30),
 
-                                  AppbarTextButton(text:'Accueil', route: '/home'),
+                                  const AppbarTextButton(text:'Accueil', route: '/home'),
 
-                                  Spacer(flex: 15),
+                                  const Spacer(flex: 15),
 
-                                  AppbarTextButton(text:'Quiz', route: ''),
+                                  userRolePage(),
 
-                                  Spacer(flex: 15),
+                                  const Spacer(flex: 15),
 
-                                  AppbarTextButton(text:'Déconnexion', route: '/logout'),
+                                  const AppbarTextButton(text:'Déconnexion', route: '/logout'),
 
-                                  Spacer(flex: 30),
+                                  const Spacer(flex: 30),
                                 ],
                               );
                             } else {
