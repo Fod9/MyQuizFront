@@ -33,7 +33,6 @@ class _MyQuizAppBarState extends State<MyQuizAppBar> {
   Widget build(BuildContext context) {
 
     Widget userRolePage() {
-      printInfo('userRole: ${widget.userRole}');
       switch (widget.userRole) {
         case 'admin':
           return const AppbarTextButton(text:'Admin', route: '/admin', color: Colors.white);

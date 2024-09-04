@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:my_quiz_ap/helpers/http_extensions.dart';
 import 'package:my_quiz_ap/helpers/utils.dart';
@@ -7,9 +7,8 @@ import '../jwt/jwt.dart';
 import '../jwt/token_checker.dart';
 import '../../constants.dart';
 
-
-Future<int> generateQuizPdf({
-  required File file,
+Future<int> generateQuizPdfWeb({
+  required Uint8List fileBytes,
   required String matiere,
   required String name,
   required int userId,
@@ -21,7 +20,7 @@ Future<int> generateQuizPdf({
     final uri = Uri.parse('$apiUrl/quiz/createFromPDF');
     final request = http.MultipartRequest('POST', uri)
       ..headers['authorization'] = await jwt.read()
-      ..files.add(await http.MultipartFile.fromPath('file', file.path))
+      ..files.add(http.MultipartFile.fromBytes('file', fileBytes, filename: 'quiz.pdf'))
       ..fields['matiere'] = matiere
       ..fields['name'] = name
       ..fields['created_by'] = userId.toString()

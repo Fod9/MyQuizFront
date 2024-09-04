@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/quiz/creation/end_validation/create_quiz_button.dart' show CreateQuizButton;
 import 'package:my_quiz_ap/components/quiz/creation/generate_pdf_quiz_btn.dart';
+import 'package:my_quiz_ap/components/quiz/creation/generate_pdf_quiz_btn_web.dart';
 import 'package:my_quiz_ap/components/quiz/creation/questions/questions_section.dart' show QuestionsSection;
 import 'package:my_quiz_ap/components/quiz/creation/quiz_name_input.dart' show QuizNameInput;
 import 'package:my_quiz_ap/components/quiz/creation/subject_and_classes/select_classes_button.dart';
@@ -149,7 +151,9 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
 
                             _spacer,
 
-                            if (!widget.isModify) const GeneratePdfQuizBtn(),
+                            if (!widget.isModify)
+                              if (kIsWeb) const GeneratePdfQuizBtnWeb()
+                              else const GeneratePdfQuizBtn(),
 
                             if (!widget.isModify) _spacer,
                           ],

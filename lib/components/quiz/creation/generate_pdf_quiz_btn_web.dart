@@ -1,22 +1,21 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:my_quiz_ap/helpers/colors.dart' show electricBlue, lightGlassBlue;
-import 'package:my_quiz_ap/helpers/quiz_creation/generate_quiz_pdf.dart';
+import 'package:my_quiz_ap/helpers/quiz_creation/generate_quiz_pdf_web.dart';
 import 'package:my_quiz_ap/providers/layout_provider.dart';
 import 'package:my_quiz_ap/providers/quiz_creation_data.dart';
 import 'package:provider/provider.dart';
 
-class GeneratePdfQuizBtn extends StatefulWidget {
-  const GeneratePdfQuizBtn({super.key});
+class GeneratePdfQuizBtnWeb extends StatefulWidget {
+  const GeneratePdfQuizBtnWeb({super.key});
 
   @override
-  State<GeneratePdfQuizBtn> createState() => _GeneratePdfQuizBtnState();
+  State<GeneratePdfQuizBtnWeb> createState() => _GeneratePdfQuizBtnWebState();
 }
 
-class _GeneratePdfQuizBtnState extends State<GeneratePdfQuizBtn>  with SingleTickerProviderStateMixin {
-
+class _GeneratePdfQuizBtnWebState extends State<GeneratePdfQuizBtnWeb> with SingleTickerProviderStateMixin {
   late final _animationController = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 500),
@@ -32,17 +31,19 @@ class _GeneratePdfQuizBtnState extends State<GeneratePdfQuizBtn>  with SingleTic
   late final QuizCreationData _quizProvider = Provider.of<QuizCreationData>(context, listen: false);
   late final LayoutProvider _layoutProvider = Provider.of<LayoutProvider>(context, listen: false);
 
-  File? _file;
+  Uint8List? _fileBytes;
   bool _loading = false;
 
   Future<void> getFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(allowedExtensions: ['pdf'], type: FileType.custom, allowMultiple: false);
 
     if (result != null) {
-      final file = File(result.files.single.path!);
-      setState(() {
-        _file = file;
-      });
+      final fileBytes = result.files.single.bytes;
+      if (fileBytes != null) {
+        setState(() {
+          _fileBytes = fileBytes;
+        });
+      }
     } else {
       if (mounted) {
         snackBar("Aucun fichier sélectionné");
@@ -67,50 +68,49 @@ class _GeneratePdfQuizBtnState extends State<GeneratePdfQuizBtn>  with SingleTic
     return SizedBox(
       width: 200,
       child: MaterialButton(
-          onPressed: () async {
+        onPressed: () async {
+          if (_quizProvider.selectedSubject == null) {
+            snackBar("Veuillez sélectionner une matière");
+            _layoutProvider.scrollToTop();
+            return;
+          }
 
-            if (_quizProvider.selectedSubject == null) {
-              snackBar("Veuillez sélectionner une matière");
-              _layoutProvider.scrollToTop();
-              return;
-            }
+          if (_quizProvider.selectedClasses.isEmpty) {
+            snackBar("Veuillez sélectionner au moins une classe");
+            _layoutProvider.scrollToTop();
+            return;
+          }
 
-            if (_quizProvider.selectedClasses.isEmpty) {
-              snackBar("Veuillez sélectionner au moins une classe");
-              _layoutProvider.scrollToTop();
-              return;
-            }
+          if (_quizProvider.quizName.isEmpty) {
+            snackBar("Veuillez donner un nom au quiz");
+            _layoutProvider.scrollToTop();
+            return;
+          }
 
-            if (_quizProvider.quizName.isEmpty) {
-              snackBar("Veuillez donner un nom au quiz");
-              _layoutProvider.scrollToTop();
-              return;
-            }
+          await getFile();
 
-            await getFile();
+          if (_fileBytes != null) {
+            setState(() {
+              _loading = true;
+            });
 
-            if (_file != null) {
-              setState(() {
-                _loading = true;
-              });
+            final int quizId = await generateQuizPdfWeb(
+              fileBytes: _fileBytes!,
+              matiere: _quizProvider.selectedSubject!['name'],
+              name: _quizProvider.quizName,
+              userId: _quizProvider.userId,
+              classes: _quizProvider.selectedClasses.map((e) => e['id'] as int).toList(),
+            );
 
-              final int quizId = await generateQuizPdf(
-                file: _file!,
-                matiere: _quizProvider.selectedSubject!['name'],
-                name: _quizProvider.quizName,
-                userId: _quizProvider.userId,
-                classes: _quizProvider.selectedClasses.map((e) => e['id'] as int).toList(),
-              );
-
-              if (quizId != -1 && context.mounted) {
-                Navigator.pushNamedAndRemoveUntil(context, "/modify-quiz", (route) => false, arguments: quizId);
-                _file = null;
-              } else {
-                if (context.mounted) {
-                  snackBar("Une erreur s'est produite lors de la création du quiz, veuillez réessayer");
-                  _file = null;
-                }
+            if (quizId != -1 && context.mounted) {
+              Navigator.pushNamedAndRemoveUntil(context, "/modify-quiz", (route) => false, arguments: quizId);
+              _fileBytes = null;
+            } else {
+              if (context.mounted) {
+                snackBar("Une erreur s'est produite lors de la création du quiz, veuillez réessayer");
+                _fileBytes = null;
               }
+            }
 
             setState(() {
               _loading = false;
