@@ -1,154 +1,193 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/components/Stats/custom_linear_indicator.dart' show CustomLinearIndicator;
-import 'package:my_quiz_ap/components/sized_block.dart' show SizedBlock;
-import 'package:my_quiz_ap/components/stats/custom_circular_indicator.dart' show CustomCircularIndicator;
+import 'package:blurrycontainer/blurrycontainer.dart' show BlurryContainer;
+import 'package:my_quiz_ap/components/Stats/customCircularIndicator.dart' show StatsCircularIndicator;
+import 'package:my_quiz_ap/components/Stats/customLinearIndicator.dart' show StatsLinearIndicator;
+import 'package:my_quiz_ap/helpers/Colors.dart' show electricBlue;
+import 'package:my_quiz_ap/helpers/stats/get_stats.dart' show getStats;
 
-class StatisticsBlock extends StatefulWidget {
-  const StatisticsBlock({
-    super.key,
-    this.blockName = "Student Statistics",
-    required this.height,
-    required this.width,
-    this.clickEvent,
-    this.child = const SizedBox(),
-    this.expandController,
-    this.isExpanded = false,
-    this.isExpandable = true,
-    this.mode = "mobile",
-  });
-
-  final String blockName;
-  final double height;
-  final double width;
-  final Function? clickEvent;
-  final AnimationController? expandController;
-  final Widget child;
-  final bool isExpandable;
-  final bool isExpanded;
-  final String mode;
+class StatisticsPopUp extends StatefulWidget {
+  const StatisticsPopUp({super.key});
 
   @override
-  State<StatisticsBlock> createState() => _StatisticsBlockState();
+  State<StatisticsPopUp> createState() => _StatisticsPopUpState();
 }
 
-class _StatisticsBlockState extends State<StatisticsBlock> {
-  Map<String, int> stats = {
-    "Maths": 90,
-    "Physics": 80,
-    "Chemistry": 70,
-    "Biology": 60,
-    "English": 50,
-  };
+class _StatisticsPopUpState extends State<StatisticsPopUp> {
 
-  @override
-  Widget build(BuildContext context) {
-    return (widget.mode == "mobile" )
-        ? MobileDisplay(parentWidget: widget)
-        : DesktopDisplay(parentWidget: widget);
+  num? _bTimeElapsed;
+
+  String get _timeElapsed {
+    int timeElapsed = _bTimeElapsed!.toInt();
+    int hours = timeElapsed ~/ 3600;
+    int minutes = (timeElapsed % 3600) ~/ 60;
+    int seconds = timeElapsed % 60;
+
+    return "$hours h $minutes min $seconds s";
   }
-}
-
-class MobileDisplay extends StatelessWidget {
-  const MobileDisplay({super.key, required this.parentWidget});
-
-  final StatisticsBlock parentWidget;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBlock(
-      blockName: parentWidget.blockName,
-      height: parentWidget.height,
-      width: parentWidget.width,
-      expandController: parentWidget.expandController,
-      isExpanded: parentWidget.isExpanded,
-      isExpendable: parentWidget.isExpandable,
-      clickEvent: () {},
-      expandSize: 0.3,
-      percentRadius: 0.05,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              CustomCircularIndicator(
-                width: parentWidget.width * 0.35,
-                percentage: 90,
-              ),
-              Center(
-                child: CustomLinearIndicator(
-                  width: parentWidget.width * 0.8,
-                  text: "20/40 minutes",
-                ),
-              ),
-              Center(
-                child: CustomLinearIndicator(
-                  width: parentWidget.width * 0.8,
-                  text: "10/20 Quiz",
-                ),
-              )
-            ],
-          ),
-          parentWidget.child,
-        ],
-      ),
-    );
-  }
-}
-
-class DesktopDisplay extends StatelessWidget {
-  const DesktopDisplay({super.key, required this.parentWidget});
-
-  final StatisticsBlock parentWidget;
-
-
-  @override
-  Widget build(BuildContext context) {
-    final double blockHeight = MediaQuery.of(context).size.height * 0.3;
-    final double blockWidth  = MediaQuery.of(context).size.width * 0.8;
-    return SizedBlock(
-      blockName: parentWidget.blockName,
-      height: blockHeight,
-      width: blockWidth,
-      expandController: parentWidget.expandController,
-      isExpanded: parentWidget.isExpanded,
-      isExpendable: parentWidget.isExpandable,
-      clickEvent: () {},
-      expandSize: 0.3,
-      percentRadius: 0.05,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomCircularIndicator(
-                  width: blockHeight * 0.50,
-                  percentage: 90,
-                ),
-                Center(
-                  child: CustomLinearIndicator(
-                    width: blockWidth * 0.25,
-                    text: "20/40 minutes",
-                    margin: const EdgeInsets.only(left: 20)
-                  ),
-                ),
-                Center(
-                  child: CustomLinearIndicator(
-                    width: blockWidth * 0.25,
-                    text: "10/20 Quiz",
-                    margin: const EdgeInsets.only(left: 20)
-                  ),
+    return FutureBuilder(
+      future: getStats(),
+      builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+        if (snapshot.hasError) {
+          return Expanded(
+            child: Center(
+                child: Column(
+                  children: [
+                    const Text("Erreur de chargement des statistiques"),
+                    ElevatedButton(
+                      onPressed: () => {
+                        Navigator.of(context).pop(),
+                        displayStatsPopup(context),
+                      },
+                      child: const Text(
+                          "Réessayer",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "QuickSand",
+                            fontWeight: FontWeight.bold,
+                          )
+                      ),
+                    ),
+                  ],
                 )
-              ],
             ),
-          ),
-          parentWidget.child,
-        ],
-      ),
+          );
+        } else if (snapshot.connectionState == ConnectionState.done) {
+
+          _bTimeElapsed = snapshot.data!["time_elapsed"];
+
+          final Map<String, dynamic> stats = snapshot.data!;
+
+          return Center(
+            child: BlurryContainer(
+              blur: 30,
+              color: Colors.black.withOpacity(0.4),
+              elevation: 15,
+              shadowColor: electricBlue,
+              borderRadius: BorderRadius.circular(20),
+              width: (MediaQuery.of(context).size.width * 0.75).clamp(0, 500),
+              height: (MediaQuery.of(context).size.height * 0.75).clamp(0, 500),
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Vos statistiques",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "QuickSand",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        const Text(
+                          "Moyenne",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "QuickSand",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        StatsCircularIndicator(
+                            width: 90, percentage: stats["average_note"]!
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Temps passé",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "QuickSand",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+
+                        StatsLinearIndicator(
+                            percentage: 100,
+                            text: _timeElapsed
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Quiz fait",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "QuickSand",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+
+                        StatsLinearIndicator(
+                            percentage: stats["percentage_done_quizzes"]!,
+                            text: "${stats["percentage_done_quizzes"]}%"
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: IconButton(
+                      icon: const Icon(Icons.close_rounded, color: Colors.white),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return const CircularProgressIndicator(
+            color: Colors.white,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            strokeCap: StrokeCap.round,
+          );
+        }
+      },
     );
   }
+}
+
+
+void displayStatsPopup(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierColor: const Color(0x00000000),
+    builder: (context) => Stack(
+      children: [
+        BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+          ),
+        ),
+
+        const StatisticsPopUp(),
+      ],
+    ),
+  );
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_quiz_ap/helpers/colors.dart';
+import 'package:my_quiz_ap/helpers/Colors.dart';
 
-class CustomCircularIndicator extends StatefulWidget {
-  const CustomCircularIndicator({
+class StatsCircularIndicator extends StatefulWidget {
+  const StatsCircularIndicator({
     super.key,
     required this.width,
     required this.percentage,
@@ -10,29 +10,28 @@ class CustomCircularIndicator extends StatefulWidget {
 
   final double width;
 
-  final int percentage;
+  final num percentage;
 
   @override
-  State<CustomCircularIndicator> createState() => _CustomCircularIndicatorState();
+  State<StatsCircularIndicator> createState() => _StatsCircularIndicatorState();
 }
 
-class _CustomCircularIndicatorState extends State<CustomCircularIndicator> {
+class _StatsCircularIndicatorState extends State<StatsCircularIndicator> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: widget.width,
       width: widget.width,
-      child: Expanded(
-        child: Stack(
+      child: Stack(
           children: [
             SizedBox(
               height: widget.width,
               width: widget.width,
-              child: const RotatedBox(
+              child: RotatedBox(
                 quarterTurns: 2,
                 child: CircularProgressIndicator(
-                  value: 0.9,
-                  strokeWidth: 15,
+                  value: widget.percentage / 20,
+                  strokeWidth: 10,
                   color: lightGreen,
                   strokeCap: StrokeCap.round,
                 ),
@@ -40,16 +39,17 @@ class _CustomCircularIndicatorState extends State<CustomCircularIndicator> {
             ),
             Center(
               child: Text(
-                "${widget.percentage}",
+                widget.percentage.toStringAsFixed(2),
                 style: TextStyle(
                   fontSize: widget.width * 0.2,
+                  fontFamily: "QuickSand",
+                  fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

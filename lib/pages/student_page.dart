@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/components/quiz/dropdown/dropdown_quiz.dart' show DropDownQuiz;
+import 'package:my_quiz_ap/components/stats/stats_button.dart';
 import 'package:my_quiz_ap/helpers/quiz/get_quiz_list.dart' show getQuizList;
 
 class StudentPage extends StatefulWidget {
@@ -122,6 +123,7 @@ class MobileDisplay extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          StatisticsButton(),
           ..._blocWidgets
         ],
       ),
@@ -179,6 +181,7 @@ class DesktopDisplay extends StatelessWidget {
               spacing: 100,
               runSpacing: 75,
               children: [
+                StatisticsButton(),
                 ..._blocWidgets,
               ],
             ),
