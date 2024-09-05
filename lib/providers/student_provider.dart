@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:my_quiz_ap/helpers/students/delete_student.dart';
 import 'package:my_quiz_ap/helpers/students/get_student_list.dart';
 import 'package:my_quiz_ap/helpers/students/send_student_csv.dart';
+import 'package:my_quiz_ap/helpers/students/send_student_csv_bytes.dart';
 
 class StudentProvider with ChangeNotifier {
 
@@ -50,6 +52,17 @@ class StudentProvider with ChangeNotifier {
     _isStudentListLoading = true;
     notifyListeners();
     await sendStudentCsv(file);
+    await fetchStudentList();
+
+    notifyListeners();
+  }
+
+  Future<void> addStudentFromCsvBytes(Uint8List? bytes) async {
+    if (bytes == null) return;
+
+    _isStudentListLoading = true;
+    notifyListeners();
+    await sendStudentCsvBytes(bytes);
     await fetchStudentList();
 
     notifyListeners();
