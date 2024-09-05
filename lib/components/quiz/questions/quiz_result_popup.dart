@@ -84,7 +84,8 @@ class _QuizResultPopupState extends State<QuizResultPopup> {
                       const SizedBox(height: 10),
 
                       Text(
-                        "$_note/20",
+                        // round to 2 decimal places
+                        "${_note.toStringAsFixed(2)} / 20",
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 32,

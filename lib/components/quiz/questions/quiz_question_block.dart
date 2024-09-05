@@ -35,6 +35,7 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
   final List<Widget> _propositions = [];
   final List<GlobalKey<QuizPropositionState>> _propositionKeys = [];
   final GlobalKey<QuizQuestionButtonState> _buttonKey = GlobalKey();
+  final _scrollController = ScrollController();
 
   /// Get and generate the propositions of the question.
   void _getPropositions() {
@@ -165,9 +166,17 @@ class _QuizQuestionBlockState extends State<QuizQuestionBlock>
 
                 Expanded(
                   flex: 15,  // will take 15/17 of the available space
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: _propositions,
+                  child: Scrollbar(
+                    interactive: false,
+                    thumbVisibility: true,
+                    controller: _scrollController,
+                    radius: const Radius.circular(10),
+                    trackVisibility: true,
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      child: Column(
+                        children: _propositions,
+                      ),
                     ),
                   ),
                 ),
