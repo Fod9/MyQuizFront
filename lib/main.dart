@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:my_quiz_ap/pages/homePage.dart' show HomePage;
 import 'package:my_quiz_ap/pages/auth_page.dart' show AuthPage;
 import 'package:my_quiz_ap/pages/admin_page.dart' show AdminPage;
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
@@ -47,6 +48,7 @@ class MyQuizApp extends StatelessWidget {
 
         routes: {
           '/': (context) => const Layout("MyQuiz", page: LandingRouter(), hasAppBar: false),
+          '/home': (context) => const Layout("MyQuiz", page: HomePage(), hasAppBar: true),
           '/auth': (context) => const Layout("MyQuiz", page: AuthPage(), hasAppBar: false),
           '/logout': (context) => const Layout("MyQuiz", page: LandingRouter(logout: true), hasAppBar: false),
           '/admin': (context) => const Layout("Admin", page: AdminPage()),
