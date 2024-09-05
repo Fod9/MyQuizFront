@@ -16,6 +16,7 @@ class StatsLinearIndicator extends StatefulWidget {
 }
 
 class _StatsLinearIndicatorState extends State<StatsLinearIndicator> {
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -47,7 +48,7 @@ class _StatsLinearIndicatorState extends State<StatsLinearIndicator> {
                     ),
                     child: Center(
                       child: Text(
-                        "${widget.text ?? widget.percentage}%",
+                        widget.text ?? "${widget.percentage}%",
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 15,

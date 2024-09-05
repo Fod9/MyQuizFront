@@ -39,7 +39,7 @@ class _StatsCircularIndicatorState extends State<StatsCircularIndicator> {
             ),
             Center(
               child: Text(
-                "${widget.percentage}",
+                widget.percentage.toStringAsFixed(2),
                 style: TextStyle(
                   fontSize: widget.width * 0.2,
                   fontFamily: "QuickSand",

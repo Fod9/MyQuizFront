@@ -16,6 +16,17 @@ class StatisticsPopUp extends StatefulWidget {
 
 class _StatisticsPopUpState extends State<StatisticsPopUp> {
 
+  num? _bTimeElapsed;
+
+  String get _timeElapsed {
+    int timeElapsed = _bTimeElapsed!.toInt();
+    int hours = timeElapsed ~/ 3600;
+    int minutes = (timeElapsed % 3600) ~/ 60;
+    int seconds = timeElapsed % 60;
+
+    return "$hours h $minutes min $seconds s";
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -46,6 +57,8 @@ class _StatisticsPopUpState extends State<StatisticsPopUp> {
             ),
           );
         } else if (snapshot.connectionState == ConnectionState.done) {
+
+          _bTimeElapsed = snapshot.data!["time_elapsed"];
 
           final Map<String, dynamic> stats = snapshot.data!;
 
@@ -107,8 +120,8 @@ class _StatisticsPopUpState extends State<StatisticsPopUp> {
                         ),
 
                         StatsLinearIndicator(
-                            percentage: stats["time_elapsed"]!,
-                            text: "${stats["time_elapsed"]!} / 100"
+                            percentage: 100,
+                            text: _timeElapsed
                         ),
 
                         const SizedBox(height: 20),
@@ -128,7 +141,7 @@ class _StatisticsPopUpState extends State<StatisticsPopUp> {
 
                         StatsLinearIndicator(
                             percentage: stats["percentage_done_quizzes"]!,
-                            text: "${stats["percentage_done_quizzes"]} / 100"
+                            text: "${stats["percentage_done_quizzes"]}%"
                         ),
                       ],
                     ),
