@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_quiz_ap/components/Stats/statistics.dart';
 import 'package:my_quiz_ap/components/quiz/dropdown/dropdown_quiz.dart' show DropDownQuiz;
 import 'package:my_quiz_ap/components/stats/stats_button.dart';
 import 'package:my_quiz_ap/helpers/quiz/get_quiz_list.dart' show getQuizList;
@@ -177,11 +178,11 @@ class DesktopDisplay extends StatelessWidget {
         padding: const EdgeInsets.only(top:75),
         child: Column(
           children: [
+            const StatisticsPopUp(),
             Wrap(
               spacing: 100,
               runSpacing: 75,
               children: [
-                StatisticsButton(),
                 ..._blocWidgets,
               ],
             ),

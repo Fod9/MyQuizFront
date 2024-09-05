@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'dart:ui' show FontWeight, ImageFilter;
 import 'package:my_quiz_ap/helpers/colors.dart' show electricBlue;
 import 'package:my_quiz_ap/helpers/utils.dart' show printInfo;
+import 'package:my_quiz_ap/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class QuizResultPopup extends StatefulWidget {
   const QuizResultPopup({
@@ -21,6 +23,8 @@ class QuizResultPopup extends StatefulWidget {
 }
 
 class _QuizResultPopupState extends State<QuizResultPopup> {
+
+  late final UserProvider _userProvider = Provider.of<UserProvider>(context, listen: false);
 
   late final double _note = widget.score / widget.total * 20;
 
@@ -109,7 +113,13 @@ class _QuizResultPopupState extends State<QuizResultPopup> {
                         await widget.sendScore();
 
                         if (context.mounted) {
-                          Navigator.pushNamedAndRemoveUntil(context, '/student', (route) => false);
+                          if (_userProvider.userRole == "student") {
+                            Navigator.pushNamedAndRemoveUntil(context, '/student', (route) => false);
+                          } else if (_userProvider.userRole == "teacher") {
+                            Navigator.pushNamedAndRemoveUntil(context, '/teacher', (route) => false);
+                          } else {
+                            Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                          }
                         }
                       }
                     },
